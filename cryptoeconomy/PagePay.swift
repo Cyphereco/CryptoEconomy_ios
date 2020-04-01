@@ -76,7 +76,7 @@ struct PagePay: View {
                         SideMenuPay(showMenu: self.$showMenu,
                                     showConfigLocalCurrency: self.$showConfigLocalCurrency,
                                     showConfigFees: self.$showConfigFees,
-                                    onStateFeesIncluded: self.$onStateUseFixAddress,
+                                    onStateFeesIncluded: self.$onStateFeesIncluded,
                                     onStateUseFixAddress: self.$onStateUseFixAddress)
                             .frame(width: geometry.size.width/2)
                             .transition(.move(edge: .top))

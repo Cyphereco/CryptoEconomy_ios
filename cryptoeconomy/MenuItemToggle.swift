@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MenuItemToggle: View {
     var itemLabel: String = ""
-    @State var onState: Bool = false
+    @Binding var onState: Bool
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
@@ -32,6 +32,14 @@ struct MenuItemToggle: View {
 
 struct MenuItemToggle_Previews: PreviewProvider {
     static var previews: some View {
-        MenuItemToggle(itemLabel: "Use All Funds", onState: false)
+      PreviewWrapper()
+    }
+
+    struct PreviewWrapper: View {
+        @State var onState = false
+        @State(initialValue: "") var searchText: String
+        var body: some View {
+            MenuItemToggle(itemLabel: "Use All Funds", onState: self.$onState)
+        }
     }
 }

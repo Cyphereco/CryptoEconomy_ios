@@ -32,8 +32,8 @@ struct SideMenuPay: View {
                     self.showConfigFees = true
                 }
             })
-            MenuItemToggle(itemLabel: "Fees Included", onState: self.onStateFeesIncluded)
-            MenuItemToggle(itemLabel: "Use Fix Address", onState: self.onStateUseFixAddress)
+            MenuItemToggle(itemLabel: "Fees Included", onState: self.$onStateFeesIncluded)
+            MenuItemToggle(itemLabel: "Use Fix Address", onState: self.$onStateUseFixAddress)
             MenuItem(itemLabel: "User Guide", completion: {
                 withAnimation {
                     self.showMenu = false
