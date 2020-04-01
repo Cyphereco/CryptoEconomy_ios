@@ -16,7 +16,7 @@ struct ConfigLocalCurrency: View {
 
     var body: some View {
         VStack {
-            Text("Choose Local Currency").fontWeight(.bold).padding()
+            Text("Set Local Currency").fontWeight(.bold).padding()
             Spacer()
             VStack {
                 Spacer()
