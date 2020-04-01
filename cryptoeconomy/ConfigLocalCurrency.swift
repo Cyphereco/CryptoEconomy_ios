@@ -20,7 +20,7 @@ struct ConfigLocalCurrency: View {
             Spacer()
             VStack {
                 Spacer()
-                Picker("Choose Local Fiat Currency", selection: $localCurrency) {
+                Picker("Set Local Fiat Currency", selection: $localCurrency) {
                     ForEach(0 ..< fiatCurrencies.count) {
                         Text(self.fiatCurrencies[$0]).tag($0)
                     }

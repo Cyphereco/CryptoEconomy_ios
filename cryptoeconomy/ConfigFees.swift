@@ -18,6 +18,7 @@ struct ConfigFees: View {
     
     var body: some View {
         VStack {
+            Text("Set Transaction Fees").fontWeight(.bold).padding()
             Spacer()
             Slider(value: $priority, in: 0...3, step: 1, onEditingChanged: { data in
                 if (self.priority == 0) {self.desc = "Custom"}

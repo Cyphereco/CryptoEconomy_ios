@@ -92,7 +92,7 @@ struct PagePay: View {
                         VStack {
                             Spacer()
                             ConfigFees(showConfigFees: self.$showConfigFees)
-                                .frame(height: geometry.size.height/3)
+                                .frame(height: geometry.size.height/2)
                                 .cornerRadius(20)
                                 .transition(.move(edge: .bottom))
                         }
