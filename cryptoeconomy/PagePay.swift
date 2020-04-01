@@ -20,6 +20,8 @@ struct PagePay: View {
     @State var authByPin: Bool = false
     
     @State var localCurrency = 4
+    @State var feePriority = 1.0
+    @State var fees = 0.000008
     
     @Environment(\.colorScheme) var colorScheme
 
@@ -69,7 +71,7 @@ struct PagePay: View {
                             .padding(.trailing, 20.0)
                         }
                         Spacer()
-                    }.disabled(self.showMenu || self.showConfigFees)
+                    }.disabled(self.showMenu || self.showConfigLocalCurrency || self.showConfigFees)
                     if (self.showMenu) {
                         SideMenuPay(showMenu: self.$showMenu,
                                     showConfigLocalCurrency: self.$showConfigLocalCurrency,
@@ -91,7 +93,7 @@ struct PagePay: View {
                     if (self.showConfigFees) {
                         VStack {
                             Spacer()
-                            ConfigFees(showConfigFees: self.$showConfigFees)
+                            ConfigFees(showConfigFees: self.$showConfigFees, fees: self.$fees, priority: self.$feePriority)
                                 .frame(height: geometry.size.height/2)
                                 .cornerRadius(20)
                                 .transition(.move(edge: .bottom))
@@ -111,7 +113,7 @@ struct PagePay: View {
                 else {
                     Image("menu_expand")
                 }
-            }.disabled(self.showConfigFees))
+            }.disabled(self.showConfigFees || self.showConfigLocalCurrency))
         }
     }
 }

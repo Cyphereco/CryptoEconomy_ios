@@ -10,9 +10,10 @@ import SwiftUI
 
 struct ConfigFees: View {
     @Binding var showConfigFees: Bool
-    @State var priority = 1.0
+    @Binding var fees: Double
+    @Binding var priority: Double
+    
     @State var desc = "Low (>= 60 minutes)"
-    @State var fees = 0.000008
     @State var customFees = "0.00004"
     @Environment(\.colorScheme) var colorScheme
     
@@ -39,7 +40,9 @@ struct ConfigFees: View {
             HStack {
                 Text("Fees = ")
                 if (priority == 0) {
-                    TextFieldWithBottomLine(textContent: customFees, textAlign: .center)
+                    TextFieldWithBottomLine(hint: customFees, textContent: self.customFees, onEditingChanged: { text in
+                        print(text)
+                    }, textAlign: .center)
                         .frame(width: 100)
                         .padding(.top, 10)
                 }
@@ -69,8 +72,10 @@ struct ConfigFees_Previews: PreviewProvider {
 
     struct PreviewWrapper: View {
         @State var showConfigFees = false
+        @State var feesPriority = 1.0
+        @State var fees = 0.000008
         var body: some View {
-            ConfigFees(showConfigFees: self.$showConfigFees)
+            ConfigFees(showConfigFees: self.$showConfigFees, fees: self.$fees, priority: self.$feesPriority)
         }
     }
 }

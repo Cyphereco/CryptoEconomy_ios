@@ -11,10 +11,13 @@ import SwiftUI
 struct TextFieldWithBottomLine: View {
     var hint: String = ""
     @State var textContent: String = ""
+    @State var onEditingChanged: (_: String)->Void = {_ in }
     var textAlign: TextAlignment = .center
     var body: some View {
         VStack {
-            TextField(hint, text: $textContent).multilineTextAlignment(textAlign).padding(-10)
+            TextField(hint, text: $textContent, onEditingChanged: {_ in
+                self.onEditingChanged(self.textContent)
+            }).multilineTextAlignment(textAlign).padding(-10)
             Divider()
         }
     }
