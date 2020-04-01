@@ -20,6 +20,7 @@ struct ConfigFees: View {
         VStack {
             Text("Set Transaction Fees").fontWeight(.bold).padding()
             Spacer()
+            Text(desc).padding(.bottom, 10)
             Slider(value: $priority, in: 0...3, step: 1, onEditingChanged: { data in
                 if (self.priority == 0) {self.desc = "Custom"}
                 if (self.priority == 1) {
@@ -35,7 +36,6 @@ struct ConfigFees: View {
                     self.desc = "High (5~15 minutes)"
                 }
             }).padding().accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
-            Text(desc).padding(.bottom, 10)
             HStack {
                 Text("Fees = ")
                 if (priority == 0) {
