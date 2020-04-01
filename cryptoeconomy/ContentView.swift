@@ -46,7 +46,7 @@ struct ContentView: View {
                     }
                 }
                 .tag(3)
-        }.accentColor(colorScheme == .dark ? .white : .black)
+        }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
     }
 }
 

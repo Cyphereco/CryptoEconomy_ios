@@ -12,22 +12,24 @@ struct SideMenuPay: View {
     @Binding var showMenu: Bool
     @Environment(\.colorScheme) var colorScheme
     
+    @Binding var showConfigLocalCurrency: Bool
+    @Binding var showConfigFees: Bool
+    
     @Binding var onStateFeesIncluded: Bool
     @Binding var onStateUseFixAddress: Bool
-    
-    let light: Double = 224/255
-    let dark: Double = 128/255
 
     var body: some View {
         VStack {
-            MenuItem(itemLabel: "Local Currency (USD)", completion: {
+            MenuItem(itemLabel: "Set Local Currency", completion: {
                 withAnimation {
                     self.showMenu = false
+                    self.showConfigLocalCurrency = true
                 }
             })
-            MenuItem(itemLabel: "Transaction Fee (Low (>60 minutes))", completion: {
+            MenuItem(itemLabel: "Set Transaction Fees", completion: {
                 withAnimation {
                     self.showMenu = false
+                    self.showConfigFees = true
                 }
             })
             MenuItemToggle(itemLabel: "Fees Included", onState: self.onStateFeesIncluded)
@@ -46,8 +48,7 @@ struct SideMenuPay: View {
         }
         .padding(.top, 20)
         .frame(maxWidth: .infinity, alignment: .trailing)
-        .background(colorScheme == .dark ? Color(red: dark, green: dark, blue: dark) :
-            Color(red: light, green: light, blue: light))
+        .background(AppConfig.getMenuBackgroundColor(colorScheme: self.colorScheme))
     }
 }
 
@@ -58,10 +59,16 @@ struct SideMenuPay_Previews: PreviewProvider {
 
     struct PreviewWrapper: View {
         @State var showMenu = false
+        @State var showConfigLocalCurrency = false
+        @State var showConfigFees = false
         @State var onStateFeesIncluded = false
         @State var onStateUseFixAddress = false
         var body: some View {
-            SideMenuPay(showMenu: self.$showMenu, onStateFeesIncluded: self.$onStateUseFixAddress, onStateUseFixAddress: self.$onStateUseFixAddress)
+            SideMenuPay(showMenu: self.$showMenu,
+                        showConfigLocalCurrency: self.$showConfigLocalCurrency,
+                        showConfigFees: self.$showConfigFees,
+                        onStateFeesIncluded: self.$onStateUseFixAddress,
+                        onStateUseFixAddress: self.$onStateUseFixAddress)
         }
     }
 }

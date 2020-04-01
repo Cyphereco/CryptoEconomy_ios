@@ -10,6 +10,7 @@ import SwiftUI
 
 struct PageHistory: View {
     @State var showsAlert = false
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         NavigationView {
@@ -17,14 +18,27 @@ struct PageHistory: View {
                 Text("No Transaction Record")
             }
             .navigationBarTitle(Text("History"), displayMode: .inline)
-            .navigationBarItems(trailing: Button(action: {
-                self.showsAlert.toggle()
-            }){Image("delete_all")}
-                .alert(isPresented: $showsAlert, content: {
-                    Alert(title: Text("Clear History"), message: Text("Delete all trnsaction records?"), primaryButton: .default(Text("Delete"), action: {
-                        print("Clear History")
-                    }), secondaryButton: .default(Text("Cancel")))
-                }))
+            .navigationBarItems(
+                trailing: Button(action: {self.showsAlert.toggle()}) {
+                    Image("delete_all")
+                }
+                .alert(
+                    isPresented: $showsAlert,
+                    content: {
+                        Alert(title: Text("Clear History"),
+                              message: Text("Delete all trnsaction records?"),
+                              primaryButton: .default(
+                                Text("Delete"),
+                                action: {print("Clear History")}
+                            ),
+                              secondaryButton: .default(
+                                Text("Cancel"),
+                                action: {print("Cancel Clear")}
+                            )
+                        )
+                    }
+                )
+            )
         }
     }
 }

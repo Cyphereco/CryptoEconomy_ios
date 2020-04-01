@@ -11,6 +11,7 @@ import SwiftUI
 struct MenuItemToggle: View {
     var itemLabel: String = ""
     @State var onState: Bool = false
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         HStack {
@@ -19,6 +20,7 @@ struct MenuItemToggle: View {
                     Text(self.itemLabel)
                         .fixedSize(horizontal: false, vertical: true)
                         .lineLimit(nil)
+                        .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
                 }
                 .padding(.leading, 20)
                 Divider().padding(.all, 0)

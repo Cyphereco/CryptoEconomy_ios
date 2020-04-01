@@ -1,11 +1,13 @@
 {
   "images" : [
     {
+      "filename" : "ic_cyphereco_color_logo-2.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
+      "filename" : "ic_cyphereco_color_logo.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
@@ -36,7 +38,6 @@
       "size" : "60x60"
     },
     {
-      "filename" : "ic_cyphereco_color_logo.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
@@ -87,6 +88,7 @@
       "size" : "83.5x83.5"
     },
     {
+      "filename" : "ic_cyphereco_color_logo-1.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"

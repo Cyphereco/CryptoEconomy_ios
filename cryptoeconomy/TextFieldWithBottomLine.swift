@@ -14,7 +14,7 @@ struct TextFieldWithBottomLine: View {
     var textAlign: TextAlignment = .center
     var body: some View {
         VStack {
-            TextField(hint, text: $textContent).multilineTextAlignment(textAlign)
+            TextField(hint, text: $textContent).multilineTextAlignment(textAlign).padding(-10)
             Divider()
         }
     }

@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct ViewAddressEditor: View {
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         NavigationView {
             VStack {
@@ -25,13 +27,13 @@ struct ViewAddressEditor: View {
                             .fontWeight(.bold)
                         }
                         .padding(12)
-                            .background(Color.init(red: 0.5, green: 0.75, blue: 1))
+                        .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
                         .cornerRadius(24)
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                     }
                 }.padding(.top, 20.0)
             }.padding(.horizontal, 20.0)
-            .navigationBarTitle(Text("Address Editor"), displayMode: .inline)        }
+            .navigationBarTitle(Text("Edit Address"), displayMode: .inline)        }
     }
 }
 

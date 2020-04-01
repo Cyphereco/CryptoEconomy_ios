@@ -10,11 +10,19 @@ import SwiftUI
 
 struct PagePay: View {
     @State var showMenu: Bool = false
-    @State var useAllFunds: Bool = false
-    @State var authByPin: Bool = false
+    @State var showConfigLocalCurrency: Bool = false
+    @State var showConfigFees: Bool = false
+
     @State var onStateFeesIncluded = false
     @State var onStateUseFixAddress = false
+
+    @State var useAllFunds: Bool = false
+    @State var authByPin: Bool = false
     
+    @State var localCurrency = 4
+    
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         NavigationView {
             GeometryReader {geometry in
@@ -24,7 +32,7 @@ struct PagePay: View {
                             .padding([.top, .trailing], 20.0)
                         Spacer()
                         TextFieldBtcAddress()
-                            .padding(.horizontal, 16.0)
+                            .padding(.horizontal, 20.0)
                         Spacer()
                         TextFieldPayAmount()
                             .padding(.horizontal, 20.0)
@@ -54,18 +62,40 @@ struct PagePay: View {
                                     .fontWeight(.bold)
                                 }
                                 .padding(12)
-                                    .background(Color.init(red: 0.5, green: 0.75, blue: 1))
+                                .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
                                 .cornerRadius(24)
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                             }
                             .padding(.trailing, 20.0)
                         }
                         Spacer()
-                    }.disabled(self.showMenu)
+                    }.disabled(self.showMenu || self.showConfigFees)
                     if (self.showMenu) {
-                        SideMenuPay(showMenu: self.$showMenu, onStateFeesIncluded: self.$onStateUseFixAddress, onStateUseFixAddress: self.$onStateUseFixAddress)
+                        SideMenuPay(showMenu: self.$showMenu,
+                                    showConfigLocalCurrency: self.$showConfigLocalCurrency,
+                                    showConfigFees: self.$showConfigFees,
+                                    onStateFeesIncluded: self.$onStateUseFixAddress,
+                                    onStateUseFixAddress: self.$onStateUseFixAddress)
                             .frame(width: geometry.size.width/2)
                             .transition(.move(edge: .top))
+                    }
+                    if (self.showConfigLocalCurrency) {
+                        VStack {
+                            Spacer()
+                            ConfigLocalCurrency(showConfigLocalCurrency: self.$showConfigLocalCurrency, localCurrency: self.$localCurrency)
+                                .frame(height: geometry.size.height/2)
+                                .cornerRadius(20)
+                                .transition(.move(edge: .bottom))
+                        }
+                    }
+                    if (self.showConfigFees) {
+                        VStack {
+                            Spacer()
+                            ConfigFees(showConfigFees: self.$showConfigFees)
+                                .frame(height: geometry.size.height/3)
+                                .cornerRadius(20)
+                                .transition(.move(edge: .bottom))
+                        }
                     }
                 }
             }
@@ -81,7 +111,7 @@ struct PagePay: View {
                 else {
                     Image("menu_expand")
                 }
-            })
+            }.disabled(self.showConfigFees))
         }
     }
 }

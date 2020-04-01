@@ -12,6 +12,8 @@ struct PageOpenTurnKey: View {
     @State var showMenu = false
     @State var requestHint: String = "Read General Information"
     let extraSpace: String = "       "
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         NavigationView {
             GeometryReader {geometry in
@@ -33,9 +35,9 @@ struct PageOpenTurnKey: View {
                                     .font(.system(size: 20))
                                 .fontWeight(.bold)
                                 .padding(12)
-                                    .background(Color.init(red: 0.5, green: 0.75, blue: 1))
+                                    .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
                                 .cornerRadius(24)
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                             }
                             Spacer()
                         }.frame(minWidth: .zero, idealWidth: .none, maxWidth: .infinity, minHeight: 80, idealHeight: .none, maxHeight: 160, alignment: .center)

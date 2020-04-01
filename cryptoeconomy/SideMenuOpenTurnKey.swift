@@ -12,9 +12,6 @@ struct SideMenuOpenTurnKey: View {
     @Binding var showMenu: Bool
     @Binding var requestHint: String
     @Environment(\.colorScheme) var colorScheme
-    
-    let light: Double = 224/255
-    let dark: Double = 128/255
 
     var body: some View {
         VStack {
@@ -70,8 +67,7 @@ struct SideMenuOpenTurnKey: View {
         }
         .padding(.top, 20)
         .frame(maxWidth: .infinity, alignment: .trailing)
-        .background(colorScheme == .dark ? Color(red: dark, green: dark, blue: dark) :
-            Color(red: light, green: light, blue: light))
+        .background(AppConfig.getMenuBackgroundColor(colorScheme: self.colorScheme))
     }
 }
 

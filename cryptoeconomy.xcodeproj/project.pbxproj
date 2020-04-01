@@ -12,6 +12,9 @@
 		BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */; };
 		BA2EEADB2433110800522A63 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEADA2433110800522A63 /* MenuItem.swift */; };
 		BA2EEADD2433B07900522A63 /* MenuItemToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEADC2433B07900522A63 /* MenuItemToggle.swift */; };
+		BA2EEADF243450F200522A63 /* ConfigLocalCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */; };
+		BA2EEAE324346C6C00522A63 /* ConfigFees.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE224346C6C00522A63 /* ConfigFees.swift */; };
+		BA2EEAE52434826A00522A63 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE42434826A00522A63 /* AppConfig.swift */; };
 		BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC537243048AB00F41471 /* PageAddresses.swift */; };
 		BA3FC53A2430576100F41471 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC5392430576100F41471 /* SearchBar.swift */; };
 		BA3FC53C243072BF00F41471 /* PageOpenTurnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */; };
@@ -54,6 +57,9 @@
 		BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOpenTurnKey.swift; sourceTree = "<group>"; };
 		BA2EEADA2433110800522A63 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		BA2EEADC2433B07900522A63 /* MenuItemToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemToggle.swift; sourceTree = "<group>"; };
+		BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigLocalCurrency.swift; sourceTree = "<group>"; };
+		BA2EEAE224346C6C00522A63 /* ConfigFees.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFees.swift; sourceTree = "<group>"; };
+		BA2EEAE42434826A00522A63 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		BA3FC537243048AB00F41471 /* PageAddresses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageAddresses.swift; sourceTree = "<group>"; };
 		BA3FC5392430576100F41471 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOpenTurnKey.swift; sourceTree = "<group>"; };
@@ -127,26 +133,29 @@
 		BA9595E5242EFD8800C48B37 /* cryptoeconomy */ = {
 			isa = PBXGroup;
 			children = (
+				BA9595EC242EFE4000C48B37 /* Assets.xcassets */,
 				BA9595E6242EFD8800C48B37 /* AppDelegate.swift */,
-				BA9595E8242EFD8900C48B37 /* SceneDelegate.swift */,
+				BA2EEAE42434826A00522A63 /* AppConfig.swift */,
 				BA9595EA242EFD8900C48B37 /* ContentView.swift */,
-				BA4015092431CA910094F6CF /* TextFieldBtcAddress.swift */,
-				BA40150B2431D80C0094F6CF /* TextEstFeesInfo.swift */,
-				BA3FC53D2431004D00F41471 /* PagePay.swift */,
-				BA40150D2431E2B70094F6CF /* TextFieldPayAmount.swift */,
-				BA40150F2431E3950094F6CF /* TextFieldWithBottomLine.swift */,
-				BA3FC53F2431006000F41471 /* PageHistory.swift */,
-				BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */,
-				BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */,
+				BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */,
+				BA2EEAE224346C6C00522A63 /* ConfigFees.swift */,
+				BA9595F4242EFE4100C48B37 /* Info.plist */,
+				BA9595F1242EFE4100C48B37 /* LaunchScreen.storyboard */,
 				BA2EEADA2433110800522A63 /* MenuItem.swift */,
 				BA2EEADC2433B07900522A63 /* MenuItemToggle.swift */,
-				BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */,
-				BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */,
 				BA3FC537243048AB00F41471 /* PageAddresses.swift */,
+				BA3FC53F2431006000F41471 /* PageHistory.swift */,
+				BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */,
+				BA3FC53D2431004D00F41471 /* PagePay.swift */,
 				BA3FC5392430576100F41471 /* SearchBar.swift */,
-				BA9595EC242EFE4000C48B37 /* Assets.xcassets */,
-				BA9595F1242EFE4100C48B37 /* LaunchScreen.storyboard */,
-				BA9595F4242EFE4100C48B37 /* Info.plist */,
+				BA9595E8242EFD8900C48B37 /* SceneDelegate.swift */,
+				BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */,
+				BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */,
+				BA40150B2431D80C0094F6CF /* TextEstFeesInfo.swift */,
+				BA4015092431CA910094F6CF /* TextFieldBtcAddress.swift */,
+				BA40150D2431E2B70094F6CF /* TextFieldPayAmount.swift */,
+				BA40150F2431E3950094F6CF /* TextFieldWithBottomLine.swift */,
+				BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */,
 				BA9595EE242EFE4100C48B37 /* Preview Content */,
 			);
 			path = cryptoeconomy;
@@ -310,6 +319,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA40150C2431D80C0094F6CF /* TextEstFeesInfo.swift in Sources */,
+				BA2EEAE52434826A00522A63 /* AppConfig.swift in Sources */,
 				BA3FC53E2431004D00F41471 /* PagePay.swift in Sources */,
 				BA4015102431E3950094F6CF /* TextFieldWithBottomLine.swift in Sources */,
 				BA2EEADD2433B07900522A63 /* MenuItemToggle.swift in Sources */,
@@ -319,6 +329,8 @@
 				BA3FC5402431006000F41471 /* PageHistory.swift in Sources */,
 				BA40150A2431CA930094F6CF /* TextFieldBtcAddress.swift in Sources */,
 				BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */,
+				BA2EEADF243450F200522A63 /* ConfigLocalCurrency.swift in Sources */,
+				BA2EEAE324346C6C00522A63 /* ConfigFees.swift in Sources */,
 				BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */,
 				BA2EEAD724330E8A00522A63 /* SideMenuPay.swift in Sources */,
 				BA40150E2431E2B70094F6CF /* TextFieldPayAmount.swift in Sources */,
