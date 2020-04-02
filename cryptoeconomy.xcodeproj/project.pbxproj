@@ -15,6 +15,8 @@
 		BA2EEADF243450F200522A63 /* ConfigLocalCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */; };
 		BA2EEAE324346C6C00522A63 /* ConfigFees.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE224346C6C00522A63 /* ConfigFees.swift */; };
 		BA2EEAE52434826A00522A63 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE42434826A00522A63 /* AppConfig.swift */; };
+		BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE62435839E00522A63 /* ListItemAddress.swift */; };
+		BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */; };
 		BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC537243048AB00F41471 /* PageAddresses.swift */; };
 		BA3FC53A2430576100F41471 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC5392430576100F41471 /* SearchBar.swift */; };
 		BA3FC53C243072BF00F41471 /* PageOpenTurnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */; };
@@ -60,6 +62,8 @@
 		BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigLocalCurrency.swift; sourceTree = "<group>"; };
 		BA2EEAE224346C6C00522A63 /* ConfigFees.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFees.swift; sourceTree = "<group>"; };
 		BA2EEAE42434826A00522A63 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		BA2EEAE62435839E00522A63 /* ListItemAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemAddress.swift; sourceTree = "<group>"; };
+		BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemTransaction.swift; sourceTree = "<group>"; };
 		BA3FC537243048AB00F41471 /* PageAddresses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageAddresses.swift; sourceTree = "<group>"; };
 		BA3FC5392430576100F41471 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOpenTurnKey.swift; sourceTree = "<group>"; };
@@ -141,6 +145,8 @@
 				BA2EEAE224346C6C00522A63 /* ConfigFees.swift */,
 				BA9595F4242EFE4100C48B37 /* Info.plist */,
 				BA9595F1242EFE4100C48B37 /* LaunchScreen.storyboard */,
+				BA2EEAE62435839E00522A63 /* ListItemAddress.swift */,
+				BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */,
 				BA2EEADA2433110800522A63 /* MenuItem.swift */,
 				BA2EEADC2433B07900522A63 /* MenuItemToggle.swift */,
 				BA3FC537243048AB00F41471 /* PageAddresses.swift */,
@@ -327,7 +333,9 @@
 				BA2EEAD52432209400522A63 /* ViewAddressEditor.swift in Sources */,
 				BA3FC53C243072BF00F41471 /* PageOpenTurnKey.swift in Sources */,
 				BA3FC5402431006000F41471 /* PageHistory.swift in Sources */,
+				BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */,
 				BA40150A2431CA930094F6CF /* TextFieldBtcAddress.swift in Sources */,
+				BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */,
 				BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */,
 				BA2EEADF243450F200522A63 /* ConfigLocalCurrency.swift in Sources */,
 				BA2EEAE324346C6C00522A63 /* ConfigFees.swift in Sources */,

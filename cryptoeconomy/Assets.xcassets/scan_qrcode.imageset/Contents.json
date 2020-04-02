@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic_action_scan_qr_code.png",
+      "filename" : "scan_qrcode.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "scan_qrcode@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "scan_qrcode@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

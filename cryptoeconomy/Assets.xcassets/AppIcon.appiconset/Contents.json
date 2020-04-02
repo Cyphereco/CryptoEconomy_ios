@@ -13,6 +13,7 @@
       "size" : "20x20"
     },
     {
+      "filename" : "ic_cyphereco_color_logo-3.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "29x29"
@@ -28,11 +29,13 @@
       "size" : "40x40"
     },
     {
+      "filename" : "ic_cyphereco_color_logo-5.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"
     },
     {
+      "filename" : "ic_cyphereco_color_logo-4.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"

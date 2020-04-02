@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct PageAddresses: View {
+    
     @State var searchText: String = ""
     var body: some View {
         NavigationView {

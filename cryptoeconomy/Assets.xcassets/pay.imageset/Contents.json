@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic_payment_on_black_24dp.png",
+      "filename" : "pay.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "pay@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "pay@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
