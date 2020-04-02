@@ -8,34 +8,30 @@
 
 import SwiftUI
 struct ListItemTransaction: View {
-    @Binding var confirmations: Int
-    @Binding var time: Date
-    @Binding var payerAddr: String
-    @Binding var payeeAddr: String
-    @Binding var amount: Double
+    var recordTransaction: RecordTransaction
 
     var body: some View {
         HStack {
             HStack {
-                if (confirmations < 0) {
+                if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 0) {
                     Image("unconfirmed")
                 }
-                else if (confirmations < 1) {
+                else if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 1) {
                     Image("confirm0")
                 }
-                else if (confirmations < 2) {
+                else if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 2) {
                     Image("confirm1")
                 }
-                else if (confirmations < 3) {
+                else if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 3) {
                     Image("confirm2")
                 }
-                else if (confirmations < 4) {
+                else if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 4) {
                     Image("confirm3")
                 }
-                else if (confirmations < 5) {
+                else if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 5) {
                     Image("confirm4")
                 }
-                else if (confirmations < 6) {
+                else if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 6) {
                     Image("confirm5")
                 }
                 else {
@@ -43,18 +39,20 @@ struct ListItemTransaction: View {
                 }
             }
             VStack {
-                Text(timeToStringDate(time: self.time))
-                Text(timeToStringTime(time: self.time))
+                Text(timeToStringDate(time: self.recordTransaction.time))
+                Text(timeToStringTime(time: self.recordTransaction.time))
             }
             VStack {
-                Text(payerAddr).lineLimit(1)
+                Text(self.recordTransaction.payer).lineLimit(1)
                 HStack {
                     Image("send_to").padding(.top, -3).padding(.bottom, 3)
                         .padding(.leading, 5).padding(.trailing, -10)
-                    Text(payeeAddr).lineLimit(1)
+                    Text(self.recordTransaction.payee).lineLimit(1)
                 }.padding(.vertical, -10)
             }.padding(.trailing, 10).padding(.bottom, 10)
-            Text(String(format: "%.4f", self.amount)).padding()
+            Button(action: {}) {
+                Text(String(format: "%.4f", self.recordTransaction.amountSent))
+            }
         }.frame(alignment: .center)
     }
     
@@ -69,6 +67,11 @@ struct ListItemTransaction: View {
         formatter.timeStyle = .short
         return formatter.string(from: time)
     }
+    
+    func calcConfimations(blockHeight: Int64) -> Int {
+        // return Int(WebService.getCurrentBlockHeight() - blockHeight))
+        return Int(blockHeight)
+    }
 }
 
 struct ListItemTransaction_Previews: PreviewProvider {
@@ -77,18 +80,10 @@ struct ListItemTransaction_Previews: PreviewProvider {
     }
 
     struct PreviewWrapper: View {
-        @State var confirmations = -1
-        @State var now = Date()
-        @State var payerAddr = "1Lx8alsiAI8x1jfaIzz82naoba38nDga"
-        @State var payeeAddr = "1Fmaia13lzibIls820Naliali18nbaiL"
-        @State var amount = 0.025
+        var recordTransaction = RecordTransaction(id: 0, time: Date(), hash: "", payer: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab", payee: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab", amountSent: 0.05, amountRecv: 0.049, rawData: "", blockHeight: -1, exchangeRate: "")
         
         var body: some View {
-            ListItemTransaction(confirmations: self.$confirmations,
-                                time: self.$now,
-                                payerAddr: self.$payerAddr,
-                                payeeAddr: self.$payeeAddr,
-                                amount: self.$amount)
+            ListItemTransaction(recordTransaction: self.recordTransaction)
         }
     }
 }

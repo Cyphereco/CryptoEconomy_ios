@@ -17,7 +17,9 @@
 		BA2EEAE52434826A00522A63 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE42434826A00522A63 /* AppConfig.swift */; };
 		BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE62435839E00522A63 /* ListItemAddress.swift */; };
 		BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */; };
-		BA2EEAEB2435BDA200522A63 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BA2EEAEA2435BDA200522A63 /* Default-568h@2x.png */; };
+		BA2EEAED2435BEB800522A63 /* Logger in Resources */ = {isa = PBXBuildFile; fileRef = BA2EEAEC2435BEB600522A63 /* Logger */; };
+		BA2EEAF2243628A600522A63 /* RecordTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAF1243628A600522A63 /* RecordTransaction.swift */; };
+		BA2EEAF424363E5600522A63 /* RecordAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAF324363E5600522A63 /* RecordAddress.swift */; };
 		BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC537243048AB00F41471 /* PageAddresses.swift */; };
 		BA3FC53A2430576100F41471 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC5392430576100F41471 /* SearchBar.swift */; };
 		BA3FC53C243072BF00F41471 /* PageOpenTurnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */; };
@@ -65,7 +67,11 @@
 		BA2EEAE42434826A00522A63 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		BA2EEAE62435839E00522A63 /* ListItemAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemAddress.swift; sourceTree = "<group>"; };
 		BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemTransaction.swift; sourceTree = "<group>"; };
-		BA2EEAEA2435BDA200522A63 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		BA2EEAEC2435BEB600522A63 /* Logger */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Logger; sourceTree = "<group>"; };
+		BA2EEAEF2435BEDE00522A63 /* BlockChainInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockChainInfoService.swift; sourceTree = "<group>"; };
+		BA2EEAF02435BEDE00522A63 /* BaseWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseWebService.swift; sourceTree = "<group>"; };
+		BA2EEAF1243628A600522A63 /* RecordTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTransaction.swift; sourceTree = "<group>"; };
+		BA2EEAF324363E5600522A63 /* RecordAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAddress.swift; sourceTree = "<group>"; };
 		BA3FC537243048AB00F41471 /* PageAddresses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageAddresses.swift; sourceTree = "<group>"; };
 		BA3FC5392430576100F41471 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOpenTurnKey.swift; sourceTree = "<group>"; };
@@ -116,10 +122,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BA2EEAEE2435BEDE00522A63 /* WebService */ = {
+			isa = PBXGroup;
+			children = (
+				BA2EEAEF2435BEDE00522A63 /* BlockChainInfoService.swift */,
+				BA2EEAF02435BEDE00522A63 /* BaseWebService.swift */,
+			);
+			path = WebService;
+			sourceTree = "<group>";
+		};
 		BA9595DA242EFD8800C48B37 = {
 			isa = PBXGroup;
 			children = (
-				BA2EEAEA2435BDA200522A63 /* Default-568h@2x.png */,
 				BA9595E5242EFD8800C48B37 /* cryptoeconomy */,
 				BA9595FC242EFE4800C48B37 /* cryptoeconomyTests */,
 				BA959607242EFE4800C48B37 /* cryptoeconomyUITests */,
@@ -140,6 +154,8 @@
 		BA9595E5242EFD8800C48B37 /* cryptoeconomy */ = {
 			isa = PBXGroup;
 			children = (
+				BA2EEAEC2435BEB600522A63 /* Logger */,
+				BA2EEAEE2435BEDE00522A63 /* WebService */,
 				BA9595EC242EFE4000C48B37 /* Assets.xcassets */,
 				BA9595E6242EFD8800C48B37 /* AppDelegate.swift */,
 				BA2EEAE42434826A00522A63 /* AppConfig.swift */,
@@ -154,6 +170,8 @@
 				BA2EEADC2433B07900522A63 /* MenuItemToggle.swift */,
 				BA3FC537243048AB00F41471 /* PageAddresses.swift */,
 				BA3FC53F2431006000F41471 /* PageHistory.swift */,
+				BA2EEAF324363E5600522A63 /* RecordAddress.swift */,
+				BA2EEAF1243628A600522A63 /* RecordTransaction.swift */,
 				BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */,
 				BA3FC53D2431004D00F41471 /* PagePay.swift */,
 				BA3FC5392430576100F41471 /* SearchBar.swift */,
@@ -300,8 +318,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA2EEAED2435BEB800522A63 /* Logger in Resources */,
 				BA9595F3242EFE4100C48B37 /* LaunchScreen.storyboard in Resources */,
-				BA2EEAEB2435BDA200522A63 /* Default-568h@2x.png in Resources */,
 				BA9595F0242EFE4100C48B37 /* Preview Assets.xcassets in Resources */,
 				BA9595ED242EFE4000C48B37 /* Assets.xcassets in Resources */,
 			);
@@ -331,6 +349,7 @@
 				BA40150C2431D80C0094F6CF /* TextEstFeesInfo.swift in Sources */,
 				BA2EEAE52434826A00522A63 /* AppConfig.swift in Sources */,
 				BA3FC53E2431004D00F41471 /* PagePay.swift in Sources */,
+				BA2EEAF2243628A600522A63 /* RecordTransaction.swift in Sources */,
 				BA4015102431E3950094F6CF /* TextFieldWithBottomLine.swift in Sources */,
 				BA2EEADD2433B07900522A63 /* MenuItemToggle.swift in Sources */,
 				BA9595E7242EFD8800C48B37 /* AppDelegate.swift in Sources */,
@@ -346,6 +365,7 @@
 				BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */,
 				BA2EEAD724330E8A00522A63 /* SideMenuPay.swift in Sources */,
 				BA40150E2431E2B70094F6CF /* TextFieldPayAmount.swift in Sources */,
+				BA2EEAF424363E5600522A63 /* RecordAddress.swift in Sources */,
 				BA3FC53A2430576100F41471 /* SearchBar.swift in Sources */,
 				BA2EEADB2433110800522A63 /* MenuItem.swift in Sources */,
 				BA9595E9242EFD8900C48B37 /* SceneDelegate.swift in Sources */,

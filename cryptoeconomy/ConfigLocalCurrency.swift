@@ -24,7 +24,7 @@ struct ConfigLocalCurrency: View {
                     ForEach(0 ..< fiatCurrencies.count) {
                         Text(self.fiatCurrencies[$0]).tag($0)
                     }
-                    }.labelsHidden()
+                }.labelsHidden()
                 Spacer()
             }.fixedSize().frame(height: 100)
             Spacer()
