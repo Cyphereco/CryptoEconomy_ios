@@ -12,7 +12,7 @@ struct TextFieldBtcAddress: View {
     @State private var name = ""
     var body: some View {
         VStack {
-            HStack {
+            HStack(alignment: .bottom) {
                 TextFieldWithBottomLine(hint: "Recipient Address", textContent: "", textAlign: .leading)
                 Button(action: {}){Image("clear")}
             }

@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct TextEstFeesInfo: View {
+    @Binding var localCurrency: Int
+    @Binding var fees: Double
     var body: some View {
         VStack {
             HStack {
@@ -18,12 +20,12 @@ struct TextEstFeesInfo: View {
             }
             HStack {
                 Spacer()
-                Text("0.0000 1000 / 0.05")
+                Text("\(self.fees) / \(AppTools.btcToFiat(btc: self.fees, localCurrency: self.localCurrency))")
                     .font(.footnote)
             }
             HStack {
                 Spacer()
-                Text("BTC / USD")
+                Text("BTC / \(AppConfig.fiatCurrencies[self.localCurrency])")
                     .font(.footnote)
             }
         }
@@ -32,6 +34,6 @@ struct TextEstFeesInfo: View {
 
 struct TextEstFeesInfo_Previews: PreviewProvider {
     static var previews: some View {
-        TextEstFeesInfo()
+        TextEstFeesInfo(localCurrency: .constant(4), fees: .constant(0.00001))
     }
 }

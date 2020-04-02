@@ -29,6 +29,7 @@
 		BA40150C2431D80C0094F6CF /* TextEstFeesInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA40150B2431D80C0094F6CF /* TextEstFeesInfo.swift */; };
 		BA40150E2431E2B70094F6CF /* TextFieldPayAmount.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA40150D2431E2B70094F6CF /* TextFieldPayAmount.swift */; };
 		BA4015102431E3950094F6CF /* TextFieldWithBottomLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA40150F2431E3950094F6CF /* TextFieldWithBottomLine.swift */; };
+		BA7DDBA0243665E50072412F /* AppTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7DDB9F243665E50072412F /* AppTools.swift */; };
 		BA9595E7242EFD8800C48B37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9595E6242EFD8800C48B37 /* AppDelegate.swift */; };
 		BA9595E9242EFD8900C48B37 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9595E8242EFD8900C48B37 /* SceneDelegate.swift */; };
 		BA9595EB242EFD8900C48B37 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9595EA242EFD8900C48B37 /* ContentView.swift */; };
@@ -81,6 +82,7 @@
 		BA40150B2431D80C0094F6CF /* TextEstFeesInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEstFeesInfo.swift; sourceTree = "<group>"; };
 		BA40150D2431E2B70094F6CF /* TextFieldPayAmount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldPayAmount.swift; sourceTree = "<group>"; };
 		BA40150F2431E3950094F6CF /* TextFieldWithBottomLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithBottomLine.swift; sourceTree = "<group>"; };
+		BA7DDB9F243665E50072412F /* AppTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTools.swift; sourceTree = "<group>"; };
 		BA9595E3242EFD8800C48B37 /* Crypto Economy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Crypto Economy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA9595E6242EFD8800C48B37 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BA9595E8242EFD8900C48B37 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				BA9595EC242EFE4000C48B37 /* Assets.xcassets */,
 				BA9595E6242EFD8800C48B37 /* AppDelegate.swift */,
 				BA2EEAE42434826A00522A63 /* AppConfig.swift */,
+				BA7DDB9F243665E50072412F /* AppTools.swift */,
 				BA9595EA242EFD8900C48B37 /* ContentView.swift */,
 				BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */,
 				BA2EEAE224346C6C00522A63 /* ConfigFees.swift */,
@@ -356,6 +359,7 @@
 				BA2EEAD52432209400522A63 /* ViewAddressEditor.swift in Sources */,
 				BA3FC53C243072BF00F41471 /* PageOpenTurnKey.swift in Sources */,
 				BA3FC5402431006000F41471 /* PageHistory.swift in Sources */,
+				BA7DDBA0243665E50072412F /* AppTools.swift in Sources */,
 				BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */,
 				BA40150A2431CA930094F6CF /* TextFieldBtcAddress.swift in Sources */,
 				BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */,

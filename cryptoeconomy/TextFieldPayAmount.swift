@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct TextFieldPayAmount: View {
+    @Binding var localCurrency: Int
     var body: some View {
         VStack {
             HStack {
@@ -30,7 +31,7 @@ struct TextFieldPayAmount: View {
                     TextFieldWithBottomLine(hint: "0.0", textContent: "0.0", textAlign: .trailing)
                     HStack {
                         Spacer()
-                        Text("USD")
+                        Text(AppConfig.fiatCurrencies[self.localCurrency])
                     }
                 }
                 .padding(.leading, 4.0)
@@ -45,6 +46,6 @@ struct TextFieldPayAmount: View {
 
 struct TextFieldPayAmount_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldPayAmount()
+        TextFieldPayAmount(localCurrency: .constant(0))
     }
 }

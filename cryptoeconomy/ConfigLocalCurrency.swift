@@ -10,8 +10,7 @@ import SwiftUI
 
 struct ConfigLocalCurrency: View {
     @Binding var showConfigLocalCurrency: Bool
-    @Binding var localCurrency: Int
-    var fiatCurrencies = ["CNY", "EUR", "JPY", "TWD", "USD"]
+    @Binding var appConfig: AppConfig
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
@@ -20,9 +19,9 @@ struct ConfigLocalCurrency: View {
             Spacer()
             VStack {
                 Spacer()
-                Picker("Set Local Fiat Currency", selection: $localCurrency) {
-                    ForEach(0 ..< fiatCurrencies.count) {
-                        Text(self.fiatCurrencies[$0]).tag($0)
+                Picker("Set Local Fiat Currency", selection: self.$appConfig.localCurrency) {
+                    ForEach(0 ..< AppConfig.fiatCurrencies.count) {
+                        Text(AppConfig.fiatCurrencies[$0]).tag($0)
                     }
                 }.labelsHidden()
                 Spacer()
@@ -50,8 +49,7 @@ struct ConfigLocalCurrency_Previews: PreviewProvider {
         @State var showConfigLocalCurrency = false
         @State var localCurrency = 4
         var body: some View {
-            ConfigLocalCurrency(showConfigLocalCurrency: self.$showConfigLocalCurrency,
-                                localCurrency: self.$localCurrency)
+            ConfigLocalCurrency(showConfigLocalCurrency: self.$showConfigLocalCurrency, appConfig: .constant(AppConfig()))
         }
     }
 }
