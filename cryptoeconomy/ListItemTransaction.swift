@@ -9,6 +9,7 @@
 import SwiftUI
 struct ListItemTransaction: View {
     @Binding var confirmations: Int
+    @Binding var time: Date
     @Binding var payerAddr: String
     @Binding var payeeAddr: String
     @Binding var amount: Double
@@ -40,19 +41,33 @@ struct ListItemTransaction: View {
                 else {
                     Image("confirm6")
                 }
-            }.padding()
-            VStack {
-                Text("")
             }
             VStack {
-                Text(payerAddr)
+                Text(timeToStringDate(time: self.time))
+                Text(timeToStringTime(time: self.time))
+            }
+            VStack {
+                Text(payerAddr).lineLimit(1)
                 HStack {
-                    Image("send_to").padding(.vertical, -20)
-                    Text(payeeAddr)
-                }
-            }.padding(.trailing, 30)
-            Text("\(self.amount)").padding()
+                    Image("send_to").padding(.top, -3).padding(.bottom, 3)
+                        .padding(.leading, 5).padding(.trailing, -10)
+                    Text(payeeAddr).lineLimit(1)
+                }.padding(.vertical, -10)
+            }.padding(.trailing, 10).padding(.bottom, 10)
+            Text(String(format: "%.4f", self.amount)).padding()
         }.frame(alignment: .center)
+    }
+    
+    func timeToStringDate(time: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        return formatter.string(from: time)
+    }
+    
+    func timeToStringTime(time: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter.string(from: time)
     }
 }
 
@@ -62,15 +77,18 @@ struct ListItemTransaction_Previews: PreviewProvider {
     }
 
     struct PreviewWrapper: View {
-      @State var confirmations = -1
-      @State var payerAddr = "1Lx8alsiAI8x1jfaIzz82naoba38nDga"
-      @State var payeeAddr = "1Fmaia13lzibIls820Naliali18nbaiL"
+        @State var confirmations = -1
+        @State var now = Date()
+        @State var payerAddr = "1Lx8alsiAI8x1jfaIzz82naoba38nDga"
+        @State var payeeAddr = "1Fmaia13lzibIls820Naliali18nbaiL"
         @State var amount = 0.025
-      var body: some View {
-        ListItemTransaction(confirmations: self.$confirmations,
-                            payerAddr: self.$payerAddr,
-                            payeeAddr: self.$payeeAddr,
-                            amount: self.$amount)
-      }
+        
+        var body: some View {
+            ListItemTransaction(confirmations: self.$confirmations,
+                                time: self.$now,
+                                payerAddr: self.$payerAddr,
+                                payeeAddr: self.$payeeAddr,
+                                amount: self.$amount)
+        }
     }
 }

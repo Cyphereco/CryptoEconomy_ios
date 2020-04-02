@@ -15,6 +15,7 @@ struct PageAddresses: View {
         NavigationView {
             VStack {
                 SearchBar(text: $searchText, placeholder: "search address")
+                
                 Spacer()
                 Text("No Address")
                 Spacer()
