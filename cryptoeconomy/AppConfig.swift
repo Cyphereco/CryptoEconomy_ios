@@ -92,18 +92,34 @@ class AppConfig: ObservableObject {
     static var fiatRates = [48352.46, 6301.76, 736225.0, 206318.37, 6825.40]
 
     // default values
-    @Published var localCurrency = FiatCurrency.USD.ordinal
-    @Published var feePriority = FeesPriority.MID.sliderValue
-    @Published var fees = 0.00001
+    @Published var currencySelection: Int = FiatCurrency.USD.ordinal
+    @Published var feesSelection: Double = FeesPriority.MID.sliderValue
+    @Published var fees: Double = 0.0
+    @Published var feesIncluded: Bool = false
+    @Published var useFixAddress: Bool = false
+    @Published var useAllFunds: Bool = false
+    @Published var authByPin: Bool = false
+    @Published var payee: String = ""
+    @Published var payer: String = ""
+    @Published var amountSend: String = "0.0"
+    @Published var amountRecv: String = "0.0"
+    
+    init() {
+        fees = priorityFees[1]
+    }
+
+    func getLocalCurrency() -> FiatCurrency {
+        return FiatCurrency.allCases[currencySelection]
+    }
     
     func getFeesPriority() -> FeesPriority {
-        if (feePriority < FeesPriority.LOW.sliderValue) {
+        if (feesSelection < FeesPriority.LOW.sliderValue) {
             return .CUSTOM
         }
-        else if (feePriority < FeesPriority.MID.sliderValue) {
+        else if (feesSelection < FeesPriority.MID.sliderValue) {
             return .LOW
         }
-        else if (feePriority < FeesPriority.HIGH.sliderValue) {
+        else if (feesSelection < FeesPriority.HIGH.sliderValue) {
             return .MID
         }
         else {
@@ -125,7 +141,6 @@ class AppConfig: ObservableObject {
     static let accentColorDark: Color = .orange
     static let colorScaleLight: Double = 240/255
     static let colorScaleDark: Double = 32/255
-    static let fiatCurrencies = ["CNY", "EUR", "JPY", "TWD", "USD"]
     
     static func getAccentColor(colorScheme: ColorScheme) -> Color {
         return colorScheme == .dark ? accentColorDark : accentColorLight

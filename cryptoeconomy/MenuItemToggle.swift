@@ -32,14 +32,6 @@ struct MenuItemToggle: View {
 
 struct MenuItemToggle_Previews: PreviewProvider {
     static var previews: some View {
-      PreviewWrapper()
-    }
-
-    struct PreviewWrapper: View {
-        @State var onState = false
-        @State(initialValue: "") var searchText: String
-        var body: some View {
-            MenuItemToggle(itemLabel: "Use All Funds", onState: self.$onState)
-        }
+        MenuItemToggle(itemLabel: "Enable Option", onState: .constant(true))
     }
 }

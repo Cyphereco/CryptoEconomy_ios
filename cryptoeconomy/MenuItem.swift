@@ -30,6 +30,6 @@ struct MenuItem: View {
 
 struct MenuItem_Previews: PreviewProvider {
     static var previews: some View {
-        MenuItem(itemLabel: "Show Full Public Key Infmation", completion: {})
+        MenuItem(itemLabel: "Option", completion: {})
     }
 }

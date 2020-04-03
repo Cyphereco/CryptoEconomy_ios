@@ -69,6 +69,6 @@ struct PageOpenTurnKey: View {
 
 struct PageOpenTurnKey_Previews: PreviewProvider {
     static var previews: some View {
-        PageOpenTurnKey()
+        PageOpenTurnKey().environmentObject(AppConfig())
     }
 }

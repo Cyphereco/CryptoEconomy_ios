@@ -10,8 +10,6 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selection = 0
-    @EnvironmentObject var appConfig: AppConfig
-
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
@@ -54,7 +52,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-            .colorScheme(.dark)
+        ContentView().colorScheme(.dark)
     }
 }

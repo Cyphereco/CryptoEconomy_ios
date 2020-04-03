@@ -73,14 +73,6 @@ struct SideMenuOpenTurnKey: View {
 
 struct SideMenuOpenTurnKey_Previews: PreviewProvider {
     static var previews: some View {
-      PreviewWrapper()
-    }
-
-    struct PreviewWrapper: View {
-      @State var showMenu = false
-      @State var requestHint: String = "Read General Information"
-      var body: some View {
-        SideMenuOpenTurnKey(showMenu: self.$showMenu, requestHint: self.$requestHint)
-      }
+        SideMenuOpenTurnKey(showMenu: .constant(false), requestHint: .constant("Read General Information"))
     }
 }

@@ -15,8 +15,7 @@ struct SideMenuPay: View {
     @Binding var showConfigLocalCurrency: Bool
     @Binding var showConfigFees: Bool
     
-    @Binding var onStateFeesIncluded: Bool
-    @Binding var onStateUseFixAddress: Bool
+    @EnvironmentObject var appConfig: AppConfig
 
     var body: some View {
         VStack {
@@ -32,8 +31,8 @@ struct SideMenuPay: View {
                     self.showConfigFees = true
                 }
             })
-            MenuItemToggle(itemLabel: "Fees Included", onState: self.$onStateFeesIncluded)
-            MenuItemToggle(itemLabel: "Use Fix Address", onState: self.$onStateUseFixAddress)
+            MenuItemToggle(itemLabel: "Fees Included", onState: self.$appConfig.feesIncluded)
+            MenuItemToggle(itemLabel: "Use Fix Address", onState: self.$appConfig.useFixAddress)
             MenuItem(itemLabel: "User Guide", completion: {
                 withAnimation {
                     self.showMenu = false
@@ -54,21 +53,9 @@ struct SideMenuPay: View {
 
 struct SideMenuPay_Previews: PreviewProvider {
     static var previews: some View {
-      PreviewWrapper()
-    }
-
-    struct PreviewWrapper: View {
-        @State var showMenu = false
-        @State var showConfigLocalCurrency = false
-        @State var showConfigFees = false
-        @State var onStateFeesIncluded = false
-        @State var onStateUseFixAddress = false
-        var body: some View {
-            SideMenuPay(showMenu: self.$showMenu,
-                        showConfigLocalCurrency: self.$showConfigLocalCurrency,
-                        showConfigFees: self.$showConfigFees,
-                        onStateFeesIncluded: self.$onStateUseFixAddress,
-                        onStateUseFixAddress: self.$onStateUseFixAddress)
-        }
+        SideMenuPay(showMenu: .constant(false),
+                    showConfigLocalCurrency: .constant(false),
+                    showConfigFees: .constant(false))
+            .environmentObject(AppConfig())
     }
 }

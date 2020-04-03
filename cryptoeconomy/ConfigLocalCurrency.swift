@@ -19,7 +19,7 @@ struct ConfigLocalCurrency: View {
             Spacer()
             VStack {
                 Spacer()
-                Picker("Set Local Fiat Currency", selection: self.$appConfig.localCurrency) {
+                Picker("Set Local Fiat Currency", selection: self.$appConfig.currencySelection) {
                     ForEach(0 ..< FiatCurrency.allCases.count) {
                         Text(FiatCurrency.allCases[$0].label)
                     }
@@ -42,6 +42,6 @@ struct ConfigLocalCurrency: View {
 
 struct ConfigLocalCurrency_Previews: PreviewProvider {
     static var previews: some View {
-        ConfigLocalCurrency(showConfigLocalCurrency: .constant(false))
+        ConfigLocalCurrency(showConfigLocalCurrency: .constant(false)).environmentObject(AppConfig())
     }
 }

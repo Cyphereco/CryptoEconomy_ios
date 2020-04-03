@@ -17,7 +17,7 @@ struct TextFieldWithBottomLine: View {
         VStack {
             TextField(hint, text: $textContent, onEditingChanged: {_ in
                 self.onEditingChanged(self.textContent)
-            }).multilineTextAlignment(textAlign).padding(-10)
+            }).multilineTextAlignment(textAlign).padding(.vertical, -10)
             Divider()
         }
     }
@@ -25,6 +25,6 @@ struct TextFieldWithBottomLine: View {
 
 struct TextFieldWithBottomLine_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldWithBottomLine(textContent: .constant("0.00004"))
+        TextFieldWithBottomLine(hint: "This is the hint", textContent: .constant(""))
     }
 }

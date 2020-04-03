@@ -13,25 +13,25 @@ struct ListItemTransaction: View {
     var body: some View {
         HStack {
             HStack {
-                if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 0) {
+                if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 0) {
                     Image("unconfirmed")
                 }
-                else if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 1) {
+                else if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 1) {
                     Image("confirm0")
                 }
-                else if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 2) {
+                else if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 2) {
                     Image("confirm1")
                 }
-                else if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 3) {
+                else if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 3) {
                     Image("confirm2")
                 }
-                else if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 4) {
+                else if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 4) {
                     Image("confirm3")
                 }
-                else if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 5) {
+                else if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 5) {
                     Image("confirm4")
                 }
-                else if (calcConfimations(blockHeight: self.recordTransaction.blockHeight) < 6) {
+                else if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 6) {
                     Image("confirm5")
                 }
                 else {
@@ -39,8 +39,8 @@ struct ListItemTransaction: View {
                 }
             }
             VStack {
-                Text(timeToStringDate(time: self.recordTransaction.time))
-                Text(timeToStringTime(time: self.recordTransaction.time))
+                Text(AppTools.timeToStringDate(time: self.recordTransaction.time))
+                Text(AppTools.timeToStringTime(time: self.recordTransaction.time))
             }
             VStack {
                 Text(self.recordTransaction.payer).lineLimit(1)
@@ -55,35 +55,12 @@ struct ListItemTransaction: View {
             }
         }.frame(alignment: .center)
     }
-    
-    func timeToStringDate(time: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        return formatter.string(from: time)
-    }
-    
-    func timeToStringTime(time: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: time)
-    }
-    
-    func calcConfimations(blockHeight: Int64) -> Int {
-        // return Int(WebService.getCurrentBlockHeight() - blockHeight))
-        return Int(blockHeight)
-    }
 }
 
 struct ListItemTransaction_Previews: PreviewProvider {
-    static var previews: some View {
-      PreviewWrapper()
-    }
+    static var recordTransaction = RecordTransaction(id: 0, time: Date(), hash: "", payer: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab", payee: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab", amountSent: 0.05, amountRecv: 0.049, rawData: "", blockHeight: 2, exchangeRate: "")
 
-    struct PreviewWrapper: View {
-        var recordTransaction = RecordTransaction(id: 0, time: Date(), hash: "", payer: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab", payee: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab", amountSent: 0.05, amountRecv: 0.049, rawData: "", blockHeight: -1, exchangeRate: "")
-        
-        var body: some View {
-            ListItemTransaction(recordTransaction: self.recordTransaction)
-        }
+    static var previews: some View {
+        ListItemTransaction(recordTransaction: self.recordTransaction)
     }
 }

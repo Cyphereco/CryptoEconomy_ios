@@ -9,24 +9,27 @@
 import SwiftUI
 
 struct TextEstFeesInfo: View {
-    @Binding var localCurrency: Int
+    @Binding var currencySelection: Int
     @Binding var fees: Double
+    @EnvironmentObject var appConfig: AppConfig
+
     var body: some View {
-        VStack {
+        VStack(alignment: .trailing) {
             HStack {
                 Spacer()
-                Text("Estimatd Fees: (Low - Included)")
-                    .font(.footnote)
+                Text("Estimatd Fees: (\(self.appConfig.getFeesPriority().label) - \(self.appConfig.feesIncluded ? "Included" : "Excluded"))")
+                    .font(.footnote).fontWeight(.bold)
             }
             HStack {
-                Spacer()
-                Text("\(self.fees) / \(AppTools.btcToFiat(btc: self.fees, localCurrency: self.localCurrency))")
-                    .font(.footnote)
-            }
-            HStack {
-                Spacer()
-                Text("BTC / \(AppConfig.fiatCurrencies[self.localCurrency])")
-                    .font(.footnote)
+                VStack(alignment: .trailing) {
+                    Text("\(self.appConfig.fees) /")
+                    Text("BTC").font(.footnote).padding(.trailing, 10)
+                }
+                VStack(alignment: .trailing) {
+                    Text("\(AppTools.btcToFiat(btc: self.fees, currencySelection: self.currencySelection))")
+                    Text("\(self.appConfig.getLocalCurrency().label)")
+                        .font(.footnote)
+                }
             }
         }
     }
@@ -34,6 +37,6 @@ struct TextEstFeesInfo: View {
 
 struct TextEstFeesInfo_Previews: PreviewProvider {
     static var previews: some View {
-        TextEstFeesInfo(localCurrency: .constant(4), fees: .constant(0.00001))
+        TextEstFeesInfo(currencySelection: .constant(4), fees: .constant(0.00001)).environmentObject(AppConfig())
     }
 }

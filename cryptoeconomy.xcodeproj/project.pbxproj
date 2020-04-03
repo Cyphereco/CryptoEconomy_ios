@@ -181,8 +181,8 @@
 		BA9595E5242EFD8800C48B37 /* cryptoeconomy */ = {
 			isa = PBXGroup;
 			children = (
-				B23FB94A243741AB00A2B80F /* WebService */,
 				B23FB9472437419400A2B80F /* Logger */,
+				B23FB94A243741AB00A2B80F /* WebService */,
 				BA9595EC242EFE4000C48B37 /* Assets.xcassets */,
 				BA9595E6242EFD8800C48B37 /* AppDelegate.swift */,
 				BA46BA852436EB9900B53540 /* AppData.swift */,

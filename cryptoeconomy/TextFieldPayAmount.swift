@@ -12,36 +12,24 @@ struct TextFieldPayAmount: View {
     @Binding var localCurrency: Int
     @State var strAmountBtc: String
     @State var strAmountFiat: String
-    
+    @EnvironmentObject var appConfig: AppConfig
+
     var body: some View {
-        VStack {
-            HStack {
-                Spacer()
-                Text("Amount")
-            }
-            HStack {
+        VStack(alignment: .trailing) {
+            Text("Amount").fontWeight(.bold)
+            HStack(alignment: .center) {
                 Button(action: {}){Image("clear")}
                     .padding(.top, -36.0)
-                VStack {
+                VStack(alignment: .trailing) {
                     TextFieldWithBottomLine(hint: "0.0", textContent: $strAmountBtc, textAlign: .trailing)
-                    HStack {
-                        Spacer()
-                        Text("BTC")
-                    }
+                    Text("BTC")
                 }
-                Text(" = ")
-                VStack {
+                Text(" = ").padding(.top, -30)
+                VStack(alignment: .trailing) {
                     TextFieldWithBottomLine(hint: "0.0", textContent: $strAmountFiat, textAlign: .trailing)
-                    HStack {
-                        Spacer()
-                        Text(AppConfig.fiatCurrencies[self.localCurrency])
-                    }
+                    Text(self.appConfig.getLocalCurrency().label)
                 }
                 .padding(.leading, 4.0)
-            }
-            HStack {
-                Spacer()
-                
             }
         }
     }
@@ -49,6 +37,6 @@ struct TextFieldPayAmount: View {
 
 struct TextFieldPayAmount_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldPayAmount(localCurrency: .constant(0), strAmountBtc: "0.0", strAmountFiat: "0.0")
+        TextFieldPayAmount(localCurrency: .constant(FiatCurrency.USD.ordinal), strAmountBtc: "0.0", strAmountFiat: "0.0").environmentObject(AppConfig())
     }
 }

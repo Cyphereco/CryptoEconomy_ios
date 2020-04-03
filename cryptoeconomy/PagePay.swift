@@ -12,12 +12,6 @@ struct PagePay: View {
     @State var showMenu: Bool = false
     @State var showConfigLocalCurrency: Bool = false
     @State var showConfigFees: Bool = false
-
-    @State var onStateFeesIncluded = false
-    @State var onStateUseFixAddress = false
-
-    @State var useAllFunds: Bool = false
-    @State var authByPin: Bool = false
         
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
@@ -27,15 +21,15 @@ struct PagePay: View {
             GeometryReader {geometry in
                 ZStack(alignment: .trailing) {
                     VStack {
-                        TextEstFeesInfo(localCurrency: self.$appConfig.localCurrency, fees: self.$appConfig.fees)
+                        TextEstFeesInfo(currencySelection: self.$appConfig.currencySelection, fees: self.$appConfig.fees)
                             .padding([.top, .trailing], 20.0)
                         Spacer()
                         TextFieldBtcAddress(address: "")
                             .padding(.horizontal, 20.0)
                         Spacer()
-                        TextFieldPayAmount(localCurrency: self.$appConfig.localCurrency, strAmountBtc: "0.0", strAmountFiat: "0.0")
+                        TextFieldPayAmount(localCurrency: self.$appConfig.currencySelection, strAmountBtc: "0.0", strAmountFiat: "0.0")
                             .padding(.horizontal, 20.0)
-                        Toggle(isOn: self.$useAllFunds){
+                        Toggle(isOn: self.$appConfig.useAllFunds){
                             Text("Use All Funds")
                                 .font(.footnote)
                                 .multilineTextAlignment(.trailing)
@@ -43,7 +37,7 @@ struct PagePay: View {
                         .padding(.leading, 210)
                         .padding(.trailing, 20.0)
                         Spacer()
-                        Toggle(isOn: self.$authByPin){
+                        Toggle(isOn: self.$appConfig.authByPin){
                             Text("Authorization with PIN Code")
                                 .font(.footnote)
                         }
@@ -72,9 +66,7 @@ struct PagePay: View {
                     if (self.showMenu) {
                         SideMenuPay(showMenu: self.$showMenu,
                                     showConfigLocalCurrency: self.$showConfigLocalCurrency,
-                                    showConfigFees: self.$showConfigFees,
-                                    onStateFeesIncluded: self.$onStateFeesIncluded,
-                                    onStateUseFixAddress: self.$onStateUseFixAddress)
+                                    showConfigFees: self.$showConfigFees)
                             .frame(width: geometry.size.width/2)
                             .transition(.move(edge: .top))
                     }
@@ -117,6 +109,6 @@ struct PagePay: View {
 
 struct PagePay_Previews: PreviewProvider {
     static var previews: some View {
-        PagePay()
+        PagePay().environmentObject(AppConfig())
     }
 }

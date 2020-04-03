@@ -11,8 +11,7 @@ import SwiftUI
 struct ConfigFees: View {
     @Binding var showConfigFees: Bool
     
-    @State var desc = "Low (>= 60 minutes)"
-    @State var strFees = "0.00004"
+    @State var strFees = "0.00001"
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
 
@@ -20,29 +19,17 @@ struct ConfigFees: View {
         VStack {
             Text("Set Transaction Fees").fontWeight(.bold).padding()
             Spacer()
-            Text(desc).padding(.bottom, 10)
-            Slider(value: self.$appConfig.feePriority, in: 0...3, step: 1, onEditingChanged: { data in
-                if (self.appConfig.feePriority < FeesPriority.LOW.sliderValue) {
-                    self.desc = "Custom"
-                }
-                else if (self.appConfig.feePriority < FeesPriority.MID.sliderValue) {
-                    self.desc = "Low (>= 60 minutes)"
-                }
-                else if (self.appConfig.feePriority < FeesPriority.HIGH.sliderValue) {
-                    self.desc = "Mid (15~35 minutes)"
-                }
-                else {
-                    self.desc = "High (5~15 minutes)"
-                }
+            Text(feesPriorityDesc(feesSelection: self.appConfig.feesSelection)).padding(.bottom, 10)
+            Slider(value: self.$appConfig.feesSelection, in: 0...3, step: 1, onEditingChanged: { data in
                 self.strFees = String(format: "%.8f", self.appConfig.getFees())
-
             }).padding().accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
             HStack {
                 Text("Fees = ")
-                if (self.appConfig.feePriority == 0) {
+                if (self.appConfig.feesSelection == 0) {
                     TextFieldWithBottomLine(textContent: self.$strFees, onEditingChanged: { text in
                         print(text)
                     }, textAlign: .center)
+                        .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
                         .frame(width: 100)
                         .padding(.top, 10)
                 }
@@ -53,7 +40,7 @@ struct ConfigFees: View {
             }
             Button(action: {
                 withAnimation {
-                    if (self.appConfig.feePriority == FeesPriority.CUSTOM.sliderValue) {
+                    if (self.appConfig.feesSelection == FeesPriority.CUSTOM.sliderValue) {
                         self.appConfig.fees = Double(self.strFees)!
                     }
                     self.showConfigFees = false
@@ -66,19 +53,25 @@ struct ConfigFees: View {
         .frame(maxHeight: .infinity, alignment: .bottom)
         .background(AppConfig.getMenuBackgroundColor(colorScheme: self.colorScheme))
     }
+    
+    func feesPriorityDesc(feesSelection: Double) -> String {
+        if (feesSelection < FeesPriority.LOW.sliderValue) {
+            return "Custom"
+        }
+        else if (feesSelection < FeesPriority.MID.sliderValue) {
+            return "Low (>= 60 minutes)"
+        }
+        else if (feesSelection < FeesPriority.HIGH.sliderValue) {
+            return "Mid (15~35 minutes)"
+        }
+        else {
+            return "High (5~15 minutes)"
+        }
+    }
 }
 
 struct ConfigFees_Previews: PreviewProvider {
     static var previews: some View {
-      PreviewWrapper()
-    }
-
-    struct PreviewWrapper: View {
-        @State var showConfigFees = false
-        @State var feesPriority = 1.0
-        @State var fees = 0.000008
-        var body: some View {
-            ConfigFees(showConfigFees: self.$showConfigFees)
-        }
+        ConfigFees(showConfigFees: .constant(false)).environmentObject(AppConfig())
     }
 }
