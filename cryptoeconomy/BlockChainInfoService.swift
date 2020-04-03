@@ -18,7 +18,7 @@ import SwiftyJSON
       Logger.shared.debug(balance)
     }.catch { error in
       // Error case
-      /Logger.shared.debug(error)
+      Logger.shared.debug(error)
     }.finally {
       // No matter success or fail will run finally
       Logger.shared.debug("finally")
