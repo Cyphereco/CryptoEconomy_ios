@@ -17,6 +17,7 @@ struct PageHistory: View {
 
     @State var showsAlert = false
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var appConfig: AppConfig
 
     var body: some View {
         NavigationView {

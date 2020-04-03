@@ -10,6 +10,9 @@ import SwiftUI
 
 struct TextFieldPayAmount: View {
     @Binding var localCurrency: Int
+    @State var strAmountBtc: String
+    @State var strAmountFiat: String
+    
     var body: some View {
         VStack {
             HStack {
@@ -20,7 +23,7 @@ struct TextFieldPayAmount: View {
                 Button(action: {}){Image("clear")}
                     .padding(.top, -36.0)
                 VStack {
-                    TextFieldWithBottomLine(hint: "0.0", textContent: "0.0", textAlign: .trailing)
+                    TextFieldWithBottomLine(hint: "0.0", textContent: $strAmountBtc, textAlign: .trailing)
                     HStack {
                         Spacer()
                         Text("BTC")
@@ -28,7 +31,7 @@ struct TextFieldPayAmount: View {
                 }
                 Text(" = ")
                 VStack {
-                    TextFieldWithBottomLine(hint: "0.0", textContent: "0.0", textAlign: .trailing)
+                    TextFieldWithBottomLine(hint: "0.0", textContent: $strAmountFiat, textAlign: .trailing)
                     HStack {
                         Spacer()
                         Text(AppConfig.fiatCurrencies[self.localCurrency])
@@ -46,6 +49,6 @@ struct TextFieldPayAmount: View {
 
 struct TextFieldPayAmount_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldPayAmount(localCurrency: .constant(0))
+        TextFieldPayAmount(localCurrency: .constant(0), strAmountBtc: "0.0", strAmountFiat: "0.0")
     }
 }

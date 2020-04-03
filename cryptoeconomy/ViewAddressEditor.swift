@@ -10,12 +10,13 @@ import SwiftUI
 
 struct ViewAddressEditor: View {
     @Environment(\.colorScheme) var colorScheme
+    @State var alias: String
 
     var body: some View {
         NavigationView {
             VStack {
-                TextFieldWithBottomLine(hint: "Alias", textAlign: .leading).padding()
-                TextFieldBtcAddress().padding()
+                TextFieldWithBottomLine(hint: "Alias", textContent: $alias, textAlign: .leading).padding()
+                TextFieldBtcAddress(address: "").padding()
                 HStack {
                     Spacer()
                     Button(action: {
@@ -39,6 +40,6 @@ struct ViewAddressEditor: View {
 
 struct ViewAddressEditor_Previews: PreviewProvider {
     static var previews: some View {
-        ViewAddressEditor()
+        ViewAddressEditor(alias: "")
     }
 }

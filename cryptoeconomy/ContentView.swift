@@ -10,6 +10,8 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selection = 0
+    @EnvironmentObject var appConfig: AppConfig
+
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {

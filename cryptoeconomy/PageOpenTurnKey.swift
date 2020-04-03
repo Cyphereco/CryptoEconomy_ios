@@ -13,6 +13,7 @@ struct PageOpenTurnKey: View {
     @State var requestHint: String = "Read General Information"
     let extraSpace: String = "       "
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var appConfig: AppConfig
 
     var body: some View {
         NavigationView {

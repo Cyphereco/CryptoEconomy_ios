@@ -10,10 +10,11 @@ import SwiftUI
 
 struct TextFieldBtcAddress: View {
     @State private var name = ""
+    @State var address: String
     var body: some View {
         VStack {
             HStack(alignment: .bottom) {
-                TextFieldWithBottomLine(hint: "Recipient Address", textContent: "", textAlign: .leading)
+                TextFieldWithBottomLine(hint: "Recipient Address", textContent: $address, textAlign: .leading)
                 Button(action: {}){Image("clear")}
             }
             HStack {
@@ -35,6 +36,6 @@ struct TextFieldBtcAddress: View {
 
 struct TextFieldBtcAddress_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldBtcAddress()
+        TextFieldBtcAddress(address: "")
     }
 }

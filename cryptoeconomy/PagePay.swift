@@ -18,10 +18,9 @@ struct PagePay: View {
 
     @State var useAllFunds: Bool = false
     @State var authByPin: Bool = false
-    
-    @State var appConfig = AppConfig()
-    
+        
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var appConfig: AppConfig
 
     var body: some View {
         NavigationView {
@@ -31,10 +30,10 @@ struct PagePay: View {
                         TextEstFeesInfo(localCurrency: self.$appConfig.localCurrency, fees: self.$appConfig.fees)
                             .padding([.top, .trailing], 20.0)
                         Spacer()
-                        TextFieldBtcAddress()
+                        TextFieldBtcAddress(address: "")
                             .padding(.horizontal, 20.0)
                         Spacer()
-                        TextFieldPayAmount(localCurrency: self.$appConfig.localCurrency)
+                        TextFieldPayAmount(localCurrency: self.$appConfig.localCurrency, strAmountBtc: "0.0", strAmountFiat: "0.0")
                             .padding(.horizontal, 20.0)
                         Toggle(isOn: self.$useAllFunds){
                             Text("Use All Funds")
@@ -82,7 +81,7 @@ struct PagePay: View {
                     if (self.showConfigLocalCurrency) {
                         VStack {
                             Spacer()
-                            ConfigLocalCurrency(showConfigLocalCurrency: self.$showConfigLocalCurrency, appConfig: self.$appConfig)
+                            ConfigLocalCurrency(showConfigLocalCurrency: self.$showConfigLocalCurrency)
                                 .frame(height: geometry.size.height/2)
                                 .cornerRadius(20)
                                 .transition(.move(edge: .bottom))
@@ -91,7 +90,7 @@ struct PagePay: View {
                     if (self.showConfigFees) {
                         VStack {
                             Spacer()
-                            ConfigFees(showConfigFees: self.$showConfigFees, fees: self.$appConfig.fees, priority: self.$appConfig.feePriority)
+                            ConfigFees(showConfigFees: self.$showConfigFees)
                                 .frame(height: geometry.size.height/2)
                                 .cornerRadius(20)
                                 .transition(.move(edge: .bottom))

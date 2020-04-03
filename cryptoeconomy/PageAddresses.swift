@@ -14,6 +14,8 @@ struct PageAddresses: View {
         RecordAddress(id: 0, alias: "BitoEx", address: "1XMnd8x42kjdiwn8d9em8dm8keqD90wm2Z")]
     
     @State var searchText: String = ""
+    @EnvironmentObject var appConfig: AppConfig
+
     var body: some View {
         NavigationView {
             VStack {
@@ -31,7 +33,7 @@ struct PageAddresses: View {
                 }
             }
             .navigationBarTitle(Text("Addresses"), displayMode: .inline)
-            .navigationBarItems(trailing: NavigationLink(destination: ViewAddressEditor()){Image("plus")})
+            .navigationBarItems(trailing: NavigationLink(destination: ViewAddressEditor(alias: "")){Image("plus")})
         }
     }
 }

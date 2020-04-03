@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TextFieldWithBottomLine: View {
     var hint: String = ""
-    @State var textContent: String = ""
+    @Binding var textContent: String
     @State var onEditingChanged: (_: String)->Void = {_ in }
     var textAlign: TextAlignment = .center
     var body: some View {
@@ -25,6 +25,6 @@ struct TextFieldWithBottomLine: View {
 
 struct TextFieldWithBottomLine_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldWithBottomLine()
+        TextFieldWithBottomLine(textContent: .constant("0.00004"))
     }
 }

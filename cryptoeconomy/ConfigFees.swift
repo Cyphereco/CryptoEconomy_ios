@@ -10,49 +10,52 @@ import SwiftUI
 
 struct ConfigFees: View {
     @Binding var showConfigFees: Bool
-    @Binding var fees: Double
-    @Binding var priority: Double
     
     @State var desc = "Low (>= 60 minutes)"
-    @State var customFees = "0.00004"
+    @State var strFees = "0.00004"
     @Environment(\.colorScheme) var colorScheme
-    
+    @EnvironmentObject var appConfig: AppConfig
+
     var body: some View {
         VStack {
             Text("Set Transaction Fees").fontWeight(.bold).padding()
             Spacer()
             Text(desc).padding(.bottom, 10)
-            Slider(value: $priority, in: 0...3, step: 1, onEditingChanged: { data in
-                if (self.priority == 0) {self.desc = "Custom"}
-                if (self.priority == 1) {
-                    self.fees = 0.000008
+            Slider(value: self.$appConfig.feePriority, in: 0...3, step: 1, onEditingChanged: { data in
+                if (self.appConfig.feePriority < FeesPriority.LOW.sliderValue) {
+                    self.desc = "Custom"
+                }
+                else if (self.appConfig.feePriority < FeesPriority.MID.sliderValue) {
                     self.desc = "Low (>= 60 minutes)"
                 }
-                if (self.priority == 2) {
-                    self.fees = 0.00001
+                else if (self.appConfig.feePriority < FeesPriority.HIGH.sliderValue) {
                     self.desc = "Mid (15~35 minutes)"
                 }
-                if (self.priority == 3) {
-                    self.fees = 0.00002
+                else {
                     self.desc = "High (5~15 minutes)"
                 }
+                self.strFees = String(format: "%.8f", self.appConfig.getFees())
+
             }).padding().accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
             HStack {
                 Text("Fees = ")
-                if (priority == 0) {
-                    TextFieldWithBottomLine(hint: customFees, textContent: self.customFees, onEditingChanged: { text in
+                if (self.appConfig.feePriority == 0) {
+                    TextFieldWithBottomLine(textContent: self.$strFees, onEditingChanged: { text in
                         print(text)
                     }, textAlign: .center)
                         .frame(width: 100)
                         .padding(.top, 10)
                 }
                 else {
-                    Text("\(fees)")
+                    Text(String(format: "%.8f", self.appConfig.fees))
                 }
                 Text(" BTC")
             }
             Button(action: {
                 withAnimation {
+                    if (self.appConfig.feePriority == FeesPriority.CUSTOM.sliderValue) {
+                        self.appConfig.fees = Double(self.strFees)!
+                    }
                     self.showConfigFees = false
                 }
             }) {
@@ -75,7 +78,7 @@ struct ConfigFees_Previews: PreviewProvider {
         @State var feesPriority = 1.0
         @State var fees = 0.000008
         var body: some View {
-            ConfigFees(showConfigFees: self.$showConfigFees, fees: self.$fees, priority: self.$feesPriority)
+            ConfigFees(showConfigFees: self.$showConfigFees)
         }
     }
 }
