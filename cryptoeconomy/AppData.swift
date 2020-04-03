@@ -1,12 +1,24 @@
 //
-//  RecordTransaction.swift
+//  AppData.swift
 //  cryptoeconomy
 //
-//  Created by Quark on 2020/4/2.
+//  Created by Quark on 2020/4/3.
 //  Copyright © 2020 Cyphereco OU. All rights reserved.
 //
 
 import Foundation
+
+struct RecordAddress {
+    var id: Int64
+    var alias: String
+    var address: String
+    
+    init(id: Int64, alias: String, address: String) {
+        self.id = id
+        self.alias = alias
+        self.address = address
+    }
+}
 
 struct RecordTransaction {
     var id: Int64

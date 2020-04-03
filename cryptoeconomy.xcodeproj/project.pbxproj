@@ -18,8 +18,6 @@
 		BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE62435839E00522A63 /* ListItemAddress.swift */; };
 		BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */; };
 		BA2EEAED2435BEB800522A63 /* Logger in Resources */ = {isa = PBXBuildFile; fileRef = BA2EEAEC2435BEB600522A63 /* Logger */; };
-		BA2EEAF2243628A600522A63 /* RecordTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAF1243628A600522A63 /* RecordTransaction.swift */; };
-		BA2EEAF424363E5600522A63 /* RecordAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAF324363E5600522A63 /* RecordAddress.swift */; };
 		BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC537243048AB00F41471 /* PageAddresses.swift */; };
 		BA3FC53A2430576100F41471 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC5392430576100F41471 /* SearchBar.swift */; };
 		BA3FC53C243072BF00F41471 /* PageOpenTurnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */; };
@@ -29,6 +27,7 @@
 		BA40150C2431D80C0094F6CF /* TextEstFeesInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA40150B2431D80C0094F6CF /* TextEstFeesInfo.swift */; };
 		BA40150E2431E2B70094F6CF /* TextFieldPayAmount.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA40150D2431E2B70094F6CF /* TextFieldPayAmount.swift */; };
 		BA4015102431E3950094F6CF /* TextFieldWithBottomLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA40150F2431E3950094F6CF /* TextFieldWithBottomLine.swift */; };
+		BA46BA862436EB9900B53540 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46BA852436EB9900B53540 /* AppData.swift */; };
 		BA7DDBA0243665E50072412F /* AppTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7DDB9F243665E50072412F /* AppTools.swift */; };
 		BA9595E7242EFD8800C48B37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9595E6242EFD8800C48B37 /* AppDelegate.swift */; };
 		BA9595E9242EFD8900C48B37 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9595E8242EFD8900C48B37 /* SceneDelegate.swift */; };
@@ -71,8 +70,6 @@
 		BA2EEAEC2435BEB600522A63 /* Logger */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Logger; sourceTree = "<group>"; };
 		BA2EEAEF2435BEDE00522A63 /* BlockChainInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockChainInfoService.swift; sourceTree = "<group>"; };
 		BA2EEAF02435BEDE00522A63 /* BaseWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseWebService.swift; sourceTree = "<group>"; };
-		BA2EEAF1243628A600522A63 /* RecordTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTransaction.swift; sourceTree = "<group>"; };
-		BA2EEAF324363E5600522A63 /* RecordAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAddress.swift; sourceTree = "<group>"; };
 		BA3FC537243048AB00F41471 /* PageAddresses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageAddresses.swift; sourceTree = "<group>"; };
 		BA3FC5392430576100F41471 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOpenTurnKey.swift; sourceTree = "<group>"; };
@@ -82,6 +79,7 @@
 		BA40150B2431D80C0094F6CF /* TextEstFeesInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEstFeesInfo.swift; sourceTree = "<group>"; };
 		BA40150D2431E2B70094F6CF /* TextFieldPayAmount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldPayAmount.swift; sourceTree = "<group>"; };
 		BA40150F2431E3950094F6CF /* TextFieldWithBottomLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithBottomLine.swift; sourceTree = "<group>"; };
+		BA46BA852436EB9900B53540 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		BA7DDB9F243665E50072412F /* AppTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTools.swift; sourceTree = "<group>"; };
 		BA9595E3242EFD8800C48B37 /* Crypto Economy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Crypto Economy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA9595E6242EFD8800C48B37 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -160,6 +158,7 @@
 				BA2EEAEE2435BEDE00522A63 /* WebService */,
 				BA9595EC242EFE4000C48B37 /* Assets.xcassets */,
 				BA9595E6242EFD8800C48B37 /* AppDelegate.swift */,
+				BA46BA852436EB9900B53540 /* AppData.swift */,
 				BA2EEAE42434826A00522A63 /* AppConfig.swift */,
 				BA7DDB9F243665E50072412F /* AppTools.swift */,
 				BA9595EA242EFD8900C48B37 /* ContentView.swift */,
@@ -173,8 +172,6 @@
 				BA2EEADC2433B07900522A63 /* MenuItemToggle.swift */,
 				BA3FC537243048AB00F41471 /* PageAddresses.swift */,
 				BA3FC53F2431006000F41471 /* PageHistory.swift */,
-				BA2EEAF324363E5600522A63 /* RecordAddress.swift */,
-				BA2EEAF1243628A600522A63 /* RecordTransaction.swift */,
 				BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */,
 				BA3FC53D2431004D00F41471 /* PagePay.swift */,
 				BA3FC5392430576100F41471 /* SearchBar.swift */,
@@ -352,7 +349,6 @@
 				BA40150C2431D80C0094F6CF /* TextEstFeesInfo.swift in Sources */,
 				BA2EEAE52434826A00522A63 /* AppConfig.swift in Sources */,
 				BA3FC53E2431004D00F41471 /* PagePay.swift in Sources */,
-				BA2EEAF2243628A600522A63 /* RecordTransaction.swift in Sources */,
 				BA4015102431E3950094F6CF /* TextFieldWithBottomLine.swift in Sources */,
 				BA2EEADD2433B07900522A63 /* MenuItemToggle.swift in Sources */,
 				BA9595E7242EFD8800C48B37 /* AppDelegate.swift in Sources */,
@@ -362,6 +358,7 @@
 				BA7DDBA0243665E50072412F /* AppTools.swift in Sources */,
 				BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */,
 				BA40150A2431CA930094F6CF /* TextFieldBtcAddress.swift in Sources */,
+				BA46BA862436EB9900B53540 /* AppData.swift in Sources */,
 				BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */,
 				BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */,
 				BA2EEADF243450F200522A63 /* ConfigLocalCurrency.swift in Sources */,
@@ -369,7 +366,6 @@
 				BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */,
 				BA2EEAD724330E8A00522A63 /* SideMenuPay.swift in Sources */,
 				BA40150E2431E2B70094F6CF /* TextFieldPayAmount.swift in Sources */,
-				BA2EEAF424363E5600522A63 /* RecordAddress.swift in Sources */,
 				BA3FC53A2430576100F41471 /* SearchBar.swift in Sources */,
 				BA2EEADB2433110800522A63 /* MenuItem.swift in Sources */,
 				BA9595E9242EFD8900C48B37 /* SceneDelegate.swift in Sources */,
