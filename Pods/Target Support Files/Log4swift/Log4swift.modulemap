@@ -1,0 +1,6 @@
+framework module Log4swift {
+  umbrella header "Log4swift-umbrella.h"
+
+  export *
+  module * { export * }
+}

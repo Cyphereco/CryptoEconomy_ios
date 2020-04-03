@@ -1,0 +1,6 @@
+framework module Pods_cryptoeconomyTests {
+  umbrella header "Pods-cryptoeconomyTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
