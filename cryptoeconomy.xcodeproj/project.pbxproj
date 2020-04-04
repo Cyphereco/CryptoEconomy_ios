@@ -192,7 +192,6 @@
 			isa = PBXGroup;
 			children = (
 				B23FB94D243745E400A2B80F /* Utils */,
-				B23FB94A243741AB00A2B80F /* WebService */,
 				B23FB9472437419400A2B80F /* Logger */,
 				B23FB94A243741AB00A2B80F /* WebService */,
 				BA9595EC242EFE4000C48B37 /* Assets.xcassets */,

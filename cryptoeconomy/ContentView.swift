@@ -11,7 +11,9 @@ import SwiftUI
 struct ContentView: View {
     @State private var selection = 0
     @Environment(\.colorScheme) var colorScheme
-    
+    @EnvironmentObject var appConfig: AppConfig
+    @EnvironmentObject var appData: AppData
+
     var body: some View {
         TabView(selection: $selection){
             PagePay()
@@ -52,6 +54,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().colorScheme(.dark)
+        ContentView().environmentObject(AppConfig()).environmentObject(AppData())
     }
 }
