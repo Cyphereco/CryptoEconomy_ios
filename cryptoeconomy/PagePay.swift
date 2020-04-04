@@ -30,14 +30,14 @@ struct PagePay: View {
                         TextFieldBtcAddress(address: "")
                             .padding(.horizontal, 20.0)
                         Spacer()
-                        TextFieldPayAmount(localCurrency: self.$appConfig.currencySelection, strAmountBtc: "0.0", strAmountFiat: "0.0")
-                            .padding(.horizontal, 20.0)
                         Toggle(isOn: self.$appConfig.useAllFunds){
                             HStack {
                                 Spacer()
                                 Text(self.useAllFunds).font(.footnote)
                             }
                         }.padding(.horizontal, 20.0)
+                        TextFieldPayAmount(localCurrency: self.$appConfig.currencySelection, strAmountBtc: "0.0", strAmountFiat: "0.0")
+                            .padding(.horizontal, 20.0)
                         Spacer()
                         Toggle(isOn: self.$appConfig.authByPin){
                             HStack {
@@ -49,7 +49,12 @@ struct PagePay: View {
                             
                         }) {
                             HStack{
-                                Image("fingerprint")
+                                if (self.appConfig.authByPin) {
+                                    Image(systemName: "ellipsis").font(.system(size: 19)).padding(4)
+                                }
+                                else {
+                                    Image("fingerprint")
+                                }
                                 Text("sign_payment")
                                     .font(.system(size: 20))
                                 .fontWeight(.bold)
