@@ -35,13 +35,13 @@ enum FeesPriority: CaseIterable {
     var label: String {
         switch self {
         case .CUSTOM:
-            return "Custom"
+            return NSLocalizedString("custom", comment: "")
         case .LOW:
-            return "Low"
-        case .HIGH:
-            return "High"
+            return NSLocalizedString("low", comment: "")
+        case .MID:
+            return NSLocalizedString("mid", comment: "")
         default:
-            return "Mid"
+            return NSLocalizedString("high", comment: "")
         }
     }
 }

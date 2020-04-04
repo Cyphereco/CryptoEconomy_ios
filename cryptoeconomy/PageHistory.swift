@@ -17,7 +17,7 @@ struct PageHistory: View {
         NavigationView {
             VStack {
                 if (self.appData.dataSetRecordTransaction.count < 1) {
-                    Text("No Transaction Record")
+                    Text("no_transaction_record")
                 }
                 else {
                     List {
@@ -27,7 +27,7 @@ struct PageHistory: View {
                     }
                 }
             }
-            .navigationBarTitle(Text("History"), displayMode: .inline)
+            .navigationBarTitle(Text("history"), displayMode: .inline)
             .navigationBarItems(
                 trailing: Button(action: {self.showsAlert.toggle()}) {
                     Image("delete_all")
@@ -35,14 +35,14 @@ struct PageHistory: View {
                 .alert(
                     isPresented: $showsAlert,
                     content: {
-                        Alert(title: Text("Clear History"),
-                              message: Text("Delete all trnsaction records?"),
+                        Alert(title: Text("clear_history"),
+                              message: Text("delete_all_transaction_records?"),
                               primaryButton: .default(
-                                Text("Delete"),
+                                Text("delete"),
                                 action: {print("Clear History")}
                             ),
                               secondaryButton: .default(
-                                Text("Cancel"),
+                                Text("cancel"),
                                 action: {print("Cancel Clear")}
                             )
                         )

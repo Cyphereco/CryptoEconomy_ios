@@ -59,6 +59,6 @@ class AppData: ObservableObject {
          RecordTransaction(id: 0, time: Date()-9876, hash: "", payer: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab", payee: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab", amountSent: 0.0567, amountRecv: 0.0556, rawData: "", blockHeight: 4, exchangeRate: "")]
     
     // assign to demo dataSet for demo/test
-    @Published var dataSetRecordAddress: Array<RecordAddress> = demoRecordAddress
-    @Published var dataSetRecordTransaction: Array<RecordTransaction> = demoRecordTransactions
+    @Published var dataSetRecordAddress: Array<RecordAddress> = demoRecordAddress //[]
+    @Published var dataSetRecordTransaction: Array<RecordTransaction> = demoRecordTransactions //[]
 }

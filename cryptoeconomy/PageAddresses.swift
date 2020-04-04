@@ -15,10 +15,12 @@ struct PageAddresses: View {
     var body: some View {
         NavigationView {
             VStack {
-                SearchBar(text: $searchText, placeholder: "search address")
+                SearchBar(text: $searchText, placeholder: NSLocalizedString("search_address", comment: ""))
                 
                 if (self.appData.dataSetRecordAddress.count < 1) {
-                    Text("No Address")
+                    Spacer()
+                    Text("no_address")
+                    Spacer()
                 }
                 else {
                     List {
@@ -28,7 +30,7 @@ struct PageAddresses: View {
                     }
                 }
             }
-            .navigationBarTitle(Text("Addresses"), displayMode: .inline)
+            .navigationBarTitle(Text("addresses"), displayMode: .inline)
             .navigationBarItems(trailing: NavigationLink(destination: ViewAddressEditor(alias: "")){Image("plus")})
         }
     }

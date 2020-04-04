@@ -15,7 +15,7 @@ struct TextFieldWithBottomLine: View {
     var textAlign: TextAlignment = .center
     var body: some View {
         VStack {
-            TextField(hint, text: $textContent, onEditingChanged: {_ in
+            TextField(NSLocalizedString(hint, comment: ""), text: $textContent, onEditingChanged: {_ in
                 self.onEditingChanged(self.textContent)
             }).multilineTextAlignment(textAlign).padding(.vertical, -10)
             Divider()
@@ -25,6 +25,6 @@ struct TextFieldWithBottomLine: View {
 
 struct TextFieldWithBottomLine_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldWithBottomLine(hint: "This is the hint", textContent: .constant(""))
+        TextFieldWithBottomLine(hint: "Type something", textContent: .constant(""))
     }
 }

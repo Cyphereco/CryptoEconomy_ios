@@ -1,0 +1,53 @@
+/* 
+  Localizable.strings
+  cryptoeconomy
+
+  Created by Quark on 2020/4/4.
+  Copyright © 2020 Cyphereco OU. All rights reserved.
+*/
+
+"about" = "關於";
+"address" = "地址";
+"addresses" = "常用地址";
+"alias" = "別名";
+"amount" = "金額";
+"authorization_with_pin_code" = "使用PIN碼授權";
+"cancel" = "取消";
+"choose_key" = "選擇密鑰";
+"clear_history" = "清除記錄";
+"custom" = "自訂";
+"delete" = "刪除";
+"delete_all_transaction_records?" = "刪除所有交易紀錄?";
+"edit_address" = "編輯地址";
+"estimated_fees" = "預估手續費";
+"excluded" = "外加";
+"export_key" = "匯出密鑰";
+"fees" = "手續費";
+"fees_included" = "手續費內含";
+"high" = "高";
+"history" = "支付紀錄";
+"included" = "內含";
+"low" = "低";
+"make_request" = "發送請求";
+"message_sign_validate" = "消息簽名/驗證";
+"mid" = "中";
+"minutes" = "分鐘";
+"no_address" = "無常用地址";
+"no_transaction_record" = "無交易紀錄";
+"pay" = "支付";
+"read_general_information" = "讀取一般資訊";
+"recipient_address" = "收款地址";
+"reset" = "重置";
+"save" = "儲存";
+"search_address" = "查找地址";
+"set_local_currency" = "設定本地貨幣";
+"set_pin_code" = "設定PIN碼";
+"set_transaction_fees" = "設定交易手續費";
+"show_full_public_key_information" = "顯示完整公鑰資訊";
+"sign_payment" = "簽名支付";
+"unlock" = "解鎖";
+"use_all_funds" = "發送全部餘額";
+"use_fix_address" = "使用固定收款地址";
+"user_guide" = "使用指南";
+"write_note" = "寫入備註";
+

@@ -16,7 +16,7 @@ struct TextFieldPayAmount: View {
 
     var body: some View {
         VStack(alignment: .trailing) {
-            Text("Amount").fontWeight(.bold)
+            Text("amount").fontWeight(.bold)
             HStack(alignment: .center) {
                 Button(action: {}){Image("clear")}
                     .padding(.top, -36.0)

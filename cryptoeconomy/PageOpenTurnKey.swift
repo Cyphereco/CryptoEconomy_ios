@@ -10,10 +10,12 @@ import SwiftUI
 
 struct PageOpenTurnKey: View {
     @State var showMenu = false
-    @State var requestHint: String = "Read General Information"
-    let extraSpace: String = "       "
+    @State var requestHint: String = NSLocalizedString("read_general_information", comment: "")
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
+
+    let readOtkInfo = NSLocalizedString("read_general_information", comment: "")
+    let makeRequest = NSLocalizedString("make_request", comment: "")
 
     var body: some View {
         NavigationView {
@@ -30,13 +32,16 @@ struct PageOpenTurnKey: View {
                         VStack(alignment: .center, spacing: 20) {
                             Spacer()
                             Button(action: {
-                                self.requestHint = "Read General Information"
+                                self.requestHint = self.readOtkInfo
                             }) {
-                                Text(self.extraSpace + "Make Request" + self.extraSpace)
-                                    .font(.system(size: 20))
-                                .fontWeight(.bold)
+                                HStack(alignment: .center){
+                                    Text(self.makeRequest)
+                                        .font(.system(size: 20))
+                                        .fontWeight(.bold)
+                                }
+                                .frame(minWidth: 200)
                                 .padding(12)
-                                    .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                                .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
                                 .cornerRadius(24)
                                 .foregroundColor(.white)
                             }

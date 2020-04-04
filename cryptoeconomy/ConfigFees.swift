@@ -15,16 +15,23 @@ struct ConfigFees: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
 
+    let labelFees = NSLocalizedString("fees", comment: "")
+    let labelCustom = NSLocalizedString("custom", comment: "")
+    let labelLow = NSLocalizedString("low", comment: "")
+    let labelMid = NSLocalizedString("mid", comment: "")
+    let labelHigh = NSLocalizedString("high", comment: "")
+    let labelMin = NSLocalizedString("minutes", comment: "")
+
     var body: some View {
         VStack {
-            Text("Set Transaction Fees").fontWeight(.bold).padding()
+            Text("set_transaction_fees").fontWeight(.bold).padding()
             Spacer()
             Text(feesPriorityDesc(feesSelection: self.appConfig.feesSelection)).padding(.bottom, 10)
             Slider(value: self.$appConfig.feesSelection, in: 0...3, step: 1, onEditingChanged: { data in
                 self.strFees = String(format: "%.8f", self.appConfig.getFees())
             }).padding().accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
             HStack {
-                Text("Fees = ")
+                Text("\(labelFees) = ")
                 if (self.appConfig.feesSelection == 0) {
                     TextFieldWithBottomLine(textContent: self.$strFees, onEditingChanged: { text in
                         print(text)
@@ -56,16 +63,16 @@ struct ConfigFees: View {
     
     func feesPriorityDesc(feesSelection: Double) -> String {
         if (feesSelection < FeesPriority.LOW.sliderValue) {
-            return "Custom"
+            return "\(self.labelCustom)"
         }
         else if (feesSelection < FeesPriority.MID.sliderValue) {
-            return "Low (>= 60 minutes)"
+            return "\(self.labelLow) (>= 60 \(self.labelMin))"
         }
         else if (feesSelection < FeesPriority.HIGH.sliderValue) {
-            return "Mid (15~35 minutes)"
+            return "\(self.labelMid) (15~35 \(self.labelMin))"
         }
         else {
-            return "High (5~15 minutes)"
+            return "\(self.labelHigh) (5~15 \(self.labelMin))"
         }
     }
 }

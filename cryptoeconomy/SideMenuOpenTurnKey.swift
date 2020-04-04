@@ -12,53 +12,62 @@ struct SideMenuOpenTurnKey: View {
     @Binding var showMenu: Bool
     @Binding var requestHint: String
     @Environment(\.colorScheme) var colorScheme
+    
+    let setPinCode = NSLocalizedString("set_pin_code", comment:"")
+    let showKey = NSLocalizedString("show_full_public_key_information", comment:"")
+    let writeNote = NSLocalizedString("write_note", comment:"")
+    let msgSignVerify = NSLocalizedString("message_sign_validate", comment:"")
+    let chooseKey = NSLocalizedString("choose_key", comment:"")
+    let unlock = NSLocalizedString("unlock", comment:"")
+    let reset = NSLocalizedString("reset", comment:"")
+    let exportKey = NSLocalizedString("export_key", comment:"")
 
     var body: some View {
         VStack {
-            MenuItem(itemLabel: "Set PIN Code", completion: {
-                self.requestHint = ("Set PIN Code")
+            MenuItem(itemLabel: setPinCode, completion: {
+                self.requestHint = self.setPinCode
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: "Show Full Public Key Information", completion: {
-                self.requestHint = ("Show Full Public Key Information")
+            MenuItem(itemLabel: showKey, completion: {
+                self.requestHint = self.showKey
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: "Write Note", completion: {
-                self.requestHint = ("Write Note")
+            MenuItem(itemLabel: writeNote, completion: {
+                self.requestHint = self.writeNote
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: "Message Sign/Validate", completion: {
-                self.requestHint = ("Message Sign/Validate")
+            MenuItem(itemLabel: msgSignVerify, completion: {
+                self.requestHint = self.msgSignVerify
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: "Choose Key", completion: {
-                self.requestHint = ("Choose Key")
+            MenuItem(itemLabel: chooseKey, completion: {
+                self.requestHint = self.chooseKey
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: "Unlock", completion: {
-                self.requestHint = ("Unlock")
+            MenuItem(itemLabel: unlock, completion: {
+                self.requestHint = self.unlock
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: "Reset", completion: {
-                self.requestHint = ("Reset")
+            MenuItem(itemLabel: reset, completion: {
+                self.requestHint = self.reset
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: "Export Key", completion: {
-                self.requestHint = ("Export Key")
+            MenuItem(itemLabel: exportKey, completion: {
+                self.requestHint = self.exportKey
                 withAnimation {
                     self.showMenu = false
                 }

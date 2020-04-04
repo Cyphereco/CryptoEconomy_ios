@@ -13,14 +13,14 @@ struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
     @EnvironmentObject var appData: AppData
-
+    
     var body: some View {
         TabView(selection: $selection){
             PagePay()
                 .tabItem {
                     VStack {
                         Image("pay")
-                        Text("Pay")
+                        Text("pay")
                     }
                 }
                 .tag(0)
@@ -36,7 +36,7 @@ struct ContentView: View {
                 .tabItem {
                     VStack {
                         Image("history")
-                        Text("History")
+                        Text("history")
                     }
                 }
                 .tag(2)
@@ -44,7 +44,7 @@ struct ContentView: View {
                 .tabItem {
                     VStack {
                         Image("addressbook")
-                        Text("Addresses")
+                        Text("addresses")
                     }
                 }
                 .tag(3)

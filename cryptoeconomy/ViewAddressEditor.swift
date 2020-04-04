@@ -15,18 +15,19 @@ struct ViewAddressEditor: View {
     var body: some View {
         NavigationView {
             VStack {
-                TextFieldWithBottomLine(hint: "Alias", textContent: $alias, textAlign: .leading).padding()
+                TextFieldWithBottomLine(hint: "alias", textContent: $alias, textAlign: .leading).padding()
                 TextFieldBtcAddress(address: "").padding()
                 HStack {
                     Spacer()
                     Button(action: {
                         
                     }) {
-                        HStack{
-                            Text("   Save   ")
+                        HStack(alignment: .center){
+                            Text("save")
                                 .font(.system(size: 20))
-                            .fontWeight(.bold)
+                                .fontWeight(.bold)
                         }
+                        .frame(minWidth: 80)
                         .padding(12)
                         .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
                         .cornerRadius(24)
@@ -34,7 +35,8 @@ struct ViewAddressEditor: View {
                     }
                 }.padding(.top, 20.0)
             }.padding(.horizontal, 20.0)
-            .navigationBarTitle(Text("Edit Address"), displayMode: .inline)        }
+            .navigationBarTitle(Text("edit_address"), displayMode: .inline)
+        }
     }
 }
 

@@ -15,11 +15,11 @@ struct ConfigLocalCurrency: View {
 
     var body: some View {
         VStack {
-            Text("Set Local Currency").fontWeight(.bold).padding()
+            Text("set_local_currency").fontWeight(.bold).padding()
             Spacer()
             VStack {
                 Spacer()
-                Picker("Set Local Fiat Currency", selection: self.$appConfig.currencySelection) {
+                Picker("set_local_currency", selection: self.$appConfig.currencySelection) {
                     ForEach(0 ..< FiatCurrency.allCases.count) {
                         Text(FiatCurrency.allCases[$0].label)
                     }

@@ -43,6 +43,8 @@
 		BA9595F3242EFE4100C48B37 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BA9595F1242EFE4100C48B37 /* LaunchScreen.storyboard */; };
 		BA9595FE242EFE4800C48B37 /* cryptoeconomyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9595FD242EFE4800C48B37 /* cryptoeconomyTests.swift */; };
 		BA959609242EFE4800C48B37 /* cryptoeconomyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA959608242EFE4800C48B37 /* cryptoeconomyUITests.swift */; };
+		BAADC80C243867F800799FD0 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAADC80B243867F800799FD0 /* AppStrings.swift */; };
+		BAADC80F24386A6E00799FD0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BAADC81124386A6E00799FD0 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +110,9 @@
 		BA959604242EFE4800C48B37 /* cryptoeconomyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = cryptoeconomyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA959608242EFE4800C48B37 /* cryptoeconomyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cryptoeconomyUITests.swift; sourceTree = "<group>"; };
 		BA95960A242EFE4800C48B37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BAADC80B243867F800799FD0 /* AppStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStrings.swift; sourceTree = "<group>"; };
+		BAADC81024386A6E00799FD0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BAADC812243898D600799FD0 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		BBA23AD2292FE79FA11FDFAB /* Pods-cryptoeconomy-cryptoeconomyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cryptoeconomy-cryptoeconomyUITests.debug.xcconfig"; path = "Target Support Files/Pods-cryptoeconomy-cryptoeconomyUITests/Pods-cryptoeconomy-cryptoeconomyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		CB6220A6989D993B98FB527A /* Pods-cryptoeconomy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cryptoeconomy.release.xcconfig"; path = "Target Support Files/Pods-cryptoeconomy/Pods-cryptoeconomy.release.xcconfig"; sourceTree = "<group>"; };
 		F4812DC8CA5165C8C96BF4C1 /* Pods-cryptoeconomy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cryptoeconomy.debug.xcconfig"; path = "Target Support Files/Pods-cryptoeconomy/Pods-cryptoeconomy.debug.xcconfig"; sourceTree = "<group>"; };
@@ -198,6 +203,7 @@
 				BA9595E6242EFD8800C48B37 /* AppDelegate.swift */,
 				BA46BA852436EB9900B53540 /* AppData.swift */,
 				BA2EEAE42434826A00522A63 /* AppConfig.swift */,
+				BAADC80B243867F800799FD0 /* AppStrings.swift */,
 				BA7DDB9F243665E50072412F /* AppTools.swift */,
 				BA9595EA242EFD8900C48B37 /* ContentView.swift */,
 				BA2EEAE224346C6C00522A63 /* ConfigFees.swift */,
@@ -206,6 +212,7 @@
 				BA9595F1242EFE4100C48B37 /* LaunchScreen.storyboard */,
 				BA2EEAE62435839E00522A63 /* ListItemAddress.swift */,
 				BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */,
+				BAADC81124386A6E00799FD0 /* Localizable.strings */,
 				BA2EEADA2433110800522A63 /* MenuItem.swift */,
 				BA2EEADC2433B07900522A63 /* MenuItemToggle.swift */,
 				BA3FC537243048AB00F41471 /* PageAddresses.swift */,
@@ -366,6 +373,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hant",
 			);
 			mainGroup = BA9595DA242EFD8800C48B37;
 			productRefGroup = BA9595E4242EFD8800C48B37 /* Products */;
@@ -385,6 +393,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA9595F3242EFE4100C48B37 /* LaunchScreen.storyboard in Resources */,
+				BAADC80F24386A6E00799FD0 /* Localizable.strings in Resources */,
 				BA9595F0242EFE4100C48B37 /* Preview Assets.xcassets in Resources */,
 				BA9595ED242EFE4000C48B37 /* Assets.xcassets in Resources */,
 			);
@@ -524,6 +533,7 @@
 				B23FB94F2437460C00A2B80F /* BtcUtils.swift in Sources */,
 				BA3FC53C243072BF00F41471 /* PageOpenTurnKey.swift in Sources */,
 				BA3FC5402431006000F41471 /* PageHistory.swift in Sources */,
+				BAADC80C243867F800799FD0 /* AppStrings.swift in Sources */,
 				BA7DDBA0243665E50072412F /* AppTools.swift in Sources */,
 				BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */,
 				BA40150A2431CA930094F6CF /* TextFieldBtcAddress.swift in Sources */,
@@ -585,6 +595,15 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		BAADC81124386A6E00799FD0 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BAADC81024386A6E00799FD0 /* en */,
+				BAADC812243898D600799FD0 /* zh-Hant */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -592,6 +611,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -652,6 +672,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

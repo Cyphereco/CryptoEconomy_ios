@@ -15,12 +15,15 @@ struct PagePay: View {
         
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
+    
+    let useAllFunds = NSLocalizedString("use_all_funds", comment: "")
+    let authByPin = NSLocalizedString("authorization_with_pin_code", comment: "")
 
     var body: some View {
         NavigationView {
             GeometryReader {geometry in
                 ZStack(alignment: .trailing) {
-                    VStack {
+                    VStack(alignment: .trailing) {
                         TextEstFeesInfo(currencySelection: self.$appConfig.currencySelection, fees: self.$appConfig.fees)
                             .padding([.top, .trailing], 20.0)
                         Spacer()
@@ -30,37 +33,34 @@ struct PagePay: View {
                         TextFieldPayAmount(localCurrency: self.$appConfig.currencySelection, strAmountBtc: "0.0", strAmountFiat: "0.0")
                             .padding(.horizontal, 20.0)
                         Toggle(isOn: self.$appConfig.useAllFunds){
-                            Text("Use All Funds")
-                                .font(.footnote)
-                                .multilineTextAlignment(.trailing)
-                        }
-                        .padding(.leading, 210)
-                        .padding(.trailing, 20.0)
+                            HStack {
+                                Spacer()
+                                Text(self.useAllFunds).font(.footnote)
+                            }
+                        }.padding(.horizontal, 20.0)
                         Spacer()
                         Toggle(isOn: self.$appConfig.authByPin){
-                            Text("Authorization with PIN Code")
-                                .font(.footnote)
-                        }
-                        .padding(.leading, 120)
-                        .padding(.trailing, 20.0)
-                        HStack {
-                            Spacer()
-                            Button(action: {
-                                
-                            }) {
-                                HStack{
-                                    Image("fingerprint")
-                                    Text("Sign Payment")
-                                        .font(.system(size: 20))
-                                    .fontWeight(.bold)
-                                }
-                                .padding(12)
-                                .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
-                                .cornerRadius(24)
-                                .foregroundColor(.white)
+                            HStack {
+                                Spacer()
+                                Text(self.authByPin).font(.footnote)
                             }
-                            .padding(.trailing, 20.0)
+                        }.padding(.horizontal, 20.0)
+                        Button(action: {
+                            
+                        }) {
+                            HStack{
+                                Image("fingerprint")
+                                Text("sign_payment")
+                                    .font(.system(size: 20))
+                                .fontWeight(.bold)
+                            }
+                            .frame(minWidth: 160)
+                            .padding(12)
+                            .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                            .cornerRadius(24)
+                            .foregroundColor(.white)
                         }
+                        .padding(.trailing, 20.0)
                         Spacer()
                     }.disabled(self.showMenu || self.showConfigLocalCurrency || self.showConfigFees)
                     if (self.showMenu) {
@@ -90,7 +90,7 @@ struct PagePay: View {
                     }
                 }
             }
-            .navigationBarTitle(Text("Pay"), displayMode: .inline)
+            .navigationBarTitle(Text("pay"), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
                 withAnimation {
                     self.showMenu.toggle()
