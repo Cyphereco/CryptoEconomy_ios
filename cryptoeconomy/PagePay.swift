@@ -54,7 +54,6 @@ struct PagePay: View {
                                     .font(.system(size: 20))
                                 .fontWeight(.bold)
                             }
-                            .frame(minWidth: 160)
                             .padding(12)
                             .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
                             .cornerRadius(24)

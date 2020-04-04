@@ -54,6 +54,11 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environmentObject(AppConfig()).environmentObject(AppData())
+        ForEach(["en", "zh-Hant", "zh-Hans", "ja"], id: \.self) {localeIdentifier in
+            ContentView().environmentObject(AppConfig())
+                .environmentObject(AppData())
+                .environment(\.locale, .init(identifier: localeIdentifier))
+                .previewDisplayName(localeIdentifier)
+        }
     }
 }

@@ -1,0 +1,53 @@
+/* 
+  Localizable.strings
+  cryptoeconomy
+
+  Created by Quark on 2020/4/4.
+  Copyright © 2020 Cyphereco OU. All rights reserved.
+*/
+
+"about" = "About";
+"address" = "Address";
+"addresses" = "Addresses";
+"alias" = "Alias";
+"amount" = "Amount";
+"authorization_with_pin_code" = "Authorization with PIN Code";
+"cancel" = "Cancel";
+"choose_key" = "Choose Key";
+"clear_history" = "Clear History";
+"custom" = "Custom";
+"delete" = "Delete";
+"delete_all_transaction_records?" = "Delete all transaction records?";
+"edit_address" = "Edit Address";
+"estimated_fees" = "Estimated Fees";
+"excluded" = "Excluded";
+"export_key" = "Export Key";
+"fees" = "Fees";
+"fees_included" = "Fees Included";
+"high" = "High";
+"history" = "History";
+"included" = "Included";
+"low" = "Low";
+"make_request" = "Make Request";
+"message_sign_validate" = "Message Sign/Validate";
+"mid" = "Mid";
+"minutes" = "Minutes";
+"no_address" = "No Address";
+"no_transaction_record" = "No Transaction Record";
+"pay" = "Pay";
+"read_general_information" = "Read General Information";
+"recipient_address" = "Recipient Address";
+"reset" = "Reset";
+"save" = "Save";
+"search_address" = "Search Address";
+"set_local_currency" = "Set Local Currency";
+"set_pin_code" = "Set PIN Code";
+"set_transaction_fees" = "Set Transaction Fees";
+"show_full_public_key_information" = "Show Full Public Key Information";
+"sign_payment" = "Sign Payment";
+"unlock" = "Unlock";
+"use_all_funds" = "Use All Funds";
+"use_fix_address" = "Use Fix Address";
+"user_guide" = "User Guide";
+"write_note" = "Write Note";
+
