@@ -28,7 +28,7 @@ struct ConfigFees: View {
             Spacer()
             Text(feesPriorityDesc(feesSelection: self.appConfig.feesSelection)).padding(.bottom, 10)
             Slider(value: self.$appConfig.feesSelection, in: 0...3, step: 1, onEditingChanged: { data in
-                self.strFees = String(format: "%.8f", self.appConfig.getFees())
+                self.strFees = AppTools.btcToFormattedString(self.appConfig.getFees())
             }).padding().accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
             HStack {
                 Text("\(labelFees) = ")
@@ -41,7 +41,7 @@ struct ConfigFees: View {
                         .padding(.top, 10)
                 }
                 else {
-                    Text(String(format: "%.8f", self.appConfig.fees))
+                    Text(AppTools.btcToFormattedString(self.appConfig.fees))
                 }
                 Text(" BTC")
             }

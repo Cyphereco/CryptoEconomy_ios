@@ -26,11 +26,11 @@ struct TextEstFeesInfo: View {
             }
             HStack {
                 VStack(alignment: .trailing) {
-                    Text("\(self.appConfig.fees) /")
+                    Text(AppTools.btcToFormattedString(self.appConfig.fees) + " /")
                     Text("BTC").font(.footnote).padding(.trailing, 10)
                 }
                 VStack(alignment: .trailing) {
-                    Text("\(AppTools.btcToFiat(btc: self.fees, currencySelection: self.currencySelection))")
+                    Text(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.fees, currencySelection: self.currencySelection)))
                     Text("\(self.appConfig.getLocalCurrency().label)")
                         .font(.footnote)
                 }

@@ -13,25 +13,25 @@ struct ListItemTransaction: View {
     var body: some View {
         HStack {
             HStack {
-                if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 0) {
+                if (AppTools.calcConfirmations(self.recordTransaction.blockHeight) < 0) {
                     Image("unconfirmed")
                 }
-                else if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 1) {
+                else if (AppTools.calcConfirmations(self.recordTransaction.blockHeight) < 1) {
                     Image("confirm0")
                 }
-                else if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 2) {
+                else if (AppTools.calcConfirmations(self.recordTransaction.blockHeight) < 2) {
                     Image("confirm1")
                 }
-                else if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 3) {
+                else if (AppTools.calcConfirmations(self.recordTransaction.blockHeight) < 3) {
                     Image("confirm2")
                 }
-                else if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 4) {
+                else if (AppTools.calcConfirmations(self.recordTransaction.blockHeight) < 4) {
                     Image("confirm3")
                 }
-                else if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 5) {
+                else if (AppTools.calcConfirmations(self.recordTransaction.blockHeight) < 5) {
                     Image("confirm4")
                 }
-                else if (AppTools.calcConfirmations(blockHeight: self.recordTransaction.blockHeight) < 6) {
+                else if (AppTools.calcConfirmations(self.recordTransaction.blockHeight) < 6) {
                     Image("confirm5")
                 }
                 else {
@@ -39,8 +39,8 @@ struct ListItemTransaction: View {
                 }
             }
             VStack {
-                Text(AppTools.timeToStringDate(time: self.recordTransaction.time))
-                Text(AppTools.timeToStringTime(time: self.recordTransaction.time))
+                Text(AppTools.timeToStringDate(self.recordTransaction.time))
+                Text(AppTools.timeToStringTime(self.recordTransaction.time))
             }
             VStack {
                 Text(self.recordTransaction.payer).lineLimit(1)

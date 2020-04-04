@@ -73,8 +73,8 @@ struct PagePay: View {
                         VStack {
                             Spacer()
                             ConfigLocalCurrency(showConfigLocalCurrency: self.$showConfigLocalCurrency)
-                                .frame(height: geometry.size.height/2)
                                 .cornerRadius(20)
+                                .frame(height: geometry.size.height/2)
                                 .transition(.move(edge: .bottom))
                         }
                     }
@@ -82,8 +82,8 @@ struct PagePay: View {
                         VStack {
                             Spacer()
                             ConfigFees(showConfigFees: self.$showConfigFees)
-                                .frame(height: geometry.size.height/2)
                                 .cornerRadius(20)
+                                .frame(height: geometry.size.height/2)
                                 .transition(.move(edge: .bottom))
                         }
                     }

@@ -9,26 +9,34 @@
 import Foundation
 
 struct AppTools {
-    static func btcToFiat(btc: Double, currencySelection: Int) -> Double {
+    static func fiatToFormattedString(_ fiat: Double) -> String {
+        return String(format: "%.3f", fiat)
+    }
+    
+    static func btcToFormattedString(_ btc: Double) -> String {
+        return String(format: "%.8f", btc)
+    }
+    
+    static func btcToFiat(_ btc: Double, currencySelection: Int) -> Double {
         return btc * AppConfig.fiatRates[currencySelection]
     }
 
-    static func fiatToBtc(fiat: Double, currencySelection: Int) -> Double {
+    static func fiatToBtc(_ fiat: Double, currencySelection: Int) -> Double {
         return fiat / AppConfig.fiatRates[currencySelection]
     }
 
-    static func calcConfirmations(blockHeight: Int64) -> Int {
+    static func calcConfirmations(_ blockHeight: Int64) -> Int {
 //        return Int(getCurrentBlockHeight() - blockHeight)
         return Int(blockHeight)
     }
     
-    static func timeToStringDate(time: Date) -> String {
+    static func timeToStringDate(_ time: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         return formatter.string(from: time)
     }
     
-    static func timeToStringTime(time: Date) -> String {
+    static func timeToStringTime(_ time: Date) -> String {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
         return formatter.string(from: time)

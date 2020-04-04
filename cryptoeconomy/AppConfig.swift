@@ -139,7 +139,7 @@ class AppConfig: ObservableObject {
     
     static let accentColorLight: Color = .blue
     static let accentColorDark: Color = .orange
-    static let colorScaleLight: Double = 240/255
+    static let colorScaleLight: Double = 224/255
     static let colorScaleDark: Double = 32/255
     
     static func getAccentColor(colorScheme: ColorScheme) -> Color {
