@@ -35,9 +35,11 @@ struct PageOpenTurnKey: View {
                                 self.requestHint = self.readOtkInfo
                             }) {
                                 HStack(alignment: .center){
+                                    Image("nfc_request")
                                     Text(self.makeRequest)
                                         .font(.system(size: 20))
                                         .fontWeight(.bold)
+                                        .padding(.trailing, 10)
                                 }
                                 .frame(minWidth: 200)
                                 .padding(12)
