@@ -13,6 +13,8 @@
 		B23FB94B243741BC00A2B80F /* BaseWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAF02435BEDE00522A63 /* BaseWebService.swift */; };
 		B23FB94C243741BC00A2B80F /* BlockChainInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAEF2435BEDE00522A63 /* BlockChainInfoService.swift */; };
 		B23FB94F2437460C00A2B80F /* BtcUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23FB94E2437460B00A2B80F /* BtcUtils.swift */; };
+		B23FB95C2439D35000A2B80F /* UnsignedTx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23FB95B2439D35000A2B80F /* UnsignedTx.swift */; };
+		B23FB95E2439D37C00A2B80F /* BlockCypherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23FB95D2439D37C00A2B80F /* BlockCypherService.swift */; };
 		B93D4DAD754E2583B041D479 /* Pods_cryptoeconomy_cryptoeconomyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31BE2B99C51B681B9DEFA6F7 /* Pods_cryptoeconomy_cryptoeconomyUITests.framework */; };
 		BA2EEAD52432209400522A63 /* ViewAddressEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */; };
 		BA2EEAD724330E8A00522A63 /* SideMenuPay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */; };
@@ -74,6 +76,8 @@
 		A7E12DA96DE7FFBDEE7EDF63 /* Pods_cryptoeconomyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cryptoeconomyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B23FB948243741A400A2B80F /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		B23FB94E2437460B00A2B80F /* BtcUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BtcUtils.swift; sourceTree = "<group>"; };
+		B23FB95B2439D35000A2B80F /* UnsignedTx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedTx.swift; sourceTree = "<group>"; };
+		B23FB95D2439D37C00A2B80F /* BlockCypherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCypherService.swift; sourceTree = "<group>"; };
 		BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAddressEditor.swift; sourceTree = "<group>"; };
 		BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuPay.swift; sourceTree = "<group>"; };
 		BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOpenTurnKey.swift; sourceTree = "<group>"; };
@@ -164,6 +168,7 @@
 			children = (
 				BA2EEAEF2435BEDE00522A63 /* BlockChainInfoService.swift */,
 				BA2EEAF02435BEDE00522A63 /* BaseWebService.swift */,
+				B23FB95D2439D37C00A2B80F /* BlockCypherService.swift */,
 			);
 			name = WebService;
 			sourceTree = "<group>";
@@ -174,6 +179,14 @@
 				B23FB94E2437460B00A2B80F /* BtcUtils.swift */,
 			);
 			name = Utils;
+			sourceTree = "<group>";
+		};
+		B23FB95A2439D32000A2B80F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B23FB95B2439D35000A2B80F /* UnsignedTx.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		BA9595DA242EFD8800C48B37 = {
@@ -202,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				BAADC8152439AAA400799FD0 /* Crypto Economy.entitlements */,
+				B23FB95A2439D32000A2B80F /* Model */,
 				B23FB94D243745E400A2B80F /* Utils */,
 				B23FB9472437419400A2B80F /* Logger */,
 				B23FB94A243741AB00A2B80F /* WebService */,
@@ -542,6 +556,7 @@
 				B23FB94F2437460C00A2B80F /* BtcUtils.swift in Sources */,
 				BA3FC53C243072BF00F41471 /* PageOpenTurnKey.swift in Sources */,
 				BA3FC5402431006000F41471 /* PageHistory.swift in Sources */,
+				B23FB95E2439D37C00A2B80F /* BlockCypherService.swift in Sources */,
 				BAADC80C243867F800799FD0 /* AppStrings.swift in Sources */,
 				BA7DDBA0243665E50072412F /* AppTools.swift in Sources */,
 				BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */,
@@ -552,6 +567,7 @@
 				BA2EEADF243450F200522A63 /* ConfigLocalCurrency.swift in Sources */,
 				BA2EEAE324346C6C00522A63 /* ConfigFees.swift in Sources */,
 				BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */,
+				B23FB95C2439D35000A2B80F /* UnsignedTx.swift in Sources */,
 				BA2EEAD724330E8A00522A63 /* SideMenuPay.swift in Sources */,
 				BA40150E2431E2B70094F6CF /* TextFieldPayAmount.swift in Sources */,
 				B23FB949243741A400A2B80F /* Logger.swift in Sources */,
