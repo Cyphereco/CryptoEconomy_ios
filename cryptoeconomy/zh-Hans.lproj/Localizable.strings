@@ -1,53 +1,52 @@
-/* 
-  Localizable.strings
-  cryptoeconomy
+/*
+  Localizable.strings
+  cryptoeconomy
 
-  Created by Quark on 2020/4/4.
-  Copyright © 2020 Cyphereco OU. All rights reserved.
+  Created by Quark on 2020/4/4.
+  Copyright © 2020 Cyphereco OU. All rights reserved.
 */
 
-"about" = "About";
-"address" = "Address";
-"addresses" = "Addresses";
-"alias" = "Alias";
-"amount" = "Amount";
-"authorization_with_pin_code" = "Authorization with PIN Code";
-"cancel" = "Cancel";
-"choose_key" = "Choose Key";
-"clear_history" = "Clear History";
-"custom" = "Custom";
-"delete" = "Delete";
-"delete_all_transaction_records?" = "Delete all transaction records?";
-"edit_address" = "Edit Address";
-"estimated_fees" = "Estimated Fees";
-"excluded" = "Excluded";
-"export_key" = "Export Key";
-"fees" = "Fees";
-"fees_included" = "Fees Included";
-"high" = "High";
-"history" = "History";
-"included" = "Included";
-"low" = "Low";
-"make_request" = "Make Request";
-"message_sign_validate" = "Message Sign/Validate";
-"mid" = "Mid";
-"minutes" = "Minutes";
-"no_address" = "No Address";
-"no_transaction_record" = "No Transaction Record";
-"pay" = "Pay";
-"read_general_information" = "Read General Information";
-"recipient_address" = "Recipient Address";
-"reset" = "Reset";
-"save" = "Save";
-"search_address" = "Search Address";
-"set_local_currency" = "Set Local Currency";
-"set_pin_code" = "Set PIN Code";
-"set_transaction_fees" = "Set Transaction Fees";
-"show_full_public_key_information" = "Show Full Public Key Information";
-"sign_payment" = "Sign Payment";
-"unlock" = "Unlock";
-"use_all_funds" = "Use All Funds";
-"use_fix_address" = "Use Fix Address";
-"user_guide" = "User Guide";
-"write_note" = "Write Note";
-
+"about" = "关于";
+"address" = "地址";
+"addresses" = "常用地址";
+"alias" = "别名";
+"amount" = "金额";
+"authorization_with_pin_code" = "使用PIN码授权";
+"cancel" = "取消";
+"choose_key" = "选择密钥";
+"clear_history" = "清除记录";
+"custom" = "自订";
+"delete" = "删除";
+"delete_all_transaction_records?" = "删除所有交易纪录?";
+"edit_address" = "编辑地址";
+"estimated_fees" = "预估手续费";
+"excluded" = "外加";
+"export_key" = "汇出密钥";
+"fees" = "手续费";
+"fees_included" = "手续费内含";
+"high" = "高";
+"history" = "支付纪录";
+"included" = "内含";
+"low" = "低";
+"make_request" = "发送请求";
+"message_sign_validate" = "消息签名/验证";
+"mid" = "中";
+"minutes" = "分钟";
+"no_address" = "无常用地址";
+"no_transaction_record" = "无交易纪录";
+"pay" = "支付";
+"read_general_information" = "读取一般资讯";
+"recipient_address" = "收款地址";
+"reset" = "重置";
+"save" = "储存";
+"search_address" = "查找地址";
+"set_local_currency" = "设定本地货币";
+"set_pin_code" = "设定PIN码";
+"set_transaction_fees" = "设定交易手续费";
+"show_full_public_key_information" = "显示完整公钥资讯";
+"sign_payment" = "签名支付";
+"unlock" = "解锁";
+"use_all_funds" = "发送全部余额";
+"use_fix_address" = "使用固定收款地址";
+"user_guide" = "使用指南";
+"write_note" = "写入备注";
