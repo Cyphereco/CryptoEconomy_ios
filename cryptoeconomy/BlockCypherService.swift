@@ -1,0 +1,137 @@
+//
+//  BlockCypherService.swift
+//  cryptoeconomy
+//
+//  Created by JJ Cherng on 2020/4/5.
+//  Copyright © 2020 Cyphereco OU. All rights reserved.
+//
+
+import Foundation
+import PromiseKit
+import Alamofire
+import SwiftyJSON
+
+/**
+  Usage:
+    BlockCypherService.shared.newTransaction(from: "13GNvHaSjhs8dLbEWrRP7Lvbb8ZBsKUU4P", to: "1LG9fDp3do4X2tEf4k7V4uCYhNUmSq6vL8", amountInSatoshi: 10000, fees: 1000).done { (unsignedTx) in
+        // Success case
+        Logger.shared.debug(unsignedTx.toString)
+    }.catch { error in
+        // Error case
+        Logger.shared.debug(error)
+    }.finally {
+        // No matter success or fail will run finally
+        Logger.shared.debug("finally")
+    }
+ */
+class BlockCypherService: BaseWebServices {
+    static let shared = BlockCypherService()
+
+    //https://api.blockcypher.com/v1/btc/main/txs/new?token=7744d177ce1e4ef48c7431fcb55531b9
+    let baseMainUrl = "https://api.blockcypher.com/v1/btc/main/"
+    let pathNewTx = "txs/new"
+    let paramToken = "?token=7744d177ce1e4ef48c7431fcb55531b9"
+    
+    func newTransaction(from: String, to: String, amountInSatoshi: Int64, fees: Int64) -> Promise<UnsignedTx> {
+        // return Promise
+        return Promise<UnsignedTx>.init(resolver: { (resolver) in
+            // Set parametere
+            // Exmaple
+            //{"inputs":[{"addresses": ["1LG9fDp3do4X2tEf4k7V4uCYhNUmSq6vL8"]}],"outputs":[{"adresses": ["1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab"], "value": 10000}], "fees": 1000}
+            var parameters = [String: AnyObject]()
+            var addresses = [String: AnyObject]()
+            addresses.updateValue([from] as AnyObject, forKey: "addresses")
+            parameters.updateValue([addresses] as AnyObject, forKey: "inputs")
+            
+            var outputs = [String: AnyObject]()
+            outputs.updateValue([to] as AnyObject, forKey: "addresses")
+            outputs.updateValue(amountInSatoshi as AnyObject, forKey: "value")
+            parameters.updateValue([outputs] as AnyObject, forKey: "outputs")
+            parameters.updateValue(fees as AnyObject, forKey: "fees")
+            
+            Logger.shared.debug(JSON(parameters))
+            
+            // generate Request
+            let req = self.requestGenerator(baseUrl: baseMainUrl, route: pathNewTx, urlParameters: paramToken, parameters: parameters, method: .post, encoding: JSONEncoding.default)
+
+            firstly {
+                // send request and get json response
+                self.setupResponse(req)
+            }.then { (responseJSON) -> Promise<UnsignedTx> in
+                // process response
+                return Promise<UnsignedTx>.init(resolver: { (resolver) in
+                    Logger.shared.debug(responseJSON)
+                    // get the unsigned tx from response
+                    // The response is like:
+                    // {
+                    //  "tx" : {
+                    //    ...
+                    //    "outputs" : [
+                    //      {
+                    //        "addresses" : [
+                    //          "13GNvHaSjhs8dLbEWrRP7Lvbb8ZBsKUU4P"
+                    //        ],
+                    //        "script_type" : "pay-to-pubkey-hash",
+                    //        "value" : 10000,
+                    //        "script" : "76a91418d8c9aea40eb32739c8f0dc4e83e70ca8a9bac688ac"
+                    //      },
+                    //      ...
+                    //    ],
+                    //    "fees" : 1000,
+                    //
+                    //  "tosign" : [
+                    //    "14f01dbd13317541340d6eb8fe7e1399225e0af264bd25bffcc9eba9dbae975a"
+                    //  ]
+                    // }
+                    
+                    // Get tosign
+                    let toSigns = responseJSON["tosign"].arrayValue
+                    if toSigns.count <= 0 {
+                        Logger.shared.debug("No tosign")
+                        resolver.reject(WebServiceError.decodeContentFailure)
+                    }
+                    var toSignArray = Array<String>()
+                    for toSign in toSigns {
+                        toSignArray.append(toSign.stringValue)
+                    }
+                    
+                    // Calculate amount
+                    var amount: Double = 0.0
+                    if from == to {
+                        // If the from equals to then use the amount in passed-in amount
+                        amount = BtcUtils.satoshiToBtc(satoshi: amountInSatoshi)
+                    } else {
+                        Logger.shared.debug("Hi")
+                        // Sum all the value in outputs which address equals to to
+                        let outputs = responseJSON["tx"]["outputs"].arrayValue
+                        Logger.shared.debug(outputs)
+                        for output in outputs {
+                            Logger.shared.debug(output)
+                            let address = output["addresses"][0].stringValue
+                            Logger.shared.debug(address)
+                            if address == to {
+                                let value = output["value"].int64Value
+                                amount += BtcUtils.satoshiToBtc(satoshi: value)
+                            }
+                        }
+                    }
+                    
+                    // Get fees
+                    let fees = responseJSON["tx"]["fees"].int64Value
+                    let unsignedTx = UnsignedTx(from: from, to: to, amount: amount, fees: fees, toSign: toSignArray)
+                    resolver.fulfill(unsignedTx)
+                })
+            }.done { (unsignedTx) in
+                // Complete
+                resolver.fulfill(unsignedTx)
+            }.catch(policy: .allErrors) { (error) in
+                // error handling
+                Logger.shared.debug(error)
+                // XXX parse error
+                resolver.reject(WebServiceError.otherErrors)
+            }
+        })
+    }
+}
+
+

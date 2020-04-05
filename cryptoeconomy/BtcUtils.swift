@@ -12,14 +12,14 @@ class BtcUtils {
     /*
      * Convert satoshi to BTC
      */
-    static func satoshiToBtc(satoshi: Int64) -> Decimal {
-        return (Decimal(satoshi) / 100000000.0)
+    static func satoshiToBtc(satoshi: Int64) -> Double {
+        return (Double(satoshi) / 100000000.0)
     }
     
     /*
      * Convert BTC to satoshi
      */
-    static func BtcToSatoshi(btc: Decimal) -> Int64 {
-        return Int64(truncating: NSDecimalNumber(decimal: (btc * 100000000.0)))
+    static func BtcToSatoshi(btc: Double) -> Int64 {
+        return Int64(truncating: NSNumber(value: (btc * 100000000.0)))
     }
 }

@@ -10,8 +10,34 @@ import Alamofire
 import PromiseKit
 import SwiftyJSON
 
+extension Request {
+    public func debugLog() -> Self {
+        #if DEBUG
+            debugPrint("=======================================")
+            debugPrint(self)
+            debugPrint("=======================================")
+        #endif
+        return self
+    }
+}
+
 class BaseWebServices {
     
+    /**
+     * Base Http Request Generator
+     *
+     */
+    public func requestGenerator(baseUrl: String, route: String, urlParameters: String = "", parameters: Parameters? = nil, method: HTTPMethod = .get, encoding: ParameterEncoding = URLEncoding.default) -> DataRequest {
+        
+        let url = baseUrl + route + urlParameters
+        
+        return Alamofire.request(
+            url,
+            method: method,
+            parameters: parameters,
+            encoding: encoding
+        )
+    }
     /**
      * Base Http Request Generator
      *
@@ -30,7 +56,7 @@ class BaseWebServices {
    
     public func setupResponse(_ dataRequest: DataRequest) -> Promise<JSON> {
         return Promise<JSON>.init(resolver: { (resolver) in
-            dataRequest.validate().responseJSON(queue: DispatchQueue.global(), options: JSONSerialization.ReadingOptions.mutableContainers, completionHandler: { (response) in
+            dataRequest.debugLog().validate().responseJSON(queue: DispatchQueue.global(), options: JSONSerialization.ReadingOptions.mutableContainers, completionHandler: { (response) in
                 
                 switch response.result {
                     
