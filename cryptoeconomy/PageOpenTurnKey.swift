@@ -16,7 +16,8 @@ struct PageOpenTurnKey: View {
 
     let readOtkInfo = NSLocalizedString("read_general_information", comment: "")
     let makeRequest = NSLocalizedString("make_request", comment: "")
-
+    @ObservedObject var otkNpi = OtkNfcProtocolInterface()
+    
     var body: some View {
         NavigationView {
             GeometryReader {geometry in
@@ -32,6 +33,7 @@ struct PageOpenTurnKey: View {
                         VStack(alignment: .center, spacing: 20) {
                             Spacer()
                             Button(action: {
+                                self.otkNpi.beginScanning()
                                 self.requestHint = self.readOtkInfo
                             }) {
                                 HStack(alignment: .center){

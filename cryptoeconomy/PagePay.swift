@@ -18,6 +18,7 @@ struct PagePay: View {
     
     let useAllFunds = NSLocalizedString("use_all_funds", comment: "")
     let authByPin = NSLocalizedString("authorization_with_pin_code", comment: "")
+    @ObservedObject var otkNpi = OtkNfcProtocolInterface()
 
     var body: some View {
         NavigationView {
@@ -46,7 +47,7 @@ struct PagePay: View {
                             }
                         }.padding(.horizontal, 20.0)
                         Button(action: {
-                            
+                            self.otkNpi.beginScanning()
                         }) {
                             HStack{
                                 if (self.appConfig.authByPin) {

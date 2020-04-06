@@ -35,15 +35,28 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
     var didChange = PassthroughSubject<Void,Never>()
 
     // MARK: - Observable Properties
-    @Published var readTag = OtkNDEFTag() { didSet { didChange.send(()) } }
-    @Published var requestCommand = OtkRequestCommand() { didSet { didChange.send(()) } }
-    @Published var otkDetected = false { didSet { didChange.send(()) } }
+    @Published var readTag = OtkNDEFTag() { didSet { didChange.send() } }
+    @Published var requestCommand = OtkRequestCommand() { didSet { didChange.send() } }
+    @Published var otkDetected = false { didSet { didChange.send() } }
 
     // Private variables
     private var session: NFCNDEFReaderSession?
     private var detectedMessages = [NFCNDEFMessage]()
     private var sessionId = ""
     private var dispatchQ: DispatchQueue?
+    
+    let strApproachOtk = NSLocalizedString("Approach OpenTurnKey to the NFC reader.", comment: "")
+    let strMultipleTags = NSLocalizedString("Multiple tags are detected, please remove all tags and try again.", comment: "")
+    let strUnableToConnect = NSLocalizedString("Unable to connect to tag.", comment: "")
+    let strUnableToQueryNdef = NSLocalizedString("Unable to query the NDEF status of tag.", comment: "")
+    let strNotNdefCompliant = NSLocalizedString("Tag is not NDEF compliant.", comment: "")
+    let strTagReadOnly = NSLocalizedString("Tag is read only. This is not an OpenTurnKey", comment: "")
+    let strRequestProcessed = NSLocalizedString("Request processed.", comment: "")
+    let strSendingRequest = NSLocalizedString("Sending request", comment: "")
+    let strRequestSentFailed = NSLocalizedString("Sending request failed", comment: "")
+    let strRequestSent = NSLocalizedString("Request has been sent.", comment: "")
+    let strNotOtk = NSLocalizedString("Not OpenTurnKey!", comment: "")
+    let strUnknownNdefStatus = NSLocalizedString("Unknown NDEF tag status.", comment: "")
     
     // MARK: - Actions
 
@@ -60,7 +73,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         }
 
         session = NFCNDEFReaderSession(delegate: self, queue: dispatchQ, invalidateAfterFirstRead: false)
-        session?.alertMessage = "Approach OpenTurnKey to the NFC reader."
+        session?.alertMessage = self.strApproachOtk
         session?.begin()
     }
 
@@ -80,7 +93,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         if tags.count > 1 {
             // Restart polling in 500ms
             let retryInterval = DispatchTimeInterval.milliseconds(500)
-            session.alertMessage = "Multiple tags are detected, please remove all tags and try again."
+            session.alertMessage = self.strMultipleTags
             DispatchQueue.global().asyncAfter(deadline: .now() + retryInterval, execute: {
                 session.restartPolling()
             })
@@ -91,36 +104,36 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         let tag = tags.first!
         session.connect(to: tag, completionHandler: { (error: Error?) in
             if nil != error {
-                session.alertMessage = "Unable to connect to tag."
+                session.alertMessage = self.strUnableToConnect
                 session.invalidate()
                 return
             }
             
             tag.queryNDEFStatus(completionHandler: { (ndefStatus: NFCNDEFStatus, capacity: Int, error: Error?) in
                 guard error == nil else {
-                    session.alertMessage = "Unable to query the NDEF status of tag."
+                    session.alertMessage = self.strUnableToQueryNdef
                     session.invalidate()
                     return
                 }
 
                 switch ndefStatus {
                 case .notSupported:
-                    session.alertMessage = "Tag is not NDEF compliant."
+                    session.alertMessage = self.strNotNdefCompliant
                     session.invalidate()
                 case .readOnly:
-                    session.alertMessage = "Tag is read only. This is not an OpenTurnKey"
+                    session.alertMessage = self.strTagReadOnly
                     session.invalidate()
                 case .readWrite:
                     tag.readNDEF(completionHandler: { (message: NFCNDEFMessage?, error: Error?) in
                         if nil != error || nil == message {
-                            session.alertMessage = "Unknown NDEF tag status."
+                            session.alertMessage = self.strUnknownNdefStatus
                             session.invalidate()
                             return
                         } else {
                             DispatchQueue.main.async {
                                 // Process detected NFCNDEFMessage objects.
                                 if ((message?.records.count ?? 0) < 6) {
-                                    session.alertMessage = "Not OpenTurnKey."
+                                    session.alertMessage = self.strNotOtk
                                     session.invalidate()
                                     return
                                 }
@@ -141,12 +154,12 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                                         if self.requestCommand.commandCode == "" ||
                                             self.requestCommand.commandCode == "160" ||
                                             otkState.executionResult > 0 {
-                                            session.alertMessage = "Request processed."
+                                            session.alertMessage = self.strRequestProcessed
                                             session.invalidate()
                                             self.otkDetected = true
                                         }
                                         else {
-                                            session.alertMessage = "Sending request (\(self.requestCommand.commandCode))..."
+                                            session.alertMessage = self.strSendingRequest + " (\(self.requestCommand.commandCode))..."
                                             print("Session ID: \(self.sessionId)")
                                             let sessId = self.payloadConstruct(str: self.sessionId)
                                             let reqId = self.payloadConstruct(str: self.sessionId)
@@ -164,19 +177,19 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                                             let requestMessage = NFCNDEFMessage.init(records: [sessId, reqId, reqCmd, reqData, reqOpt])
                                             tag.writeNDEF(requestMessage, completionHandler: { (error: Error?) in
                                                 if nil != error {
-                                                    session.alertMessage = "Sending request failed: \(error!)"
+                                                    session.alertMessage = self.strRequestSentFailed + ": \(error!)"
                                                     session.invalidate()
                                                     return
                                                 }
                                                 else {
-                                                    session.alertMessage = "Request has been sent."
+                                                    session.alertMessage = self.strRequestSent
                                                     session.invalidate()
                                                 }
                                             })
                                         }
                                     }
                                     else {
-                                        session.alertMessage = "Not OpenTurnKey!"
+                                        session.alertMessage = self.strNotOtk
                                         session.invalidate()
                                     }
                                 }
@@ -184,7 +197,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                         }
                     })
                 @unknown default:
-                    session.alertMessage = "Unknown NDEF tag status."
+                    session.alertMessage = self.strUnknownNdefStatus
                     session.invalidate()
                 }
             })
