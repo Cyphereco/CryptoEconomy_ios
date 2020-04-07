@@ -28,7 +28,7 @@ struct PagePay: View {
                         TextEstFeesInfo(currencySelection: self.$appConfig.currencySelection, fees: self.$appConfig.fees)
                             .padding([.top, .trailing], 20.0)
                         Spacer()
-                        TextFieldBtcAddress(address: "")
+                        TextFieldBtcAddress(address: self.$appConfig.payeeAddr)
                             .padding(.horizontal, 20.0)
                         Spacer()
                         Toggle(isOn: self.$appConfig.useAllFunds){
@@ -47,7 +47,7 @@ struct PagePay: View {
                             }
                         }.padding(.horizontal, 20.0)
                         Button(action: {
-                            self.otkNpi.beginScanning()
+                            self.otkNpi.beginScanning(completion: {})
                         }) {
                             HStack{
                                 if (self.appConfig.authByPin) {

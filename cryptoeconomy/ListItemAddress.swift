@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ListItemAddress: View {
     var recordAddress: RecordAddress
+    @EnvironmentObject var appConfig: AppConfig
 
     var body: some View {
         HStack {
@@ -24,7 +25,10 @@ struct ListItemAddress: View {
                 Image("delete")}.buttonStyle(BorderlessButtonStyle())
             Button(action: {}){
                 Image("qrcode")}.buttonStyle(BorderlessButtonStyle()).padding(.horizontal, 10).padding(.trailing, 5)
-            Button(action: {}){
+            Button(action: {
+                self.appConfig.payeeAddr = self.recordAddress.address
+                self.appConfig.pageSelected = 0
+            }){
                 Image("send")}.buttonStyle(BorderlessButtonStyle())
         }.padding(.horizontal, 5)
     }

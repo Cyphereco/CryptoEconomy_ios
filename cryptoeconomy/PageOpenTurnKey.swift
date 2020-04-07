@@ -33,7 +33,7 @@ struct PageOpenTurnKey: View {
                         VStack(alignment: .center, spacing: 20) {
                             Spacer()
                             Button(action: {
-                                self.otkNpi.beginScanning()
+                                self.otkNpi.beginScanning(completion: {})
                                 self.requestHint = self.readOtkInfo
                             }) {
                                 HStack(alignment: .center){

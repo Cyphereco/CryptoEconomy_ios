@@ -103,7 +103,9 @@ class AppConfig: ObservableObject {
     @Published var payer: String = ""
     @Published var amountSend: String = "0.0"
     @Published var amountRecv: String = "0.0"
-    
+    @Published var pageSelected: Int = 0
+    @Published var payeeAddr: String = ""
+
     init() {
         fees = priorityFees[1]
     }

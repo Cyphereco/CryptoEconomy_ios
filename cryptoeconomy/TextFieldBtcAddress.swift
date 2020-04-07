@@ -10,18 +10,26 @@ import SwiftUI
 
 struct TextFieldBtcAddress: View {
     @State private var name = ""
-    @State var address: String
+    @Binding var address: String
+    @ObservedObject var otkNpi = OtkNfcProtocolInterface()
+
     var body: some View {
         VStack {
             HStack(alignment: .bottom) {
-                TextFieldWithBottomLine(hint: "recipient_address", textContent: $address, textAlign: .leading)
+                TextFieldWithBottomLine(hint: "recipient_address",
+                textContent: $address,
+                textAlign: .leading)
                 Button(action: {}){Image("clear")}
             }
             HStack {
                 Spacer()
                 Button(action: {}){
                     Image("paste")}
-                Button(action: {}){
+                Button(action: {
+                    self.otkNpi.beginScanning(completion: {
+                        self.address = self.otkNpi.otkData.btcAddress
+                    })
+                }){
                     Image("read_nfc")}
                         .padding(.horizontal, 10.0)
                         .padding(.trailing, 4.0)
@@ -36,6 +44,6 @@ struct TextFieldBtcAddress: View {
 
 struct TextFieldBtcAddress_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldBtcAddress(address: "")
+        TextFieldBtcAddress(address: .constant(""))
     }
 }

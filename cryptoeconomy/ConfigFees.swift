@@ -33,12 +33,15 @@ struct ConfigFees: View {
             HStack {
                 Text("\(labelFees) = ")
                 if (self.appConfig.feesSelection == 0) {
-                    TextFieldWithBottomLine(textContent: self.$strFees, onEditingChanged: { text in
+                    TextFieldWithBottomLine(hint: "",
+                        textContent: self.$strFees,
+                        textAlign: .center,
+                        onEditingChanged: { text in
                         print(text)
-                    }, textAlign: .center)
-                        .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
-                        .frame(width: 100)
-                        .padding(.top, 10)
+                    })
+                    .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                    .frame(width: 100)
+                    .padding(.top, 10)
                 }
                 else {
                     Text(AppTools.btcToFormattedString(self.appConfig.fees))
