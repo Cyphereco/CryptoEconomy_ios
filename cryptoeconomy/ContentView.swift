@@ -9,13 +9,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selection = 0
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
     @EnvironmentObject var appData: AppData
     
     var body: some View {
-        TabView(selection: $selection){
+        TabView(selection: self.$appConfig.pageSelected){
             PagePay()
                 .tabItem {
                     VStack {

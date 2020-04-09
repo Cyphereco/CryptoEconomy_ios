@@ -1,53 +1,64 @@
-/* 
-  Localizable.strings
-  cryptoeconomy
+/*
+  Localizable.strings
+  cryptoeconomy
 
-  Created by Quark on 2020/4/4.
-  Copyright © 2020 Cyphereco OU. All rights reserved.
+  Created by Quark on 2020/4/4.
+  Copyright © 2020 Cyphereco OU. All rights reserved.
 */
 
-"about" = "關於";
+"about" = "关于";
 "address" = "地址";
 "addresses" = "常用地址";
-"alias" = "別名";
-"amount" = "金額";
-"authorization_with_pin_code" = "使用PIN碼授權";
+"alias" = "别名";
+"amount" = "金额";
+"Approach OpenTurnKey to the NFC reader." = "将OpenTurnKey靠近NFC读写器.";
+"authorization_with_pin_code" = "使用PIN码授权";
 "cancel" = "取消";
-"choose_key" = "選擇密鑰";
-"clear_history" = "清除記錄";
-"custom" = "自訂";
-"delete" = "刪除";
-"delete_all_transaction_records?" = "刪除所有交易紀錄?";
-"edit_address" = "編輯地址";
-"estimated_fees" = "預估手續費";
+"choose_key" = "选择密钥";
+"clear_history" = "清除记录";
+"custom" = "自订";
+"delete" = "删除";
+"delete_all_transaction_records?" = "删除所有交易纪录?";
+"edit_address" = "编辑地址";
+"estimated_fees" = "预估手续费";
 "excluded" = "外加";
-"export_key" = "匯出密鑰";
-"fees" = "手續費";
-"fees_included" = "手續費內含";
+"export_key" = "汇出密钥";
+"fees" = "手续费";
+"fees_included" = "手续费内含";
 "high" = "高";
-"history" = "支付紀錄";
-"included" = "內含";
+"history" = "支付纪录";
+"included" = "内含";
 "low" = "低";
-"make_request" = "發送請求";
-"message_sign_validate" = "消息簽名/驗證";
+"make_request" = "发送请求";
+"message_sign_validate" = "消息签名/验证";
 "mid" = "中";
-"minutes" = "分鐘";
-"no_address" = "無常用地址";
-"no_transaction_record" = "無交易紀錄";
+"minutes" = "分钟";
+"Multiple tags are detected, please remove all tags and try again." = "读取到多个标签，请全部移开后重试。";
+"no_address" = "无常用地址";
+"no_transaction_record" = "无交易纪录";
+"Not OpenTurnKey!" = "Not OpenTurnKey!";
 "pay" = "支付";
-"read_general_information" = "讀取一般資訊";
+"read_general_information" = "读取一般资讯";
 "recipient_address" = "收款地址";
+"Request has been sent." = "请求已发送。";
+"Request processed." = "请求已处理。";
 "reset" = "重置";
-"save" = "儲存";
+"save" = "储存";
 "search_address" = "查找地址";
-"set_local_currency" = "設定本地貨幣";
-"set_pin_code" = "設定PIN碼";
-"set_transaction_fees" = "設定交易手續費";
-"show_full_public_key_information" = "顯示完整公鑰資訊";
-"sign_payment" = "簽名支付";
-"unlock" = "解鎖";
-"use_all_funds" = "發送全部餘額";
+"Sending request" = "发送请求中";
+"Sending request failed" = "请求发送失败";
+"set_local_currency" = "设定本地货币";
+"set_pin_code" = "设定PIN码";
+"set_transaction_fees" = "设定交易手续费";
+"show_full_public_key_information" = "显示完整公钥资讯";
+"sign_payment" = "签名支付";
+"Tag is not NDEF compliant." = "非NDEF兼容标签。";
+"Tag is read only. This is not an OpenTurnKey" = "唯读标签，不是有效的OpenTurnKey。";
+"Unable to connect to tag." = "无法连线到标签。";
+"Unable to query the NDEF status of tag." = "无法访问NDEF标签状态。";
+"Unknown NDEF tag status." = "未知的NDEF标签状态。";
+"unlock" = "解锁";
+"use_all_funds" = "发送全部余额";
 "use_fix_address" = "使用固定收款地址";
 "user_guide" = "使用指南";
-"write_note" = "寫入備註";
-
+"write_note" = "写入备注";

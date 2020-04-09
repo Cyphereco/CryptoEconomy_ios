@@ -11,8 +11,9 @@ import SwiftUI
 struct TextFieldWithBottomLine: View {
     var hint: String = ""
     @Binding var textContent: String
-    @State var onEditingChanged: (_: String)->Void = {_ in }
     var textAlign: TextAlignment = .center
+    @State var onEditingChanged: (_: String)->Void = {_ in }
+
     var body: some View {
         VStack {
             TextField(NSLocalizedString(hint, comment: ""), text: $textContent, onEditingChanged: {_ in

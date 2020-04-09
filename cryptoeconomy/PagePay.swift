@@ -18,6 +18,7 @@ struct PagePay: View {
     
     let useAllFunds = NSLocalizedString("use_all_funds", comment: "")
     let authByPin = NSLocalizedString("authorization_with_pin_code", comment: "")
+    @ObservedObject var otkNpi = OtkNfcProtocolInterface()
 
     var body: some View {
         NavigationView {
@@ -27,7 +28,7 @@ struct PagePay: View {
                         TextEstFeesInfo(currencySelection: self.$appConfig.currencySelection, fees: self.$appConfig.fees)
                             .padding([.top, .trailing], 20.0)
                         Spacer()
-                        TextFieldBtcAddress(address: "")
+                        TextFieldBtcAddress(address: self.$appConfig.payeeAddr)
                             .padding(.horizontal, 20.0)
                         Spacer()
                         Toggle(isOn: self.$appConfig.useAllFunds){
@@ -46,7 +47,7 @@ struct PagePay: View {
                             }
                         }.padding(.horizontal, 20.0)
                         Button(action: {
-                            
+                            self.otkNpi.beginScanning(completion: {})
                         }) {
                             HStack{
                                 if (self.appConfig.authByPin) {
