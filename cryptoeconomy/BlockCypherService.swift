@@ -45,7 +45,19 @@ class BlockCypherService: BaseWebServices {
     }
         
     /*
-     * New Transaction
+      New Transaction
+      Usage:
+        BlockCypherService.shared.newTransaction(from: "13GNvHaSjhs8dLbEWrRP7Lvbb8ZBsKUU4P", to: "1LG9fDp3do4X2tEf4k7V4uCYhNUmSq6vL8", amountInSatoshi: 10000, fees: 1000).done { (unsignedTx) in
+            // Success case
+            Logger.shared.debug(unsignedTx.toString)
+        }.catch { error in
+            // Error case
+            Logger.shared.debug(error)
+        }.finally {
+            // No matter success or fail will run finally
+            Logger.shared.debug("finally")
+        }
+     
      */
     func newTransaction(from: String, to: String, amountInSatoshi: Int64, fees: Int64) -> Promise<UnsignedTx> {
         // return Promise
@@ -149,7 +161,17 @@ class BlockCypherService: BaseWebServices {
     }
     
     /*
-     * Complete an unsigned transaction
+      Complete an unsigned transaction
+      Usage:
+        BlockCypherService.shared.sendTransaction(unsignedTx: unsignedTx, signatures: ["71afd0977030180970e345fd4fb713bb561933f7329aefd1a2bbd99d8de88eae1d8901b26439067849ee296150f4a692803b98b140059c4f8bfe5dd04d068941"], publicKey: "02853861e2f9f802626d71242c3248a870bc51815138620d5676c2b5cf23ff9917").done { (transaction) in
+            Logger.shared.debug(transaction.toString())
+        }.catch { error in
+            // Error case
+            Logger.shared.debug(error)
+        }.finally {
+            // No matter success or fail will run finally
+            Logger.shared.debug("finally")
+        }
      */
     func sendTransaction(unsignedTx: UnsignedTx, signatures: Array<String>, publicKey: String) -> Promise<Transaction> {
         // return Promise
