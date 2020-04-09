@@ -15,6 +15,7 @@
 		B23FB94F2437460C00A2B80F /* BtcUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23FB94E2437460B00A2B80F /* BtcUtils.swift */; };
 		B23FB95C2439D35000A2B80F /* UnsignedTx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23FB95B2439D35000A2B80F /* UnsignedTx.swift */; };
 		B23FB95E2439D37C00A2B80F /* BlockCypherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23FB95D2439D37C00A2B80F /* BlockCypherService.swift */; };
+		B23FB960243ADDC800A2B80F /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23FB95F243ADDC800A2B80F /* Transaction.swift */; };
 		B93D4DAD754E2583B041D479 /* Pods_cryptoeconomy_cryptoeconomyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31BE2B99C51B681B9DEFA6F7 /* Pods_cryptoeconomy_cryptoeconomyUITests.framework */; };
 		BA2EEAD52432209400522A63 /* ViewAddressEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */; };
 		BA2EEAD724330E8A00522A63 /* SideMenuPay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */; };
@@ -77,6 +78,7 @@
 		B23FB94E2437460B00A2B80F /* BtcUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BtcUtils.swift; sourceTree = "<group>"; };
 		B23FB95B2439D35000A2B80F /* UnsignedTx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedTx.swift; sourceTree = "<group>"; };
 		B23FB95D2439D37C00A2B80F /* BlockCypherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCypherService.swift; sourceTree = "<group>"; };
+		B23FB95F243ADDC800A2B80F /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAddressEditor.swift; sourceTree = "<group>"; };
 		BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuPay.swift; sourceTree = "<group>"; };
 		BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOpenTurnKey.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				B23FB95B2439D35000A2B80F /* UnsignedTx.swift */,
+				B23FB95F243ADDC800A2B80F /* Transaction.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -559,6 +562,7 @@
 				BA46BA862436EB9900B53540 /* AppData.swift in Sources */,
 				BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */,
 				BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */,
+				B23FB960243ADDC800A2B80F /* Transaction.swift in Sources */,
 				BA2EEADF243450F200522A63 /* ConfigLocalCurrency.swift in Sources */,
 				BA2EEAE324346C6C00522A63 /* ConfigFees.swift in Sources */,
 				BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */,

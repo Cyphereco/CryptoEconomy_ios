@@ -27,11 +27,26 @@ import SwiftyJSON
 class BlockCypherService: BaseWebServices {
     static let shared = BlockCypherService()
 
-    //https://api.blockcypher.com/v1/btc/main/txs/new?token=7744d177ce1e4ef48c7431fcb55531b9
     let baseMainUrl = "https://api.blockcypher.com/v1/btc/main/"
+    let baseTestUrl = "https://api.blockcypher.com/v1/btc/test3/"
     let pathNewTx = "txs/new"
+    let pathSendTx = "txs/send"
     let paramToken = "?token=7744d177ce1e4ef48c7431fcb55531b9"
     
+    /*
+     * Get base url for main net or test net depends on address prefix
+     */
+    private func _getBaseUrl(address: String) -> String {
+        // Main net address must be start with '1'
+        if address.prefix(1) == "1" {
+            return baseMainUrl
+        }
+        return baseTestUrl
+    }
+        
+    /*
+     * New Transaction
+     */
     func newTransaction(from: String, to: String, amountInSatoshi: Int64, fees: Int64) -> Promise<UnsignedTx> {
         // return Promise
         return Promise<UnsignedTx>.init(resolver: { (resolver) in
@@ -52,7 +67,7 @@ class BlockCypherService: BaseWebServices {
             Logger.shared.debug(JSON(parameters))
             
             // generate Request
-            let req = self.requestGenerator(baseUrl: baseMainUrl, route: pathNewTx, urlParameters: paramToken, parameters: parameters, method: .post, encoding: JSONEncoding.default)
+            let req = self.requestGenerator(baseUrl: _getBaseUrl(address: from), route: pathNewTx, urlParameters: paramToken, parameters: parameters, method: .post, encoding: JSONEncoding.default)
 
             firstly {
                 // send request and get json response
@@ -84,6 +99,7 @@ class BlockCypherService: BaseWebServices {
                     //  ]
                     // }
                     
+                    
                     // Get tosign
                     let toSigns = responseJSON["tosign"].arrayValue
                     if toSigns.count <= 0 {
@@ -101,7 +117,6 @@ class BlockCypherService: BaseWebServices {
                         // If the from equals to then use the amount in passed-in amount
                         amount = BtcUtils.satoshiToBtc(satoshi: amountInSatoshi)
                     } else {
-                        Logger.shared.debug("Hi")
                         // Sum all the value in outputs which address equals to to
                         let outputs = responseJSON["tx"]["outputs"].arrayValue
                         Logger.shared.debug(outputs)
@@ -118,12 +133,82 @@ class BlockCypherService: BaseWebServices {
                     
                     // Get fees
                     let fees = responseJSON["tx"]["fees"].int64Value
-                    let unsignedTx = UnsignedTx(from: from, to: to, amount: amount, fees: fees, toSign: toSignArray)
+                    let unsignedTx = UnsignedTx(from: from, to: to, amount: amount, fees: fees, toSign: toSignArray, jsonData: responseJSON)
                     resolver.fulfill(unsignedTx)
                 })
             }.done { (unsignedTx) in
                 // Complete
                 resolver.fulfill(unsignedTx)
+            }.catch(policy: .allErrors) { (error) in
+                // error handling
+                Logger.shared.debug(error)
+                // XXX parse error
+                resolver.reject(WebServiceError.otherErrors)
+            }
+        })
+    }
+    
+    /*
+     * Complete an unsigned transaction
+     */
+    func sendTransaction(unsignedTx: UnsignedTx, signatures: Array<String>, publicKey: String) -> Promise<Transaction> {
+        // return Promise
+        return Promise<Transaction>.init(resolver: { (resolver) in
+            var sigArray = Array<String>()
+            var pubKeyArray = Array<String>()
+            for sig in signatures {
+                // convert to DER and append to array
+                let der = BtcUtils.toDER(sigHexString: sig) as Data
+                sigArray.append(der.hexEncodedString())
+                pubKeyArray.append(publicKey)
+            }
+            // Add signnatures and pubkeys
+            unsignedTx.jsonData["signatures"].arrayObject = sigArray
+            unsignedTx.jsonData["pubkeys"].arrayObject = pubKeyArray
+            
+            // Convert JSON to dictionary
+            var parameters = [String: AnyObject]()
+            if let data = unsignedTx.jsonData.rawString()!.data(using: .utf8) {
+                do {
+                    parameters = try JSONSerialization.jsonObject(with: data, options: []) as! [String : AnyObject]
+                } catch {
+                    Logger.shared.debug("Failed to generate data for send transaction")
+                    resolver.reject(WebServiceError.otherErrors)
+                }
+            }
+            // generate Request
+            let req = self.requestGenerator(baseUrl: _getBaseUrl(address: unsignedTx.from), route: pathSendTx, urlParameters: paramToken, parameters: parameters, method: .post, encoding: JSONEncoding.default)
+
+            firstly {
+                // send request and get json response
+                self.setupResponse(req)
+            }.then { (responseJSON) -> Promise<Transaction> in
+                // process response
+                return Promise<Transaction>.init(resolver: { (resolver) in
+                    Logger.shared.debug(responseJSON)
+                    // get the tx from response
+                    // The response is like:
+                    // {
+                    //    "tx": {
+                    //    "hash": "4e6dfb1415b4fba5bd257c129847c70fbd4e45e41828079c4a282680528f3a50",
+                    //    ...
+                    //    "fees": 12000,
+                    // }
+                    
+                    // Get hash
+                    let hash = responseJSON["tx"]["hash"].stringValue
+                    // Get fees
+                    let fees = responseJSON["tx"]["fees"].int64Value
+                    // Get block height
+                    let blockHeight = responseJSON["tx"]["block_height"].int64Value
+                    // Get raw
+                    let rawData = responseJSON["tx"]["hex"].stringValue
+                    let tx = Transaction(hash: hash, from: unsignedTx.from, to: unsignedTx.to, amount: unsignedTx.amount, fees: fees, blockHeight: blockHeight, rawData: rawData)
+                    resolver.fulfill(tx)
+                })
+            }.done { (tx) in
+                // Complete
+                resolver.fulfill(tx)
             }.catch(policy: .allErrors) { (error) in
                 // error handling
                 Logger.shared.debug(error)
