@@ -359,7 +359,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                 continue
             }
             else {
-                var words = line.components(separatedBy: ">")
+                let words = line.components(separatedBy: ">")
                 
                 if (words[0].contains("Session_ID")) {
                     otkData.sessionId = trimSting(words[1])
