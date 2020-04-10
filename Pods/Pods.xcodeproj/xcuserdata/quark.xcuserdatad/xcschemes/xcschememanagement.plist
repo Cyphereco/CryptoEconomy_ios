@@ -11,6 +11,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>BigInt.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
 		<key>Log4swift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
