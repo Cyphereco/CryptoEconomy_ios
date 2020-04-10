@@ -17,7 +17,7 @@ struct ViewAddressEditor: View {
     var body: some View {
         NavigationView {
             VStack {
-                TextFieldWithBottomLine(hint: "alias", textContent: alias, textAlign: .leading, readOnly: false).padding()
+                TextFieldWithBottomLine(hint: "alias", textContent: $alias, textAlign: .leading, readOnly: false).padding()
                 TextFieldBtcAddress(address: $address).padding()
                 HStack {
                     Spacer()

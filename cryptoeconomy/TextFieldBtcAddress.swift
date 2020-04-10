@@ -17,7 +17,7 @@ struct TextFieldBtcAddress: View {
         VStack {
             HStack(alignment: .bottom) {
                 TextFieldWithBottomLine(hint: "recipient_address",
-                                        textContent: address,
+                                        textContent: $address,
                                         textAlign: .leading,
                                         readOnly: true)
                 Button(action: {}){Image("clear")}

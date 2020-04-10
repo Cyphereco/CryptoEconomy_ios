@@ -50,7 +50,7 @@ struct ListItemTransaction: View {
                     Text(self.recordTransaction.payee).lineLimit(1)
                 }.padding(.vertical, -10)
             }.padding(.trailing, 10).padding(.bottom, 10)
-            Button(action: {}) {
+            NavigationLink(destination: ViewOpenTurnKeyInfo()) {
                 Text(String(format: "%.4f", self.recordTransaction.amountSent))
             }
         }.frame(alignment: .center)

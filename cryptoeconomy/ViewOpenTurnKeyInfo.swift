@@ -14,8 +14,9 @@ struct ViewOpenTurnKeyInfo: View {
     var btcBalance: Double = 0.0
     var fiatBalance: Double = 0.0
     var btcAddress: String = "BTC Address"
-    var note: String = ""
+    @State var note: String = ""
     @EnvironmentObject var appConfig: AppConfig
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         VStack {
@@ -37,8 +38,8 @@ struct ViewOpenTurnKeyInfo: View {
             Spacer()
             HStack {
                 Text("Note:")
-                TextFieldWithBottomLine(textContent: self.note, textAlign: .leading, readOnly: true)
-                Image("info").foregroundColor(.yellow)
+                TextFieldWithBottomLine(textContent: self.$note, textAlign: .leading, readOnly: true)
+                Image("info").foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
             }.padding(20)
         }
     }

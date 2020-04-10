@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TextFieldWithBottomLine: View {
     var hint: String = ""
-    @State var textContent: String
+    @Binding var textContent: String
     var textAlign: TextAlignment = .center
     var readOnly: Bool
     @State var onEditingChanged: (_: String)->Void = {_ in }
@@ -32,6 +32,6 @@ struct TextFieldWithBottomLine: View {
 
 struct TextFieldWithBottomLine_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldWithBottomLine(hint: "Type something", textContent: "123", textAlign: .leading, readOnly: true, onEditingChanged: {txt in})
+        TextFieldWithBottomLine(hint: "Type something", textContent: .constant("123"), textAlign: .leading, readOnly: true, onEditingChanged: {txt in})
     }
 }
