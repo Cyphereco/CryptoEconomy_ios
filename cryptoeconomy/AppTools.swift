@@ -14,7 +14,7 @@ struct AppTools {
     }
     
     static func btcToFormattedString(_ btc: Double) -> String {
-        return String(format: "%.8f", btc)
+        return btc > 1000 ? (btc > 1000000 ? String(format: "%.2f", btc) : String(format: "%.4f", btc)) : String(format: "%.8f", btc)
     }
     
     static func btcToFiat(_ btc: Double, currencySelection: Int) -> Double {

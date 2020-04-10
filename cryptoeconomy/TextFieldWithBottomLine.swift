@@ -10,15 +10,21 @@ import SwiftUI
 
 struct TextFieldWithBottomLine: View {
     var hint: String = ""
-    @Binding var textContent: String
+    @State var textContent: String
     var textAlign: TextAlignment = .center
+    var readOnly: Bool
     @State var onEditingChanged: (_: String)->Void = {_ in }
 
     var body: some View {
         VStack {
-            TextField(NSLocalizedString(hint, comment: ""), text: $textContent, onEditingChanged: {_ in
-                self.onEditingChanged(self.textContent)
-            }).multilineTextAlignment(textAlign).padding(.vertical, -10)
+            if (readOnly) {
+                Text(textContent).multilineTextAlignment(textAlign).lineLimit(3)
+            }
+            else {
+                TextField(NSLocalizedString(hint, comment: ""), text: $textContent, onEditingChanged: {_ in
+                    self.onEditingChanged(self.textContent)
+                }).multilineTextAlignment(textAlign).padding(.vertical, -10)
+            }
             Divider()
         }
     }
@@ -26,6 +32,6 @@ struct TextFieldWithBottomLine: View {
 
 struct TextFieldWithBottomLine_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldWithBottomLine(hint: "Type something", textContent: .constant(""))
+        TextFieldWithBottomLine(hint: "Type something", textContent: "123", textAlign: .leading, readOnly: true, onEditingChanged: {txt in})
     }
 }

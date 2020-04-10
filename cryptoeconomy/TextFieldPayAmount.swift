@@ -21,12 +21,12 @@ struct TextFieldPayAmount: View {
                 Button(action: {}){Image("clear")}
                     .padding(.top, -36.0)
                 VStack(alignment: .trailing) {
-                    TextFieldWithBottomLine(hint: "0.0", textContent: $strAmountBtc, textAlign: .trailing)
+                    TextFieldWithBottomLine(hint: "0.0", textContent: strAmountBtc, textAlign: .trailing, readOnly: false)
                     Text("BTC")
                 }
                 Text(" = ").padding(.top, -30)
                 VStack(alignment: .trailing) {
-                    TextFieldWithBottomLine(hint: "0.0", textContent: $strAmountFiat, textAlign: .trailing)
+                    TextFieldWithBottomLine(hint: "0.0", textContent: strAmountFiat, textAlign: .trailing, readOnly: false)
                     Text(self.appConfig.getLocalCurrency().label)
                 }
                 .padding(.leading, 4.0)

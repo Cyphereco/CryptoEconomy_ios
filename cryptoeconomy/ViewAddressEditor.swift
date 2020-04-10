@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct ViewAddressEditor: View {
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     @State var alias: String
     @State var address = ""
@@ -16,12 +17,24 @@ struct ViewAddressEditor: View {
     var body: some View {
         NavigationView {
             VStack {
-                TextFieldWithBottomLine(hint: "alias", textContent: $alias, textAlign: .leading).padding()
+                TextFieldWithBottomLine(hint: "alias", textContent: alias, textAlign: .leading, readOnly: false).padding()
                 TextFieldBtcAddress(address: $address).padding()
                 HStack {
                     Spacer()
                     Button(action: {
-                        
+                        self.presentationMode.wrappedValue.dismiss()
+                    }) {
+                        HStack(alignment: .center){
+                            Text("Cancel")
+                                .font(.system(size: 20))
+                                .fontWeight(.bold)
+                        }
+                        .frame(minWidth: 80)
+                        .padding(12)
+                        .cornerRadius(24)
+                    }
+                    Button(action: {
+                        // address duiplication check and save to db
                     }) {
                         HStack(alignment: .center){
                             Text("save")

@@ -10,7 +10,9 @@ import SwiftUI
 
 struct PageAddresses: View {
     @State var searchText: String = ""
+    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appData: AppData
+    @State var showAddressEditor = false
 
     var body: some View {
         NavigationView {
@@ -31,7 +33,15 @@ struct PageAddresses: View {
                 }
             }
             .navigationBarTitle(Text("addresses"), displayMode: .inline)
-            .navigationBarItems(trailing: NavigationLink(destination: ViewAddressEditor(alias: "")){Image("plus")})
+            .navigationBarItems(trailing:
+                Image("plus")
+                    .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
+                .onTapGesture {
+                    self.showAddressEditor = true
+                }
+                .sheet(isPresented: $showAddressEditor) {
+                    ViewAddressEditor(alias: "").foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
+            })
         }
     }
 }

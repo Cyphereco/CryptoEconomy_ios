@@ -34,8 +34,9 @@ struct ConfigFees: View {
                 Text("\(labelFees) = ")
                 if (self.appConfig.feesSelection == 0) {
                     TextFieldWithBottomLine(hint: "",
-                        textContent: self.$strFees,
-                        textAlign: .center,
+                                            textContent: self.strFees,
+                                            textAlign: .center,
+                                            readOnly: false,
                         onEditingChanged: { text in
                         print(text)
                     })

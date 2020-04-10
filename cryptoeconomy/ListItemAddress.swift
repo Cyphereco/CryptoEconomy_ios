@@ -11,15 +11,21 @@ import SwiftUI
 struct ListItemAddress: View {
     var recordAddress: RecordAddress
     @EnvironmentObject var appConfig: AppConfig
+    @Environment(\.colorScheme) var colorScheme
+    @State var showAddressEditor = false
 
     var body: some View {
         HStack {
-            Button(action: {}) {
-                VStack(alignment: .leading) {
-                    Text(self.recordAddress.alias).fontWeight(.bold).lineLimit(1)
-                    Text(self.recordAddress.address).lineLimit(1).padding(.leading, 20)
-                }
+            VStack(alignment: .leading) {
+                Text(self.recordAddress.alias).fontWeight(.bold).lineLimit(1)
+                Text(self.recordAddress.address).lineLimit(1).padding(.leading, 20)
             }
+            .onTapGesture {
+                self.showAddressEditor = true
+            }
+            .sheet(isPresented: $showAddressEditor) {
+                ViewAddressEditor(alias: self.recordAddress.alias, address: self.recordAddress.address)
+                    .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))}
             Spacer()
             Button(action: {}){
                 Image("delete")}.buttonStyle(BorderlessButtonStyle())
