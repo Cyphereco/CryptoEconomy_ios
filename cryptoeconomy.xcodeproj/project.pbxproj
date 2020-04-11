@@ -18,6 +18,7 @@
 		B23FB960243ADDC800A2B80F /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23FB95F243ADDC800A2B80F /* Transaction.swift */; };
 		B93D4DAD754E2583B041D479 /* Pods_cryptoeconomy_cryptoeconomyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31BE2B99C51B681B9DEFA6F7 /* Pods_cryptoeconomy_cryptoeconomyUITests.framework */; };
 		BA1F873C24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F873B24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift */; };
+		BA1F87402440DCFA003DB110 /* ViewTransactionInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F873F2440DCFA003DB110 /* ViewTransactionInformation.swift */; };
 		BA2EEAD52432209400522A63 /* ViewAddressEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */; };
 		BA2EEAD724330E8A00522A63 /* SideMenuPay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */; };
 		BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */; };
@@ -82,6 +83,7 @@
 		B23FB95D2439D37C00A2B80F /* BlockCypherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCypherService.swift; sourceTree = "<group>"; };
 		B23FB95F243ADDC800A2B80F /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		BA1F873B24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewOpenTurnKeyInfo.swift; sourceTree = "<group>"; };
+		BA1F873F2440DCFA003DB110 /* ViewTransactionInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTransactionInformation.swift; sourceTree = "<group>"; };
 		BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAddressEditor.swift; sourceTree = "<group>"; };
 		BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuPay.swift; sourceTree = "<group>"; };
 		BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOpenTurnKey.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 				BA40150F2431E3950094F6CF /* TextFieldWithBottomLine.swift */,
 				BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */,
 				BA1F873B24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift */,
+				BA1F873F2440DCFA003DB110 /* ViewTransactionInformation.swift */,
 				BA9595EE242EFE4100C48B37 /* Preview Content */,
 			);
 			path = cryptoeconomy;
@@ -568,6 +571,7 @@
 				BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */,
 				BA40150A2431CA930094F6CF /* TextFieldBtcAddress.swift in Sources */,
 				BA46BA862436EB9900B53540 /* AppData.swift in Sources */,
+				BA1F87402440DCFA003DB110 /* ViewTransactionInformation.swift in Sources */,
 				BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */,
 				BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */,
 				B23FB960243ADDC800A2B80F /* Transaction.swift in Sources */,

@@ -9,6 +9,7 @@
 import SwiftUI
 struct ListItemTransaction: View {
     var recordTransaction: RecordTransaction
+    @State var showTransactionInfo = false
 
     var body: some View {
         HStack {
@@ -50,10 +51,14 @@ struct ListItemTransaction: View {
                     Text(self.recordTransaction.payee).lineLimit(1)
                 }.padding(.vertical, -10)
             }.padding(.trailing, 10).padding(.bottom, 10)
-            NavigationLink(destination: ViewOpenTurnKeyInfo()) {
-                Text(String(format: "%.4f", self.recordTransaction.amountSent))
-            }
+            Text(String(format: "%.4f", self.recordTransaction.amountSent))
         }.frame(alignment: .center)
+        .onTapGesture {
+            self.showTransactionInfo = true
+        }
+        .sheet(isPresented: $showTransactionInfo){
+            ViewTransactionInformation()
+        }
     }
 }
 
