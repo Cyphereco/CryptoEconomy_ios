@@ -17,14 +17,12 @@ struct TextFieldWithBottomLine: View {
 
     var body: some View {
         VStack {
-            if (readOnly) {
-                Text(textContent).multilineTextAlignment(textAlign).lineLimit(3)
-            }
-            else {
-                TextField(NSLocalizedString(hint, comment: ""), text: $textContent, onEditingChanged: {_ in
-                    self.onEditingChanged(self.textContent)
-                }).multilineTextAlignment(textAlign).padding(.vertical, -10)
-            }
+            TextField(NSLocalizedString(hint, comment: ""), text: $textContent, onEditingChanged: {_ in
+                self.onEditingChanged(self.textContent)
+            })
+            .multilineTextAlignment(textAlign)
+            .padding(.vertical, -10)
+            .disabled(self.readOnly)
             Divider()
         }
     }
