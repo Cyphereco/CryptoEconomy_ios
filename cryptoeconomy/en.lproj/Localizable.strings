@@ -35,10 +35,13 @@
 "message_sign_validate" = "Message Sign/Validate";
 "mid" = "Mid";
 "minutes" = "Minutes";
+"mint_information" = "Mint Information";
 "Multiple tags are detected, please remove all tags and try again." = "Multiple tags are detected, please remove all tags and try again.";
 "no_address" = "No Address";
 "no_transaction_record" = "No Transaction Record";
 "Not OpenTurnKey!" = "Not OpenTurnKey!";
+"note" = "Note";
+"openturnkey_information" = "OpenTurnKey Information";
 "pay" = "Pay";
 "read_general_information" = "Read General Information";
 "recipient" = "Recipient";

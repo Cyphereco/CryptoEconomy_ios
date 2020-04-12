@@ -35,10 +35,13 @@
 "message_sign_validate" = "消息簽名/驗證";
 "mid" = "中";
 "minutes" = "分鐘";
+"mint_information" = "鑄造資訊";
 "Multiple tags are detected, please remove all tags and try again." = "讀取到多個標籤，請全部移開後重試。";
 "no_address" = "無常用地址";
 "no_transaction_record" = "無交易紀錄";
 "Not OpenTurnKey!" = "不是OpenTurnKey!";
+"note" = "註記";
+"openturnkey_information" = "OpenTurnKey資訊";
 "pay" = "支付";
 "read_general_information" = "讀取一般資訊";
 "received_amount" = "實收金額";

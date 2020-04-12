@@ -35,10 +35,13 @@
 "message_sign_validate" = "メッセージの署名/検証";
 "mid" = "中";
 "minutes" = "分";
+"mint_information" = "ミント情報";
 "Multiple tags are detected, please remove all tags and try again." = "複数のタグが検出されました。すべてのタグを削除して、もう一度お試しください。";
 "no_address" = "入金アドレスなし";
 "no_transaction_record" = "支払い記録なし";
 "Not OpenTurnKey!" = "OpenTurnKeyではありません！";
+"note" = "ノート";
+"openturnkey_information" = "OpenTurnKey情報";
 "pay" = "支払い";
 "read_general_information" = "一般情報を読む";
 "received_amount" = "受金金額";

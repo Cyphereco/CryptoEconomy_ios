@@ -16,6 +16,10 @@ struct ViewOpenTurnKeyInfo: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
     @State var showOtkInfo = false
+    
+    let openturnkeyInfo = NSLocalizedString("openturnkey_information", comment: "")
+    let note = NSLocalizedString("note", comment: "")
+    let mintInfo = NSLocalizedString("mint_information", comment: "")
  
     var body: some View {
         NavigationView {
@@ -23,7 +27,7 @@ struct ViewOpenTurnKeyInfo: View {
                 HStack {
                     Spacer()
                     showLockState(state: otkNpi.otkState.isLocked).foregroundColor(otkNpi.otkState.isLocked ? .red : .green)
-                    showBatteryLevel(level: otkNpi.otkInfo.batteryPercentage).foregroundColor(otkNpi.otkInfo.batteryPercentage.contains("10%") ? .red : .black)
+                    showBatteryLevel(level: otkNpi.otkInfo.batteryPercentage).foregroundColor(otkNpi.otkInfo.batteryPercentage.contains("10%") ? .red : (colorScheme == .dark ? .white : .black))
                     Text(otkNpi.otkInfo.batteryPercentage)
                 }.padding()
                 VStack {
@@ -37,7 +41,7 @@ struct ViewOpenTurnKeyInfo: View {
                 }.padding()
                 Spacer()
                 HStack {
-                    Text("Note:")
+                    Text("\(self.note):")
                     TextFieldWithBottomLine(textContent: .constant(otkNpi.otkInfo.note), textAlign: .leading, readOnly: true)
                     Image("info").foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
                         .onTapGesture {
@@ -46,7 +50,7 @@ struct ViewOpenTurnKeyInfo: View {
                     .alert(
                         isPresented: self.$showOtkInfo,
                         content: {
-                            Alert(title: Text("Mint Information"),
+                            Alert(title: Text(self.mintInfo),
                                   message: Text(self.otkNpi.readTag.info)
                             )
                         }
@@ -54,7 +58,7 @@ struct ViewOpenTurnKeyInfo: View {
                 }.padding(20)
             }
             .padding(.horizontal, 20.0)
-            .navigationBarTitle(Text("OpenTurnKey Information"), displayMode: .inline)
+            .navigationBarTitle(Text(self.openturnkeyInfo), displayMode: .inline)
             .navigationBarItems(trailing:
                 Image("clear")
                     .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
