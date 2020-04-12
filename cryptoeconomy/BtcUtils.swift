@@ -161,7 +161,9 @@ class BtcUtils {
             }
             addr = String(addressStr.suffix(from: addressStr.index(addressStr.startIndex, offsetBy: prefixBtcString.count)))
         }
-        print("substring: \(addr)")
-        return true
+
+        let pattern = "^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$"
+        let bitCoinIDTest = NSPredicate(format:"SELF MATCHES %@", pattern)
+        return bitCoinIDTest.evaluate(with: addr)
     }
 }
