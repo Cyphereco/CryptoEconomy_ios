@@ -24,16 +24,17 @@ import SwiftyJSON
       Logger.shared.debug("finally")
     }
  */
-class BlockChainInfoService: BaseWebServices {
+class BlockChainInfoService {
     
-    let baseUrl = "https://blockchain.info/"
-    let pathBalance = "balance"
-    let paramActive = "active"
-    let keyFinalBalance = "final_balance"
+    static let webService = BaseWebServices()
+    static let baseUrl = "https://blockchain.info/"
+    static let pathBalance = "balance"
+    static let paramActive = "active"
+    static let keyFinalBalance = "final_balance"
     
     static let shared = BlockChainInfoService()
     
-    func getBalance(address: String) -> Promise<Int64> {
+    static func getBalance(address: String) -> Promise<Int64> {
         // return Promise
         return Promise<Int64>.init(resolver: { (resolver) in
             //
@@ -42,11 +43,11 @@ class BlockChainInfoService: BaseWebServices {
             parameters.updateValue(address as AnyObject, forKey: paramActive)
             
             // generate Request
-            let req = self.requestGenerator(baseUrl: baseUrl, route: pathBalance, parameters: parameters, method: .get)
+            let req = webService.requestGenerator(baseUrl: baseUrl, route: pathBalance, parameters: parameters, method: .get)
             
             firstly {
                 // send request and get json response
-                self.setupResponse(req)
+                webService.setupResponse(req)
             }.then { (responseJSON) -> Promise<Int64> in
                 // process response
                 return Promise<Int64>.init(resolver: { (resolver) in

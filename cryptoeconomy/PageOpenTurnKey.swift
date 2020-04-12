@@ -16,7 +16,9 @@ struct PageOpenTurnKey: View {
 
     let readOtkInfo = NSLocalizedString("read_general_information", comment: "")
     let makeRequest = NSLocalizedString("make_request", comment: "")
-    @ObservedObject var otkNpi = OtkNfcProtocolInterface()
+    @State var otkNpi = OtkNfcProtocolInterface()
+    @State var showOpenTurnKeyInfo = false
+    @State var otkBtcBalance = 0.0
     
     var body: some View {
         NavigationView {
@@ -33,7 +35,15 @@ struct PageOpenTurnKey: View {
                         VStack(alignment: .center, spacing: 20) {
                             Spacer()
                             Button(action: {
-                                self.otkNpi.beginScanning(completion: {})
+                                self.otkNpi.beginScanning(completion: {
+                                    if (self.otkNpi.otkDetected) {
+                                        print(self.otkNpi)
+                                        self.showOpenTurnKeyInfo = true
+                                        _ = BlockChainInfoService.getBalance(address: self.otkNpi.otkData.btcAddress).done({result in
+                                            self.otkBtcBalance = Double(result) / 100000000
+                                        })
+                                    }
+                                })
                                 self.requestHint = self.readOtkInfo
                             }) {
                                 HStack(alignment: .center){
@@ -48,6 +58,9 @@ struct PageOpenTurnKey: View {
                                 .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
                                 .cornerRadius(24)
                                 .foregroundColor(.white)
+                            }
+                            .sheet(isPresented: self.$showOpenTurnKeyInfo) {
+                                ViewOpenTurnKeyInfo(otkNpi: self.$otkNpi, btcBalance: self.$otkBtcBalance).environmentObject(AppConfig())
                             }
                             Spacer()
                         }.frame(minWidth: .zero, idealWidth: .none, maxWidth: .infinity, minHeight: 80, idealHeight: .none, maxHeight: 160, alignment: .center)

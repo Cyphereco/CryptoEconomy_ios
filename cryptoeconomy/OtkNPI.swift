@@ -23,8 +23,8 @@ struct OtkInfo {
     var hwVer = ""
     var fwVer = ""
     var serialNo = ""
-    var batteryPercentage = 0
-    var batteryVoltage = 0
+    var batteryPercentage = ""
+    var batteryVoltage = ""
     var note = ""
 }
 
@@ -329,6 +329,11 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         otkInfo.fwVer = getValueOfKey(str: lines[3], key: "F/W Version")
         otkInfo.serialNo = getValueOfKey(str: lines[4], key: "Serial No.")
         otkInfo.note = getValueOfKey(str: lines[6], key: "Note")
+        
+        let strBatt = getValueOfKey(str: lines[5], key: "Battery Level")
+        let secBatt = strBatt.components(separatedBy: "/")
+        otkInfo.batteryPercentage = trimSting(secBatt[0])
+        otkInfo.batteryVoltage = trimSting(secBatt[1])
 
         return otkInfo
     }
@@ -397,6 +402,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
     
     static func trimSting(_ str: String) -> String {
         var output = str
+        output = output.replacingOccurrences(of: " ", with: "")
         output = output.replacingOccurrences(of: "\n", with: "")
         output = output.replacingOccurrences(of: "\r", with: "")
         return output
