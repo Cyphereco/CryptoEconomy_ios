@@ -9,16 +9,17 @@
 import SwiftUI
 
 struct PageAddresses: View {
-    @State var searchText: String = ""
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appData: AppData
+    @ObservedObject var appData = AppData()
+    @State var searchText: String = ""
     @State var showAddressEditor = false
 
     var body: some View {
+        
         NavigationView {
             VStack {
-                SearchBar(text: $searchText, placeholder: NSLocalizedString("search_address", comment: ""))
-                
+                SearchBar(text: self.$searchText, placeholder: NSLocalizedString("search_address", comment: ""))
+
                 if (self.appData.dataSetRecordAddress.count < 1) {
                     Spacer()
                     Text("no_address")
@@ -26,12 +27,18 @@ struct PageAddresses: View {
                 }
                 else {
                     List {
-                        ForEach (0 ..< self.appData.dataSetRecordAddress.count) {
-                            ListItemAddress(recordAddress: self.appData.dataSetRecordAddress[$0])
+                        ForEach (self.appData.dataSetRecordAddress) { item in
+                            if (self.searchText.isEmpty) || (item.alias.lowercased().contains(self.searchText.lowercased())) {
+                                ListItemAddress(appData: self.appData, recordAddress: item)
+                            }
                         }
                     }
                 }
             }
+            .gesture(TapGesture().onEnded { _ in
+                UIApplication.shared.endEditing()
+            })
+
             .navigationBarTitle(Text("addresses"), displayMode: .inline)
             .navigationBarItems(trailing:
                 Image("plus")
@@ -39,8 +46,9 @@ struct PageAddresses: View {
                 .onTapGesture {
                     self.showAddressEditor = true
                 }
-                .sheet(isPresented: $showAddressEditor) {
-                    ViewAddressEditor(alias: "").foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
+                .sheet(isPresented: self.$showAddressEditor) {
+                    ViewAddressEditor(appData: self.appData, alias: "", address: "")
+                        .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
             })
         }
     }
@@ -48,6 +56,6 @@ struct PageAddresses: View {
 
 struct PageAddresses_Previews: PreviewProvider {
     static var previews: some View {
-        PageAddresses().environmentObject(AppData())
+        PageAddresses()
     }
 }
