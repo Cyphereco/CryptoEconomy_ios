@@ -26,7 +26,10 @@ struct TextFieldWithBottomLine: View {
             else {
                 TextField(NSLocalizedString(hint, comment: ""), text: $textContent, onEditingChanged: {_ in
                     self.onEditingChanged(self.textContent)
-                }).multilineTextAlignment(textAlign).padding(.vertical, -10)
+                })
+                .multilineTextAlignment(textAlign)
+                .padding(.vertical, -10)
+                .disabled(self.readOnly)
             }
             Divider()
         }

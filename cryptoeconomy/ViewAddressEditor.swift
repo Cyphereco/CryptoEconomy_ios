@@ -50,7 +50,7 @@ struct ViewAddressEditor: View {
                 }.padding(.top, 20.0)
             }.padding(.horizontal, 20.0)
             .navigationBarTitle(Text("edit_address"), displayMode: .inline)
-        }
+        }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
     }
 }
 
