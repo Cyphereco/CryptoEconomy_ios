@@ -40,7 +40,7 @@ struct PageAddresses: View {
                     self.showAddressEditor = true
                 }
                 .sheet(isPresented: $showAddressEditor) {
-                    ViewAddressEditor(alias: "").foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
+                    ViewAddressEditor(alias: "")
             })
         }
     }

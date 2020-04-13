@@ -16,55 +16,69 @@ struct ViewOpenTurnKeyInfo: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
     @State var showOtkInfo = false
+    @State var showToastMessage = false
     
+    var pasteboard = UIPasteboard.general
     let openturnkeyInfo = NSLocalizedString("openturnkey_information", comment: "")
     let note = NSLocalizedString("note", comment: "")
     let mintInfo = NSLocalizedString("mint_information", comment: "")
  
     var body: some View {
-        NavigationView {
-            VStack {
-                HStack {
-                    Spacer()
-                    showLockState(state: otkNpi.otkState.isLocked).foregroundColor(otkNpi.otkState.isLocked ? .red : .green)
-                    showBatteryLevel(level: otkNpi.otkInfo.batteryPercentage).foregroundColor(otkNpi.otkInfo.batteryPercentage.contains("10%") ? .red : (colorScheme == .dark ? .white : .black))
-                    Text(otkNpi.otkInfo.batteryPercentage)
-                }.padding()
+        ZStack {
+            NavigationView {
                 VStack {
-                    Text("\(AppTools.btcToFormattedString(self.btcBalance)) BTC").font(.title)
-                    Text("(~ \(AppTools.fiatToFormattedString(self.fiatBalance)) \(appConfig.getLocalCurrency().label))").font(.footnote)
-                }.padding()
-                VStack {
-                    Image(uiImage: UIImage(data: getQrCodeData(str: otkNpi.otkData.btcAddress))!).resizable().frame(width: 100, height: 100)
-                    Text(self.otkNpi.otkData.btcAddress).multilineTextAlignment(.center).padding()
-                    Image("copy")
-                }.padding()
-                Spacer()
-                HStack {
-                    Text("\(self.note):")
-                    TextFieldWithBottomLine(textContent: .constant(otkNpi.otkInfo.note), textAlign: .leading, readOnly: true)
-                    Image("info").foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
-                        .onTapGesture {
-                            self.showOtkInfo = true
-                    }
-                    .alert(
-                        isPresented: self.$showOtkInfo,
-                        content: {
-                            Alert(title: Text(self.mintInfo),
-                                  message: Text(self.otkNpi.readTag.info)
-                            )
+                    HStack {
+                        Spacer()
+                        showLockState(state: otkNpi.otkState.isLocked).foregroundColor(otkNpi.otkState.isLocked ? .red : .green)
+                        showBatteryLevel(level: otkNpi.otkInfo.batteryPercentage).foregroundColor(otkNpi.otkInfo.batteryPercentage.contains("10%") ? .red : (colorScheme == .dark ? .white : .black))
+                        Text(otkNpi.otkInfo.batteryPercentage)
+                    }.padding()
+                    VStack {
+                        Text("\(AppTools.btcToFormattedString(self.btcBalance)) BTC").font(.title)
+                        Text("(~ \(AppTools.fiatToFormattedString(self.fiatBalance)) \(appConfig.getLocalCurrency().label))").font(.footnote)
+                    }.padding()
+                    VStack {
+                        Image(uiImage: UIImage(data: getQrCodeData(str: otkNpi.otkData.btcAddress))!).resizable().frame(width: 100, height: 100)
+                        Text(self.otkNpi.otkData.btcAddress).multilineTextAlignment(.center).padding()
+                        Button(action: {
+                            withAnimation {
+                                self.pasteboard.string = self.otkNpi.otkData.btcAddress
+                                self.showToastMessage = true
+                            }
+                        }){
+                            Image("copy")
                         }
-                    )
-                }.padding(20)
+                    }.padding()
+                    Spacer()
+                    HStack {
+                        Text("\(self.note):")
+                        TextFieldWithBottomLine(textContent: .constant(otkNpi.otkInfo.note), textAlign: .leading, readOnly: true)
+                        Image("info").foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
+                            .onTapGesture {
+                                self.showOtkInfo = true
+                        }
+                        .alert(
+                            isPresented: self.$showOtkInfo,
+                            content: {
+                                Alert(title: Text(self.mintInfo),
+                                      message: Text(self.otkNpi.readTag.info)
+                                )
+                            }
+                        )
+                    }.padding(20)
+                }
+                .padding(.horizontal, 20.0)
+                .navigationBarTitle(Text(self.openturnkeyInfo), displayMode: .inline)
+                .navigationBarItems(trailing:
+                    Image("clear")
+                        .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
+                        .onTapGesture {
+                        self.presentationMode.wrappedValue.dismiss()
+                    })
             }
-            .padding(.horizontal, 20.0)
-            .navigationBarTitle(Text(self.openturnkeyInfo), displayMode: .inline)
-            .navigationBarItems(trailing:
-                Image("clear")
-                    .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
-                    .onTapGesture {
-                    self.presentationMode.wrappedValue.dismiss()
-                })
+            if (self.showToastMessage) {
+                ViewToastMessage(message: "Copied", delay: 2, show: self.$showToastMessage)
+            }
         }
     }
     

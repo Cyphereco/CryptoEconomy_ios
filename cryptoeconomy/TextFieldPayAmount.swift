@@ -18,7 +18,10 @@ struct TextFieldPayAmount: View {
         VStack(alignment: .trailing) {
             Text("amount").fontWeight(.bold)
             HStack(alignment: .center) {
-                Button(action: {}){Image("clear")}
+                Button(action: {
+                    self.strAmountBtc = "0.0"
+                    self.strAmountFiat = "0.0"
+                }){Image("clear")}
                     .padding(.top, -36.0)
                 VStack(alignment: .trailing) {
                     TextFieldWithBottomLine(hint: "0.0", textContent: $strAmountBtc, textAlign: .trailing, readOnly: false)

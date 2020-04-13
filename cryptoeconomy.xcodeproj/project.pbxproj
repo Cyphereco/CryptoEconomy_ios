@@ -19,6 +19,7 @@
 		B93D4DAD754E2583B041D479 /* Pods_cryptoeconomy_cryptoeconomyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31BE2B99C51B681B9DEFA6F7 /* Pods_cryptoeconomy_cryptoeconomyUITests.framework */; };
 		BA1F873C24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F873B24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift */; };
 		BA1F87402440DCFA003DB110 /* ViewTransactionInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F873F2440DCFA003DB110 /* ViewTransactionInformation.swift */; };
+		BA1F874224443169003DB110 /* ViewToastMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F874124443168003DB110 /* ViewToastMessage.swift */; };
 		BA2EEAD52432209400522A63 /* ViewAddressEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */; };
 		BA2EEAD724330E8A00522A63 /* SideMenuPay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */; };
 		BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */; };
@@ -84,6 +85,7 @@
 		B23FB95F243ADDC800A2B80F /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		BA1F873B24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewOpenTurnKeyInfo.swift; sourceTree = "<group>"; };
 		BA1F873F2440DCFA003DB110 /* ViewTransactionInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTransactionInformation.swift; sourceTree = "<group>"; };
+		BA1F874124443168003DB110 /* ViewToastMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewToastMessage.swift; sourceTree = "<group>"; };
 		BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAddressEditor.swift; sourceTree = "<group>"; };
 		BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuPay.swift; sourceTree = "<group>"; };
 		BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOpenTurnKey.swift; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 				BA40150F2431E3950094F6CF /* TextFieldWithBottomLine.swift */,
 				BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */,
 				BA1F873B24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift */,
+				BA1F874124443168003DB110 /* ViewToastMessage.swift */,
 				BA1F873F2440DCFA003DB110 /* ViewTransactionInformation.swift */,
 				BA9595EE242EFE4100C48B37 /* Preview Content */,
 			);
@@ -579,6 +582,7 @@
 				BA2EEAE324346C6C00522A63 /* ConfigFees.swift in Sources */,
 				BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */,
 				B23FB95C2439D35000A2B80F /* UnsignedTx.swift in Sources */,
+				BA1F874224443169003DB110 /* ViewToastMessage.swift in Sources */,
 				BA2EEAD724330E8A00522A63 /* SideMenuPay.swift in Sources */,
 				BA40150E2431E2B70094F6CF /* TextFieldPayAmount.swift in Sources */,
 				B23FB949243741A400A2B80F /* Logger.swift in Sources */,

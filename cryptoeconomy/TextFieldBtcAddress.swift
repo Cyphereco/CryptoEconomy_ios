@@ -12,6 +12,7 @@ struct TextFieldBtcAddress: View {
     @State private var name = ""
     @Binding var address: String
     @ObservedObject var otkNpi = OtkNfcProtocolInterface()
+    var pasteboard = UIPasteboard.general
 
     var body: some View {
         VStack {
@@ -20,11 +21,16 @@ struct TextFieldBtcAddress: View {
                                         textContent: $address,
                                         textAlign: .leading,
                                         readOnly: true)
-                Button(action: {}){Image("clear")}
+                Button(action: {
+                    self.address = ""
+                }){Image("clear")}
             }
             HStack {
                 Spacer()
-                Button(action: {}){
+                Button(action: {
+                    // validate address before pasting
+                    self.address = self.pasteboard.string ?? ""
+                }){
                     Image("paste")}
                 Button(action: {
                     self.otkNpi.beginScanning(completion: {

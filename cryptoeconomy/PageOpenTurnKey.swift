@@ -40,7 +40,9 @@ struct PageOpenTurnKey: View {
                                         print(self.otkNpi)
                                         self.showOpenTurnKeyInfo = true
                                         _ = BlockChainInfoService.getBalance(address: self.otkNpi.otkData.btcAddress).done({result in
-                                            self.otkBtcBalance = Double(result) / 100000000
+                                            if (result > 0) {
+                                                self.otkBtcBalance = Double(result) / 100000000
+                                            }
                                         })
                                     }
                                 })

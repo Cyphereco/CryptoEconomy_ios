@@ -17,12 +17,17 @@ struct TextFieldWithBottomLine: View {
 
     var body: some View {
         VStack {
-            TextField(NSLocalizedString(hint, comment: ""), text: $textContent, onEditingChanged: {_ in
-                self.onEditingChanged(self.textContent)
-            })
-            .multilineTextAlignment(textAlign)
-            .padding(.vertical, -10)
-            .disabled(self.readOnly)
+            if (readOnly && textContent.count > 0) {
+                Text(textContent)
+                    .multilineTextAlignment(textAlign)
+                    .lineLimit(3)
+                    .padding(.vertical, -10)
+            }
+            else {
+                TextField(NSLocalizedString(hint, comment: ""), text: $textContent, onEditingChanged: {_ in
+                    self.onEditingChanged(self.textContent)
+                }).multilineTextAlignment(textAlign).padding(.vertical, -10)
+            }
             Divider()
         }
     }
@@ -30,6 +35,6 @@ struct TextFieldWithBottomLine: View {
 
 struct TextFieldWithBottomLine_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldWithBottomLine(hint: "Type something", textContent: .constant("123"), textAlign: .leading, readOnly: true, onEditingChanged: {txt in})
+        TextFieldWithBottomLine(hint: "Type something", textContent: .constant("123"), textAlign: .leading, readOnly: true, onEditingChanged: {text in})
     }
 }
