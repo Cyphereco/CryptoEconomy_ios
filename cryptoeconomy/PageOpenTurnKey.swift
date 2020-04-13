@@ -61,7 +61,9 @@ struct PageOpenTurnKey: View {
                                 .cornerRadius(24)
                                 .foregroundColor(.white)
                             }
-                            .sheet(isPresented: self.$showOpenTurnKeyInfo) {
+                            .sheet(isPresented: self.$showOpenTurnKeyInfo, onDismiss: {
+                                self.otkNpi = OtkNfcProtocolInterface()
+                            }) {
                                 ViewOpenTurnKeyInfo(otkNpi: self.$otkNpi, btcBalance: self.$otkBtcBalance).environmentObject(AppConfig())
                             }
                             Spacer()
