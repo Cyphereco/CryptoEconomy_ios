@@ -30,22 +30,20 @@ struct PagePay: View {
                         Spacer()
                         TextFieldBtcAddress(address: self.$appConfig.payeeAddr)
                             .padding(.horizontal, 20.0)
-                        Spacer()
                         Toggle(isOn: self.$appConfig.useAllFunds){
                             HStack {
                                 Spacer()
                                 Text(self.useAllFunds).font(.footnote)
                             }
-                        }.padding(.horizontal, 20.0)
+                        }.padding(.horizontal, 20.0).padding(.top, 50)
                         TextFieldPayAmount(localCurrency: self.$appConfig.currencySelection, strAmountBtc: "0.0", strAmountFiat: "0.0").keyboardType(.decimalPad)
                             .padding(.horizontal, 20.0)
-                        Spacer()
                         Toggle(isOn: self.$appConfig.authByPin){
                             HStack {
                                 Spacer()
                                 Text(self.authByPin).font(.footnote)
                             }
-                        }.padding(.horizontal, 20.0)
+                        }.padding(.horizontal, 20.0).padding(.top, 40).padding(.bottom, 10)
                         Button(action: {
                             self.otkNpi.beginScanning(completion: {})
                         }) {
@@ -66,7 +64,7 @@ struct PagePay: View {
                             .foregroundColor(.white)
                         }
                         .padding(.trailing, 20.0)
-                        Spacer()
+                        .padding(.bottom, 40)
                     }.disabled(self.showMenu || self.showConfigLocalCurrency || self.showConfigFees)
                     if (self.showMenu) {
                         SideMenuPay(showMenu: self.$showMenu,
