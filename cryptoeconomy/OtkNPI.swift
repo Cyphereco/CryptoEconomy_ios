@@ -316,6 +316,14 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
     }
 
     static func parseOtkInfo(strInfo: String) -> OtkInfo {
+        let headerMint = "Key Mint"
+        let headerMintDate = "Mint Date"
+        let headerHwVer = "H/W Version"
+        let headerFwVer = "F/W Version"
+        let headerSerialNo = "Serial No."
+        let headerBattLevel = "Battery Level"
+        let headerNote = "Note"
+        
         var otkInfo = OtkInfo()
         let lines = strInfo.components(separatedBy: "\n")
         print("otkInfo: \(lines.count)")
@@ -323,18 +331,36 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
             return otkInfo
         }
         
-        otkInfo.mint = getValueOfKey(str: lines[0], key: "Key Mint")
-        otkInfo.mintDate = getValueOfKey(str: lines[1], key: "Mint Date")
-        otkInfo.hwVer = getValueOfKey(str: lines[2], key: "H/W Version")
-        otkInfo.fwVer = getValueOfKey(str: lines[3], key: "F/W Version")
-        otkInfo.serialNo = getValueOfKey(str: lines[4], key: "Serial No.")
-        otkInfo.note = getValueOfKey(str: lines[6], key: "Note")
+        for line in lines {
+            if (line.contains(headerMint)) {
+                otkInfo.mint = getValueOfKey(str: line, key: headerMint)
+            }
+            else if (line.contains(headerMintDate)) {
+                otkInfo.mintDate = getValueOfKey(str: line, key: headerMintDate)
+            }
+            else if (line.contains(headerHwVer)) {
+                otkInfo.hwVer = getValueOfKey(str: line, key: headerHwVer)
+            }
+            else if (line.contains(headerFwVer)) {
+                otkInfo.fwVer = getValueOfKey(str: line, key: headerFwVer)
+            }
+            else if (line.contains(headerSerialNo)) {
+                otkInfo.serialNo = getValueOfKey(str: line, key: headerSerialNo)
+            }
+            else if (line.contains(headerBattLevel)) {
+                let secBatt = getValueOfKey(str: line, key: headerBattLevel).components(separatedBy: "/")
+                if (secBatt.count > 0) {
+                    otkInfo.batteryPercentage = trimSting(secBatt[0])
+                }
+                if (secBatt.count > 1) {
+                    otkInfo.batteryVoltage = trimSting(secBatt[1])
+                }
+            }
+            else if (line.contains(headerNote)) {
+                otkInfo.note = getValueOfKey(str: lines[0], key: headerNote)
+            }
+        }
         
-        let strBatt = getValueOfKey(str: lines[5], key: "Battery Level")
-        let secBatt = strBatt.components(separatedBy: "/")
-        otkInfo.batteryPercentage = trimSting(secBatt[0])
-        otkInfo.batteryVoltage = trimSting(secBatt[1])
-
         return otkInfo
     }
     
