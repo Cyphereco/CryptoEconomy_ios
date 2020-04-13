@@ -326,10 +326,6 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         
         var otkInfo = OtkInfo()
         let lines = strInfo.components(separatedBy: "\n")
-        print("otkInfo: \(lines.count)")
-        if (lines.count < 7) {
-            return otkInfo
-        }
         
         for line in lines {
             if (line.contains(headerMint)) {
@@ -357,7 +353,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                 }
             }
             else if (line.contains(headerNote)) {
-                otkInfo.note = getValueOfKey(str: lines[0], key: headerNote)
+                otkInfo.note = lines[lines.count - 1]
             }
         }
         
