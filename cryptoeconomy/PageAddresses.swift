@@ -10,7 +10,7 @@ import SwiftUI
 
 struct PageAddresses: View {
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var appData = AppData()
+    @ObservedObject var addressListVM = AddressListViewModel()
     @State var searchText: String = ""
     @State var showAddressEditor = false
 
@@ -20,16 +20,16 @@ struct PageAddresses: View {
             VStack {
                 SearchBar(text: self.$searchText, placeholder: NSLocalizedString("search_address", comment: ""))
 
-                if (self.appData.dataSetRecordAddress.count < 1) {
+                if addressListVM.addresses.isEmpty {
                     Spacer()
                     Text("no_address")
                     Spacer()
                 }
                 else {
                     List {
-                        ForEach (self.appData.dataSetRecordAddress) { item in
+                        ForEach(self.addressListVM.addresses) { item in
                             if (self.searchText.isEmpty) || (item.alias.lowercased().contains(self.searchText.lowercased())) {
-                                ListItemAddress(appData: self.appData, recordAddress: item)
+                                ListItemAddress(addressListVM: self.addressListVM, recordAddress: item)
                             }
                         }
                     }
@@ -47,7 +47,7 @@ struct PageAddresses: View {
                     self.showAddressEditor = true
                 }
                 .sheet(isPresented: self.$showAddressEditor) {
-                    ViewAddressEditor(appData: self.appData, alias: "", address: "")
+                    ViewAddressEditor(addressListVM: self.addressListVM, alias: "", address: "")
                         .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
             })
         }

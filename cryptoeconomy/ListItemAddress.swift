@@ -47,14 +47,13 @@ struct AddressQRCodeView: View {
 struct ListItemAddress: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
-    @ObservedObject var appData: AppData
+    @ObservedObject var addressListVM: AddressListViewModel
 
     @State private var showDelAlert: Bool = false
     @State private var showQRCodeSheet: Bool = false
     @State var showAddressEditor = false
 
-    var recordAddress: RecordAddress
-    private let dbControllor = DatabaseControllor()
+    var recordAddress: AddressViewModel
 
     var body: some View {
         HStack {
@@ -66,7 +65,7 @@ struct ListItemAddress: View {
                 self.showAddressEditor = true
             }
             .sheet(isPresented: $showAddressEditor) {
-                ViewAddressEditor(appData: self.appData, alias: self.recordAddress.alias, address: self.recordAddress.address)
+                ViewAddressEditor(addressListVM: self.addressListVM, alias: self.recordAddress.alias, address: self.recordAddress.address)
                     .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))}
             Spacer()
             Button(action: {
@@ -75,10 +74,10 @@ struct ListItemAddress: View {
             .alert(isPresented: self.$showDelAlert) {
                 return Alert(title: Text("Are you sure to delete it?"),
                     primaryButton: .default(Text("YES"), action: {
-                        if (self.dbControllor?.deleteAddressItemByAliasAndAddress(alias: self.recordAddress.alias,
-                                                                                  address: self.recordAddress.address)
-                                ?? false) {
-                            self.appData.fetchAddress()
+                        if CoreDataManager.shared.deleteAddress(
+                                addressVM: AddressViewModel(alias: self.recordAddress.alias,
+                                                            address: self.recordAddress.address)) {
+                            self.addressListVM.fetchAllAddresses()
                         }
                     }),
                     secondaryButton: .default(Text("NO")))
@@ -107,10 +106,9 @@ struct ListItemAddress_Previews: PreviewProvider {
     }
 
     struct PreviewWrapper: View {
-        var recordAddress = RecordAddress(alias: "Maicoin", address: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab")
-        
+        var recordAddress = AddressViewModel(alias: "Maicoin", address: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab")
         var body: some View {
-            ListItemAddress(appData: AppData(), recordAddress: self.recordAddress)
+            ListItemAddress(addressListVM: AddressListViewModel(), recordAddress: self.recordAddress)
         }
     }
 }

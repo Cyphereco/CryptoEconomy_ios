@@ -11,14 +11,12 @@ import SwiftUI
 struct ViewAddressEditor: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @ObservedObject var appData: AppData
+    @ObservedObject var addressListVM: AddressListViewModel
     @State var alias: String
     @State var address: String
 
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
-
-    private let dbControllor = DatabaseControllor()
 
     var body: some View {
         NavigationView {
@@ -45,14 +43,15 @@ struct ViewAddressEditor: View {
                         }
                         Button(action: {
                             if (!self.alias.isEmpty) && (!self.address.isEmpty) {
-                                if !(self.dbControllor?.addAddressItem(item: DBAddressItem(address: self.address,
-                                                                                           alias: self.alias)) ?? false) {
-                                    self.showAlert = true
-                                    self.alertMessage = "Cannot add to database!!!"
+                                if CoreDataManager.shared.insertAddress(
+                                        addressVM: AddressViewModel(alias: self.alias,
+                                                                    address: self.address)) {
+                                    self.addressListVM.fetchAllAddresses()
+                                    self.presentationMode.wrappedValue.dismiss()
                                 }
                                 else {
-                                    self.appData.fetchAddress()
-                                    self.presentationMode.wrappedValue.dismiss()
+                                    self.showAlert = true
+                                    self.alertMessage = "Cannot add to database!!!"
                                 }
                             }
                             else {
@@ -89,6 +88,6 @@ struct ViewAddressEditor: View {
 
 struct ViewAddressEditor_Previews: PreviewProvider {
     static var previews: some View {
-        ViewAddressEditor(appData: AppData(), alias: "", address: "")
+        ViewAddressEditor(addressListVM: AddressListViewModel(), alias: "", address: "")
     }
 }

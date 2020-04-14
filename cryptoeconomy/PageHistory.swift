@@ -9,20 +9,22 @@
 import SwiftUI
 
 struct PageHistory: View {
-    @State var showsAlert = false
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appData: AppData
+    @ObservedObject var transactionListVM = TransactionListViewModel()
+
+    @State var showsAlert = false
 
     var body: some View {
         NavigationView {
             VStack {
-                if (self.appData.dataSetRecordTransaction.count < 1) {
+                if self.transactionListVM.transactions.isEmpty {
                     Text("no_transaction_record")
                 }
                 else {
                     List {
-                        ForEach (0 ..< self.appData.dataSetRecordTransaction.count) {
-                            ListItemTransaction(recordTransaction: self.appData.dataSetRecordTransaction[$0])
+                        ForEach(self.transactionListVM.transactions) { item in
+                            ListItemTransaction(transactionListVM: self.transactionListVM,
+                                                recordTransaction: item)
                         }
                     }
                 }
@@ -39,7 +41,12 @@ struct PageHistory: View {
                               message: Text("delete_all_transaction_records?"),
                               primaryButton: .default(
                                 Text("delete"),
-                                action: {print("Clear History")}
+                                action: {
+                                    print("Clear History")
+                                    if CoreDataManager.shared.deleteAllTransaction() {
+                                        self.transactionListVM.fetch()
+                                    }
+                                }
                             ),
                               secondaryButton: .default(
                                 Text("cancel"),
@@ -55,6 +62,6 @@ struct PageHistory: View {
 
 struct PageHistory_Previews: PreviewProvider {
     static var previews: some View {
-        PageHistory().environmentObject(AppData())
+        PageHistory()
     }
 }
