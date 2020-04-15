@@ -9,29 +9,36 @@
 import SwiftUI
 
 struct PageAddresses: View {
-    @State var searchText: String = ""
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appData: AppData
+    @ObservedObject var addressListVM = AddressListViewModel()
+    @State var searchText: String = ""
     @State var showAddressEditor = false
 
     var body: some View {
+        
         NavigationView {
             VStack {
-                SearchBar(text: $searchText, placeholder: NSLocalizedString("search_address", comment: ""))
-                
-                if (self.appData.dataSetRecordAddress.count < 1) {
+                SearchBar(text: self.$searchText, placeholder: NSLocalizedString("search_address", comment: ""))
+
+                if addressListVM.addresses.isEmpty {
                     Spacer()
                     Text("no_address")
                     Spacer()
                 }
                 else {
                     List {
-                        ForEach (0 ..< self.appData.dataSetRecordAddress.count) {
-                            ListItemAddress(recordAddress: self.appData.dataSetRecordAddress[$0])
+                        ForEach(self.addressListVM.addresses) { item in
+                            if (self.searchText.isEmpty) || (item.alias.lowercased().contains(self.searchText.lowercased())) {
+                                ListItemAddress(addressListVM: self.addressListVM, recordAddress: item)
+                            }
                         }
                     }
                 }
             }
+            .gesture(TapGesture().onEnded { _ in
+                UIApplication.shared.endEditing()
+            })
+
             .navigationBarTitle(Text("addresses"), displayMode: .inline)
             .navigationBarItems(trailing:
                 Image("plus")
@@ -48,6 +55,6 @@ struct PageAddresses: View {
 
 struct PageAddresses_Previews: PreviewProvider {
     static var previews: some View {
-        PageAddresses().environmentObject(AppData())
+        PageAddresses()
     }
 }

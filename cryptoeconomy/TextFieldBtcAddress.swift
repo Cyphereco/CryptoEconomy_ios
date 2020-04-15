@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import CodeScanner
 
 struct TextFieldBtcAddress: View {
     @State private var name = ""
@@ -34,18 +35,42 @@ struct TextFieldBtcAddress: View {
                     Image("paste")}
                 Button(action: {
                     self.otkNpi.beginScanning(completion: {
-                        self.address = self.otkNpi.otkData.btcAddress
+                        if !self.updateAddress(addr: self.otkNpi.otkData.btcAddress) {
+                            Logger.shared.warning("Invalide BTC address")
+                        }
                     })
-                }){
-                    Image("read_nfc")}
-                        .padding(.horizontal, 10.0)
-                        .padding(.trailing, 4.0)
-                Button(action: {}){
-                    Image("scan_qrcode")}
-                Spacer().fixedSize().frame(width: 40
-                    , height: 0, alignment: .leading)
+                }){Image("read_nfc")}
+                    .padding(.horizontal, 10.0)
+                    .padding(.trailing, 4.0)
+                Button(action: {
+                    self.isShowingScanner = true
+                }){Image("scan_qrcode")}
+                .sheet(isPresented: self.$isShowingScanner) {
+                    CodeScannerView(codeTypes: [.qr], simulatedData: "Some simulated data", completion: self.handleScan)
+                }
+                Spacer().fixedSize().frame(width: 40, height: 0, alignment: .leading)
             }
         }
+    }
+
+    private func handleScan(result: Result<String, CodeScannerView.ScanError>) {
+        self.isShowingScanner = false
+        switch result {
+            case .success(let data):
+                if !self.updateAddress(addr: data) {
+                    Logger.shared.warning("Invalide BTC address")
+                }
+            case .failure(let error):
+                Logger.shared.warning("Scanning failed \(error)")
+        }
+    }
+
+    private func updateAddress(addr: String) -> Bool {
+        if BtcUtils.isValidateAddress(addressStr: addr) {
+            self.address = BtcUtils.removePrefixFromAddress(addressStr: addr)
+            return true
+        }
+        return false
     }
 }
 
