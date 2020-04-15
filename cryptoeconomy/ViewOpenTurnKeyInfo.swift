@@ -19,9 +19,6 @@ struct ViewOpenTurnKeyInfo: View {
     @State var showToastMessage = false
     
     var pasteboard = UIPasteboard.general
-    let openturnkeyInfo = NSLocalizedString("openturnkey_information", comment: "")
-    let note = NSLocalizedString("note", comment: "")
-    let mintInfo = NSLocalizedString("mint_information", comment: "")
  
     var body: some View {
         ZStack {
@@ -51,7 +48,7 @@ struct ViewOpenTurnKeyInfo: View {
                     }.padding()
                     Spacer()
                     HStack {
-                        Text("\(self.note):")
+                        Text("\(AppStrings.note):")
                         TextFieldWithBottomLine(textContent: .constant(otkNpi.otkInfo.note), textAlign: .leading, readOnly: true)
                         Image("info").foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
                             .onTapGesture {
@@ -60,7 +57,7 @@ struct ViewOpenTurnKeyInfo: View {
                         .alert(
                             isPresented: self.$showOtkInfo,
                             content: {
-                                Alert(title: Text(self.mintInfo),
+                                Alert(title: Text(AppStrings.mintInfo),
                                       message: Text(self.otkNpi.readTag.info)
                                 )
                             }
@@ -68,7 +65,7 @@ struct ViewOpenTurnKeyInfo: View {
                     }.padding(20)
                 }
                 .padding(.horizontal, 20.0)
-                .navigationBarTitle(Text(self.openturnkeyInfo), displayMode: .inline)
+                .navigationBarTitle(Text(AppStrings.openturnkeyInfo), displayMode: .inline)
                 .navigationBarItems(trailing:
                     Image("clear")
                         .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))

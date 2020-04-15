@@ -17,7 +17,7 @@ struct SearchBar_Previews: PreviewProvider {
       @State(initialValue: "") var searchText: String
 
       var body: some View {
-        SearchBar(text: $searchText, placeholder: NSLocalizedString("search_address", comment: ""))
+        SearchBar(text: $searchText, placeholder: AppStrings.searchAddress)
       }
     }
 }

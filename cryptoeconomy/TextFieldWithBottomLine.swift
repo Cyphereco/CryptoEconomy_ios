@@ -24,7 +24,7 @@ struct TextFieldWithBottomLine: View {
                     .padding(.vertical, -10)
             }
             else {
-                TextField(NSLocalizedString(hint, comment: ""), text: $textContent, onEditingChanged: {_ in
+                TextField(hint, text: $textContent, onEditingChanged: {_ in
                     self.onEditingChanged(self.textContent)
                 })
                 .multilineTextAlignment(textAlign)

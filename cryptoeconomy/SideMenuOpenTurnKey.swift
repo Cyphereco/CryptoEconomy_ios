@@ -13,61 +13,52 @@ struct SideMenuOpenTurnKey: View {
     @Binding var requestHint: String
     @Environment(\.colorScheme) var colorScheme
     
-    let setPinCode = NSLocalizedString("set_pin_code", comment:"")
-    let showKey = NSLocalizedString("show_full_public_key_information", comment:"")
-    let writeNote = NSLocalizedString("write_note", comment:"")
-    let msgSignVerify = NSLocalizedString("message_sign_validate", comment:"")
-    let chooseKey = NSLocalizedString("choose_key", comment:"")
-    let unlock = NSLocalizedString("unlock", comment:"")
-    let reset = NSLocalizedString("reset", comment:"")
-    let exportKey = NSLocalizedString("export_key", comment:"")
-
     var body: some View {
         VStack {
-            MenuItem(itemLabel: setPinCode, completion: {
-                self.requestHint = self.setPinCode
+            MenuItem(itemLabel: AppStrings.setPinCode, completion: {
+                self.requestHint = AppStrings.setPinCode
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: showKey, completion: {
-                self.requestHint = self.showKey
+            MenuItem(itemLabel: AppStrings.showKey, completion: {
+                self.requestHint = AppStrings.showKey
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: writeNote, completion: {
-                self.requestHint = self.writeNote
+            MenuItem(itemLabel: AppStrings.writeNote, completion: {
+                self.requestHint = AppStrings.writeNote
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: msgSignVerify, completion: {
-                self.requestHint = self.msgSignVerify
+            MenuItem(itemLabel: AppStrings.msgSignVerify, completion: {
+                self.requestHint = AppStrings.msgSignVerify
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: chooseKey, completion: {
-                self.requestHint = self.chooseKey
+            MenuItem(itemLabel: AppStrings.chooseKey, completion: {
+                self.requestHint = AppStrings.chooseKey
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: unlock, completion: {
-                self.requestHint = self.unlock
+            MenuItem(itemLabel: AppStrings.unlock, completion: {
+                self.requestHint = AppStrings.unlock
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: reset, completion: {
-                self.requestHint = self.reset
+            MenuItem(itemLabel: AppStrings.reset, completion: {
+                self.requestHint = AppStrings.reset
                 withAnimation {
                     self.showMenu = false
                 }
             })
-            MenuItem(itemLabel: exportKey, completion: {
-                self.requestHint = self.exportKey
+            MenuItem(itemLabel: AppStrings.exportKey, completion: {
+                self.requestHint = AppStrings.exportKey
                 withAnimation {
                     self.showMenu = false
                 }

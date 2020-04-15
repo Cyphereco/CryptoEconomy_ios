@@ -10,12 +10,10 @@ import SwiftUI
 
 struct PageOpenTurnKey: View {
     @State var showMenu = false
-    @State var requestHint: String = NSLocalizedString("read_general_information", comment: "")
+    @State var requestHint: String = AppStrings.readGeneralInformation
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
 
-    let readOtkInfo = NSLocalizedString("read_general_information", comment: "")
-    let makeRequest = NSLocalizedString("make_request", comment: "")
     @State var otkNpi = OtkNfcProtocolInterface()
     @State var showOpenTurnKeyInfo = false
     @State var otkBtcBalance = 0.0
@@ -46,11 +44,11 @@ struct PageOpenTurnKey: View {
                                         })
                                     }
                                 })
-                                self.requestHint = self.readOtkInfo
+                                self.requestHint = AppStrings.readGeneralInformation
                             }) {
                                 HStack(alignment: .center){
                                     Image("nfc_request")
-                                    Text(self.makeRequest)
+                                    Text(AppStrings.makeRequest)
                                         .font(.system(size: 20))
                                         .fontWeight(.bold)
                                         .padding(.trailing, 10)

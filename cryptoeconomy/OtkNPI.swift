@@ -74,19 +74,6 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
     private var dispatchQ: DispatchQueue?
     private var waitForResult = false
     private var completion: ()->Void = {}
-
-    let strApproachOtk = NSLocalizedString("Approach OpenTurnKey to the NFC reader.", comment: "")
-    let strMultipleTags = NSLocalizedString("Multiple tags are detected, please remove all tags and try again.", comment: "")
-    let strUnableToConnect = NSLocalizedString("Unable to connect to tag.", comment: "")
-    let strUnableToQueryNdef = NSLocalizedString("Unable to query the NDEF status of tag.", comment: "")
-    let strNotNdefCompliant = NSLocalizedString("Tag is not NDEF compliant.", comment: "")
-    let strTagReadOnly = NSLocalizedString("Tag is read only. This is not an OpenTurnKey", comment: "")
-    let strRequestProcessed = NSLocalizedString("Request processed.", comment: "")
-    let strSendingRequest = NSLocalizedString("Sending request", comment: "")
-    let strRequestSentFailed = NSLocalizedString("Sending request failed", comment: "")
-    let strRequestSent = NSLocalizedString("Request has been sent.", comment: "")
-    let strNotOtk = NSLocalizedString("Not OpenTurnKey!", comment: "")
-    let strUnknownNdefStatus = NSLocalizedString("Unknown NDEF tag status.", comment: "")
     
     // MARK: - Actions
 
@@ -105,7 +92,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         self.completion = completion
 
         session = NFCNDEFReaderSession(delegate: self, queue: dispatchQ, invalidateAfterFirstRead: false)
-        session?.alertMessage = self.strApproachOtk
+        session?.alertMessage = AppStrings.strApproachOtk
         session?.begin()
     }
 
@@ -125,7 +112,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         if tags.count > 1 {
             // Restart polling in 500ms
             let retryInterval = DispatchTimeInterval.milliseconds(500)
-            session.alertMessage = self.strMultipleTags
+            session.alertMessage = AppStrings.strMultipleTags
             DispatchQueue.global().asyncAfter(deadline: .now() + retryInterval, execute: {
                 session.restartPolling()
             })
@@ -136,36 +123,36 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         let tag = tags.first!
         session.connect(to: tag, completionHandler: { (error: Error?) in
             if nil != error {
-                session.alertMessage = self.strUnableToConnect
+                session.alertMessage = AppStrings.strUnableToConnect
                 session.invalidate()
                 return
             }
             
             tag.queryNDEFStatus(completionHandler: { (ndefStatus: NFCNDEFStatus, capacity: Int, error: Error?) in
                 guard error == nil else {
-                    session.alertMessage = self.strUnableToQueryNdef
+                    session.alertMessage = AppStrings.strUnableToQueryNdef
                     session.invalidate()
                     return
                 }
 
                 switch ndefStatus {
                 case .notSupported:
-                    session.alertMessage = self.strNotNdefCompliant
+                    session.alertMessage = AppStrings.strNotNdefCompliant
                     session.invalidate()
                 case .readOnly:
-                    session.alertMessage = self.strTagReadOnly
+                    session.alertMessage = AppStrings.strTagReadOnly
                     session.invalidate()
                 case .readWrite:
                     tag.readNDEF(completionHandler: { (message: NFCNDEFMessage?, error: Error?) in
                         if nil != error || nil == message {
-                            session.alertMessage = self.strUnknownNdefStatus
+                            session.alertMessage = AppStrings.strUnknownNdefStatus
                             session.invalidate()
                             return
                         } else {
                             DispatchQueue.main.async {
                                 // Process detected NFCNDEFMessage objects.
                                 if ((message?.records.count ?? 0) < 6) {
-                                    session.alertMessage = self.strNotOtk
+                                    session.alertMessage = AppStrings.strNotOtk
                                     session.invalidate()
                                     return
                                 }
@@ -194,13 +181,13 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                                         if self.requestCommand.commandCode == "" ||
                                             self.requestCommand.commandCode == "160" ||
                                             otkState.executionResult > 0 {
-                                            session.alertMessage = self.strRequestProcessed
+                                            session.alertMessage = AppStrings.strRequestProcessed
                                             session.invalidate()
                                             self.otkDetected = true
                                             self.waitForResult = false
                                         }
                                         else {
-                                            session.alertMessage = self.strSendingRequest + " (\(self.requestCommand.commandCode))..."
+                                            session.alertMessage = AppStrings.strSendingRequest + " (\(self.requestCommand.commandCode))..."
                                             print("Session ID: \(self.sessionId)")
                                             let sessId = self.payloadConstruct(str: self.sessionId)
                                             let reqId = self.payloadConstruct(str: self.sessionId)
@@ -218,12 +205,12 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                                             let requestMessage = NFCNDEFMessage.init(records: [sessId, reqId, reqCmd, reqData, reqOpt])
                                             tag.writeNDEF(requestMessage, completionHandler: { (error: Error?) in
                                                 if nil != error {
-                                                    session.alertMessage = self.strRequestSentFailed + ": \(error!)"
+                                                    session.alertMessage = AppStrings.strRequestSentFailed + ": \(error!)"
                                                     session.invalidate()
                                                     return
                                                 }
                                                 else {
-                                                    session.alertMessage = self.strRequestSent
+                                                    session.alertMessage = AppStrings.strRequestSent
                                                     session.invalidate()
                                                     self.waitForResult = true
                                                 }
@@ -231,7 +218,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                                         }
                                     }
                                     else {
-                                        session.alertMessage = self.strNotOtk
+                                        session.alertMessage = AppStrings.strNotOtk
                                         session.invalidate()
                                     }
                                 }
@@ -239,7 +226,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                         }
                     })
                 @unknown default:
-                    session.alertMessage = self.strUnknownNdefStatus
+                    session.alertMessage = AppStrings.strUnknownNdefStatus
                     session.invalidate()
                 }
             })

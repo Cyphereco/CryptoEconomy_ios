@@ -15,23 +15,16 @@ struct ConfigFees: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
 
-    let labelFees = NSLocalizedString("fees", comment: "")
-    let labelCustom = NSLocalizedString("custom", comment: "")
-    let labelLow = NSLocalizedString("low", comment: "")
-    let labelMid = NSLocalizedString("mid", comment: "")
-    let labelHigh = NSLocalizedString("high", comment: "")
-    let labelMin = NSLocalizedString("minutes", comment: "")
-
     var body: some View {
         VStack {
-            Text("set_transaction_fees").fontWeight(.bold).padding()
+            Text(AppStrings.setTransactionFees).fontWeight(.bold).padding()
             Spacer()
             Text(feesPriorityDesc(feesSelection: self.appConfig.feesSelection)).padding(.bottom, 10)
             Slider(value: self.$appConfig.feesSelection, in: 0...3, step: 1, onEditingChanged: { data in
                 self.strFees = AppTools.btcToFormattedString(self.appConfig.getFees())
             }).padding().accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
             HStack {
-                Text("\(labelFees) = ")
+                Text("\(AppStrings.fees) = ")
                 if (self.appConfig.feesSelection == 0) {
                     TextFieldWithBottomLine(hint: "",
                                             textContent: self.$strFees,
@@ -67,16 +60,16 @@ struct ConfigFees: View {
     
     func feesPriorityDesc(feesSelection: Double) -> String {
         if (feesSelection < FeesPriority.LOW.sliderValue) {
-            return "\(self.labelCustom)"
+            return "\(AppStrings.custom)"
         }
         else if (feesSelection < FeesPriority.MID.sliderValue) {
-            return "\(self.labelLow) (>= 60 \(self.labelMin))"
+            return "\(AppStrings.low) (>= 60 \(AppStrings.minutes))"
         }
         else if (feesSelection < FeesPriority.HIGH.sliderValue) {
-            return "\(self.labelMid) (15~35 \(self.labelMin))"
+            return "\(AppStrings.mid) (15~35 \(AppStrings.minutes))"
         }
         else {
-            return "\(self.labelHigh) (5~15 \(self.labelMin))"
+            return "\(AppStrings.high) (5~15 \(AppStrings.minutes))"
         }
     }
 }

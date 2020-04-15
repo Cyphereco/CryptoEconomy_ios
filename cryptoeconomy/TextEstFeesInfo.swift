@@ -13,15 +13,11 @@ struct TextEstFeesInfo: View {
     @Binding var fees: Double
     @EnvironmentObject var appConfig: AppConfig
     
-    let estimatd_fees = NSLocalizedString("estimated_fees", comment:"")
-    let included = NSLocalizedString("included", comment:"")
-    let excluded = NSLocalizedString("excluded", comment:"")
-
     var body: some View {
         VStack(alignment: .trailing) {
             HStack {
                 Spacer()
-                Text("\(estimatd_fees): (\(self.appConfig.getFeesPriority().label) - \(self.appConfig.feesIncluded ? included : excluded))")
+                Text("\(AppStrings.estimatd_fees): (\(self.appConfig.getFeesPriority().label) - \(self.appConfig.feesIncluded ? AppStrings.included : AppStrings.excluded))")
                     .font(.footnote).fontWeight(.bold)
             }
             HStack {

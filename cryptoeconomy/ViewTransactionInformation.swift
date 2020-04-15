@@ -16,28 +16,15 @@ struct ViewTransactionInformation: View {
     @State var msg = ""
     @State var showLocalCurrency = false
 
-    let transactionInfo = NSLocalizedString("transaction_information", comment: "")
-    let date = NSLocalizedString("date", comment: "")
-    let time = NSLocalizedString("time", comment: "")
-    let result = NSLocalizedString("result", comment: "")
-    let confirmations = NSLocalizedString("confirmations", comment: "")
-    let sender = NSLocalizedString("sender", comment: "")
-    let sendAmount = NSLocalizedString("send_amount", comment: "")
-    let recipient = NSLocalizedString("recipient", comment: "")
-    let recvAmount = NSLocalizedString("received_amount", comment: "")
-    let fees = NSLocalizedString("fees", comment: "")
-    let labelShowLocalCurrency = NSLocalizedString("show_local_currency", comment: "")
-    let transactionId = NSLocalizedString("transaction_id", comment: "")
-
     var body: some View {
         NavigationView {
             GeometryReader {geometry in
                 VStack {
                     HStack {
                         VStack(alignment: .trailing) {
-                            Text("\(self.date)/\(self.time) :")
+                            Text("\(AppStrings.date)/\(AppStrings.time) :")
                                 .font(.headline)
-                            Text("\(self.result) :")
+                            Text("\(AppStrings.result) :")
                                 .font(.headline)
                         }
                         .frame(width: geometry.size.width / 4)
@@ -45,7 +32,7 @@ struct ViewTransactionInformation: View {
 
                         VStack(alignment: .leading) {
                             Text("04/11/20 10:55:21")
-                            Text("1 \(self.confirmations)")
+                            Text("1 \(AppStrings.confirmations)")
                         }
                         
                         Spacer()
@@ -67,7 +54,7 @@ struct ViewTransactionInformation: View {
 
                     VStack(alignment: .leading) {
                         VStack(alignment: .leading) {
-                            Text("\(self.sender) :")
+                            Text("\(AppStrings.sender) :")
                                 .font(.headline)
                             Text("1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab")
                                 .lineLimit(3)
@@ -76,7 +63,7 @@ struct ViewTransactionInformation: View {
                                 .frame(height: 50)
                         }
                         HStack {
-                            Text("\(self.sendAmount) :")
+                            Text("\(AppStrings.sendAmount) :")
                                 .font(.headline)
                             Spacer()
                             Text("0.1234 5678 BTC")
@@ -86,7 +73,7 @@ struct ViewTransactionInformation: View {
 
                     VStack(alignment: .leading) {
                         VStack(alignment: .leading) {
-                            Text("\(self.recipient) :")
+                            Text("\(AppStrings.recipient) :")
                                 .font(.headline)
                             Text("1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab")
                                 .multilineTextAlignment(.leading)
@@ -95,7 +82,7 @@ struct ViewTransactionInformation: View {
                             .frame(height: 50)
                         }
                         HStack {
-                            Text("\(self.recvAmount) :")
+                            Text("\(AppStrings.recvAmount) :")
                                 .font(.headline)
                             Spacer()
                             Text("0.1234 4678 BTC")
@@ -104,7 +91,7 @@ struct ViewTransactionInformation: View {
                     }.padding()
 
                     HStack {
-                        Text("\(self.fees) :")
+                        Text("\(AppStrings.fees) :")
                             .font(.headline)
                         Spacer()
                         Text("0.0000 1 BTC")
@@ -114,14 +101,14 @@ struct ViewTransactionInformation: View {
                         Spacer()
                         Image("pay")
                             .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
-                        Text(self.labelShowLocalCurrency).lineLimit(1).font(.headline)
+                        Text(AppStrings.showLocalCurrency).lineLimit(1).font(.headline)
                         Toggle("", isOn: self.$showLocalCurrency)
                             .labelsHidden()
                     }.padding([.leading, .bottom, .trailing])
 
                     Spacer()
                     HStack {
-                        Text("\(self.transactionId):")
+                        Text("\(AppStrings.transactionId):")
                             .font(.headline)
                         Image("eye")
                             .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
@@ -159,7 +146,7 @@ struct ViewTransactionInformation: View {
                    }
                 }
             }
-            .navigationBarTitle(Text(self.transactionInfo), displayMode: .inline)
+            .navigationBarTitle(Text(AppStrings.transactionInfo), displayMode: .inline)
             .navigationBarItems(trailing:
                 Image("clear")
                     .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))

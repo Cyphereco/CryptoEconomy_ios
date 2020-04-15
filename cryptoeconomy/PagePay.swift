@@ -12,13 +12,10 @@ struct PagePay: View {
     @State var showMenu: Bool = false
     @State var showConfigLocalCurrency: Bool = false
     @State var showConfigFees: Bool = false
-    @State var address: String = ""
         
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
     
-    let useAllFunds = NSLocalizedString("use_all_funds", comment: "")
-    let authByPin = NSLocalizedString("authorization_with_pin_code", comment: "")
     @ObservedObject var otkNpi = OtkNfcProtocolInterface()
 
     var body: some View {
@@ -34,7 +31,7 @@ struct PagePay: View {
                         Toggle(isOn: self.$appConfig.useAllFunds){
                             HStack {
                                 Spacer()
-                                Text(self.useAllFunds).font(.footnote)
+                                Text(AppStrings.useAllFunds).font(.footnote)
                             }
                         }.padding(.horizontal, 20.0).padding(.top, 50)
                         TextFieldPayAmount(localCurrency: self.$appConfig.currencySelection, strAmountBtc: "0.0", strAmountFiat: "0.0").keyboardType(.decimalPad)
@@ -42,7 +39,7 @@ struct PagePay: View {
                         Toggle(isOn: self.$appConfig.authByPin){
                             HStack {
                                 Spacer()
-                                Text(self.authByPin).font(.footnote)
+                                Text(AppStrings.authByPin).font(.footnote)
                             }
                         }.padding(.horizontal, 20.0).padding(.top, 40).padding(.bottom, 10)
                         Button(action: {

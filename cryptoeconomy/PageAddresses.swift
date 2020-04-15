@@ -18,7 +18,7 @@ struct PageAddresses: View {
         
         NavigationView {
             VStack {
-                SearchBar(text: self.$searchText, placeholder: NSLocalizedString("search_address", comment: ""))
+                SearchBar(text: self.$searchText, placeholder: AppStrings.searchAddress)
 
                 if addressListVM.addresses.isEmpty {
                     Spacer()
