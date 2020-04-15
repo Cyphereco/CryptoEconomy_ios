@@ -10,18 +10,19 @@ import SwiftUI
 import CodeScanner
 
 struct TextFieldBtcAddress: View {
-    @State private var name = ""
     @Binding var address: String
     @ObservedObject var otkNpi = OtkNfcProtocolInterface()
-    var pasteboard = UIPasteboard.general
+    @State private var isShowingScanner = false
+
+    private let pasteboard = UIPasteboard.general
 
     var body: some View {
         VStack {
             HStack(alignment: .bottom) {
                 TextFieldWithBottomLine(hint: "recipient_address",
-                                        textContent: $address,
-                                        textAlign: .leading,
-                                        readOnly: true)
+                textContent: $address,
+                textAlign: .leading,
+                readOnly: true)
                 Button(action: {
                     self.address = ""
                 }){Image("clear")}
@@ -29,10 +30,13 @@ struct TextFieldBtcAddress: View {
             HStack {
                 Spacer()
                 Button(action: {
-                    // validate address before pasting
-                    self.address = self.pasteboard.string ?? ""
-                }){
-                    Image("paste")}
+                    if let pasteString = self.pasteboard.string {
+                        if !self.updateAddress(addr: pasteString) {
+                            Logger.shared.warning("Invalide BTC address")
+                        }
+                    }
+                }){Image("paste")}
+
                 Button(action: {
                     self.otkNpi.beginScanning(completion: {
                         if !self.updateAddress(addr: self.otkNpi.otkData.btcAddress) {

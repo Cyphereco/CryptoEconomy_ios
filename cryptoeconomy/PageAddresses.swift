@@ -46,8 +46,9 @@ struct PageAddresses: View {
                 .onTapGesture {
                     self.showAddressEditor = true
                 }
-                .sheet(isPresented: $showAddressEditor) {
-                    ViewAddressEditor(alias: "")
+                .sheet(isPresented: self.$showAddressEditor) {
+                    ViewAddressEditor(addressListVM: self.addressListVM, alias: "", address: "")
+                        .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
             })
         }
     }
