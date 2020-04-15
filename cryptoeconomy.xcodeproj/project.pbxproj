@@ -619,6 +619,7 @@
 				BA7DDBA0243665E50072412F /* AppTools.swift in Sources */,
 				BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */,
 				BA40150A2431CA930094F6CF /* TextFieldBtcAddress.swift in Sources */,
+                BF524281243E1C2B0063ABAC /* QRCodeGenerateView.swift in Sources */,
 				BF4DC5332441A13B0031FD6C /* BackgroundView.swift in Sources */,
 				BA1F87402440DCFA003DB110 /* ViewTransactionInformation.swift in Sources */,
 				BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */,
