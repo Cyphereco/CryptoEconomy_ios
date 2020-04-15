@@ -8,13 +8,55 @@
 
 import SwiftUI
 
+struct SwipableTabs: ViewModifier {
+    @Binding var currentTab: Int
+    let totalTabs: Int
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            GeometryReader {_ in
+                EmptyView()
+            }
+            .background(Color.white.opacity(0.001))
+            
+            content
+        }
+        .gesture(DragGesture()
+            .onEnded { gesture in
+                if gesture.translation.width > 100 {
+                    withAnimation {
+                        if self.currentTab > 0 {
+                            self.currentTab -= 1
+                        }
+                    }
+                }
+                else if gesture.translation.width < -100 {
+                    withAnimation {
+                        if self.currentTab < self.totalTabs - 1 {
+                            self.currentTab += 1
+                        }
+                    }
+                }
+            })
+    }
+}
+
+extension View {
+    func swipableTabs(currentTab: Binding<Int>, totalTabs: Int) -> some View {
+        self.modifier(SwipableTabs(currentTab: currentTab, totalTabs: totalTabs))
+    }
+}
+
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
     
+    let totalTabs = 4
+    
     var body: some View {
         TabView(selection: self.$appConfig.pageSelected){
             PagePay()
+                .swipableTabs(currentTab: self.$appConfig.pageSelected, totalTabs: self.totalTabs)
                 .tabItem {
                     VStack {
                         Image("pay")
@@ -23,6 +65,7 @@ struct ContentView: View {
                 }
                 .tag(0)
             PageOpenTurnKey()
+                .swipableTabs(currentTab: self.$appConfig.pageSelected, totalTabs: self.totalTabs)
                 .tabItem {
                     VStack {
                         Image("cyphereco_icon")
@@ -31,6 +74,7 @@ struct ContentView: View {
                 }
                 .tag(1)
             PageHistory()
+                .swipableTabs(currentTab: self.$appConfig.pageSelected, totalTabs: self.totalTabs)
                 .tabItem {
                     VStack {
                         Image("history")
@@ -39,6 +83,7 @@ struct ContentView: View {
                 }
                 .tag(2)
             PageAddresses()
+                .swipableTabs(currentTab: self.$appConfig.pageSelected, totalTabs: self.totalTabs)
                 .tabItem {
                     VStack {
                         Image("addressbook")
