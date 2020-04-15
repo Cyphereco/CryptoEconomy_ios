@@ -8,7 +8,9 @@
 
 import SwiftUI
 struct ListItemTransaction: View {
-    var recordTransaction: RecordTransaction
+    @ObservedObject var transactionListVM: TransactionListViewModel
+
+    var recordTransaction: TransactionViewModel
     @State var showTransactionInfo = false
 
     var body: some View {
@@ -63,9 +65,9 @@ struct ListItemTransaction: View {
 }
 
 struct ListItemTransaction_Previews: PreviewProvider {
-    static var recordTransaction = RecordTransaction(id: 0, time: Date(), hash: "", payer: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab", payee: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab", amountSent: 0.05, amountRecv: 0.049, rawData: "", blockHeight: 2, exchangeRate: "")
+    static var recordTransaction = TransactionViewModel(time: Date(), hash: "", payer: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab", payee: "1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab", amountSent: 0.05, amountRecv: 0.049, rawData: "", blockHeight: 2, exchangeRate: "")
 
     static var previews: some View {
-        ListItemTransaction(recordTransaction: self.recordTransaction)
+        ListItemTransaction(transactionListVM: TransactionListViewModel(), recordTransaction: recordTransaction)
     }
 }

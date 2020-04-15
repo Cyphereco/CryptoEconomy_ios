@@ -12,6 +12,7 @@ struct PagePay: View {
     @State var showMenu: Bool = false
     @State var showConfigLocalCurrency: Bool = false
     @State var showConfigFees: Bool = false
+    @State var address: String = ""
         
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig

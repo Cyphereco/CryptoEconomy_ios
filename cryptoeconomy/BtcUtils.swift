@@ -143,4 +143,27 @@ class BtcUtils {
         return (r, s)
     }
 
+    static func removePrefixFromAddress(addressStr: String) -> String {
+        var addr: String = addressStr
+        if addressStr.contains(":") {
+            let prefixBtcString = "bitcoin:"
+            addr = String(addressStr.suffix(from: addressStr.index(addressStr.startIndex, offsetBy: prefixBtcString.count)))
+        }
+        return addr
+    }
+
+    static func isValidateAddress(addressStr: String) -> Bool {
+        var addr: String = addressStr
+        if addressStr.contains(":") {
+            let prefixBtcString = "bitcoin:"
+            if prefixBtcString != addressStr.prefix(prefixBtcString.count) {
+                return false
+            }
+            addr = String(addressStr.suffix(from: addressStr.index(addressStr.startIndex, offsetBy: prefixBtcString.count)))
+        }
+
+        let pattern = "^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$"
+        let bitCoinIDTest = NSPredicate(format:"SELF MATCHES %@", pattern)
+        return bitCoinIDTest.evaluate(with: addr)
+    }
 }

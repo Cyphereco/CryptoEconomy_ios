@@ -11,7 +11,6 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
-    @EnvironmentObject var appData: AppData
     
     var body: some View {
         TabView(selection: self.$appConfig.pageSelected){
@@ -56,7 +55,6 @@ struct ContentView_Previews: PreviewProvider {
         ForEach(["en", "zh-Hant", "zh-Hans", "ja"], id: \.self) {localeIdentifier in
             ContentView()
                 .environmentObject(AppConfig())
-                .environmentObject(AppData())
                 .environment(\.locale, .init(identifier: localeIdentifier))
                 .previewDisplayName(localeIdentifier)
         }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="DBAddress" representedClassName="DBAddress" syncable="YES" codeGenerationType="class">
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="alias" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="DBTransaction" representedClassName="DBTransaction" syncable="YES" codeGenerationType="class">
+        <attribute name="amountRecv" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="amountSent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="blockHeight" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="exchangeRate" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="payee" optional="YES" attributeType="String"/>
+        <attribute name="payer" optional="YES" attributeType="String"/>
+        <attribute name="rawData" optional="YES" attributeType="String"/>
+        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="transHash" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="DBAddress" positionX="-45" positionY="0" width="128" height="73"/>
+        <element name="DBTransaction" positionX="-45" positionY="18" width="128" height="193"/>
+    </elements>
+</model>
