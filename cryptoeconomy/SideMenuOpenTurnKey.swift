@@ -8,71 +8,68 @@
 
 import SwiftUI
 
+struct OtkCommand: ViewModifier {
+    let command: String
+    let hint: String
+    let completion: () -> Void
+    @EnvironmentObject var appConfig: AppConfig
+
+    func body(content: Content) -> some View {
+        content
+        .onTapGesture {
+            withAnimation {
+                self.appConfig.requestCommand = self.command
+                self.appConfig.requestHint = self.hint
+                self.completion()
+            }
+        }
+    }
+}
+
+extension View {
+    func otkCommand(command: String, hint: String, completion: @escaping ()->Void) -> some View {
+        self.modifier(OtkCommand(command: command, hint: hint, completion: completion))
+    }
+}
+
 struct SideMenuOpenTurnKey: View {
-    @Binding var showMenu: Bool
-    @Binding var requestHint: String
+    let isOpened: Bool
+    let closeMenu: ()->Void
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        VStack {
-            MenuItem(itemLabel: AppStrings.setPinCode, completion: {
-                self.requestHint = AppStrings.setPinCode
-                withAnimation {
-                    self.showMenu = false
+        GeometryReader { geometry in
+            HStack {
+                Spacer()
+                VStack (alignment: .leading) {
+                    Text(AppStrings.setPinCode).padding()
+                        .otkCommand(command: "166", hint: AppStrings.setPinCode, completion: {self.closeMenu()})
+                    Text(AppStrings.showKey).padding()
+                        .otkCommand(command: "162", hint: AppStrings.showKey, completion: {self.closeMenu()})
+                    Text(AppStrings.writeNote).padding()
+                        .otkCommand(command: "165", hint: AppStrings.writeNote, completion: {self.closeMenu()})
+                    Text(AppStrings.msgSignVerify).padding()
+                        .otkCommand(command: "160", hint: AppStrings.msgSignVerify, completion: {self.closeMenu()})
+                    Text(AppStrings.chooseKey).padding()
+                        .otkCommand(command: "167", hint: AppStrings.chooseKey, completion: {self.closeMenu()})
+                    Text(AppStrings.unlock).padding()
+                        .otkCommand(command: "161", hint: AppStrings.unlock, completion: {self.closeMenu()})
+                    Text(AppStrings.reset).padding()
+                        .otkCommand(command: "168", hint: AppStrings.reset, completion: {self.closeMenu()})
+                    Text(AppStrings.exportKey).padding()
+                        .otkCommand(command: "169", hint: AppStrings.exportKey, completion: {self.closeMenu()})
                 }
-            })
-            MenuItem(itemLabel: AppStrings.showKey, completion: {
-                self.requestHint = AppStrings.showKey
-                withAnimation {
-                    self.showMenu = false
-                }
-            })
-            MenuItem(itemLabel: AppStrings.writeNote, completion: {
-                self.requestHint = AppStrings.writeNote
-                withAnimation {
-                    self.showMenu = false
-                }
-            })
-            MenuItem(itemLabel: AppStrings.msgSignVerify, completion: {
-                self.requestHint = AppStrings.msgSignVerify
-                withAnimation {
-                    self.showMenu = false
-                }
-            })
-            MenuItem(itemLabel: AppStrings.chooseKey, completion: {
-                self.requestHint = AppStrings.chooseKey
-                withAnimation {
-                    self.showMenu = false
-                }
-            })
-            MenuItem(itemLabel: AppStrings.unlock, completion: {
-                self.requestHint = AppStrings.unlock
-                withAnimation {
-                    self.showMenu = false
-                }
-            })
-            MenuItem(itemLabel: AppStrings.reset, completion: {
-                self.requestHint = AppStrings.reset
-                withAnimation {
-                    self.showMenu = false
-                }
-            })
-            MenuItem(itemLabel: AppStrings.exportKey, completion: {
-                self.requestHint = AppStrings.exportKey
-                withAnimation {
-                    self.showMenu = false
-                }
-            })
+                .background(self.colorScheme == .dark ? Color.black : Color.white)
+                .offset(x: self.isOpened ? 0 : geometry.size.width * 2)
+                .animation(.easeInOut)
+            }
             Spacer()
         }
-        .padding(.top, 20)
-        .frame(maxWidth: .infinity, alignment: .trailing)
-        .background(AppConfig.getMenuBackgroundColor(colorScheme: self.colorScheme))
     }
 }
 
 struct SideMenuOpenTurnKey_Previews: PreviewProvider {
     static var previews: some View {
-        SideMenuOpenTurnKey(showMenu: .constant(false), requestHint: .constant("Read General Information"))
+        SideMenuOpenTurnKey(isOpened: true, closeMenu: {})
     }
 }

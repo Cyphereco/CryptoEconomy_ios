@@ -104,12 +104,15 @@ class AppConfig: ObservableObject {
     @Published var amountSend: String = "0.0"
     @Published var amountRecv: String = "0.0"
     @Published var pageSelected: Int = 0
+    @Published var showMenu: Bool = false
     @Published var payeeAddr: String = ""
+    @Published var requestHint: String = AppStrings.readGeneralInformation
+    @Published var requestCommand: String = ""
 
     init() {
         fees = priorityFees[1]
     }
-
+    
     func getLocalCurrency() -> FiatCurrency {
         return FiatCurrency.allCases[currencySelection]
     }

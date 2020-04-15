@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct PageOpenTurnKey: View {
-    @State var showMenu = false
     @State var requestHint: String = AppStrings.readGeneralInformation
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
@@ -29,7 +28,7 @@ struct PageOpenTurnKey: View {
                         Image("cyphereco_label").resizable().scaledToFit().frame(width: 100, height: 100)
                         Text("OpenTurnKey")
                             .fontWeight(.bold)
-                        Text("(" + self.requestHint + ")").padding()
+                        Text("(" + self.appConfig.requestHint + ")").padding()
                         VStack(alignment: .center, spacing: 20) {
                             Spacer()
                             Button(action: {
@@ -66,26 +65,16 @@ struct PageOpenTurnKey: View {
                             }
                             Spacer()
                         }.frame(minWidth: .zero, idealWidth: .none, maxWidth: .infinity, minHeight: 80, idealHeight: .none, maxHeight: 160, alignment: .center)
-                    }.disabled(self.showMenu)
-                    if (self.showMenu) {
-                        SideMenuOpenTurnKey(showMenu: self.$showMenu, requestHint: self.$requestHint)
-                            .frame(width: geometry.size.width/2)
-                            .transition(.move(edge: .top))
                     }
                 }
             }
             .navigationBarTitle(Text("OpenTurnKey"), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
                 withAnimation {
-                    self.showMenu.toggle()
+                    self.appConfig.showMenu = true
                 }
             }) {
-                if (showMenu) {
-                    Image("menu_collapse")
-                }
-                else {
-                    Image("menu_expand")
-                }
+                Image("menu")
             })
         }
     }

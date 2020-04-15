@@ -52,46 +52,78 @@ struct ContentView: View {
     @EnvironmentObject var appConfig: AppConfig
     
     let totalTabs = 4
-    
+    @GestureState  var dragOffset = CGSize.zero
+
     var body: some View {
-        TabView(selection: self.$appConfig.pageSelected){
-            PagePay()
-                .swipableTabs(currentTab: self.$appConfig.pageSelected, totalTabs: self.totalTabs)
-                .tabItem {
-                    VStack {
-                        Image("pay")
-                        Text("pay")
+        ZStack {
+            TabView(selection: self.$appConfig.pageSelected){
+                PagePay()
+                    .tabItem {
+                        VStack {
+                            Image("pay")
+                            Text("pay")
+                        }
                     }
-                }
-                .tag(0)
-            PageOpenTurnKey()
-                .swipableTabs(currentTab: self.$appConfig.pageSelected, totalTabs: self.totalTabs)
-                .tabItem {
-                    VStack {
-                        Image("cyphereco_icon")
-                        Text("OpenTurnKey")
+                    .tag(0)
+                PageOpenTurnKey()
+                    .tabItem {
+                        VStack {
+                            Image("cyphereco_icon")
+                            Text("OpenTurnKey")
+                        }
                     }
-                }
-                .tag(1)
-            PageHistory()
-                .swipableTabs(currentTab: self.$appConfig.pageSelected, totalTabs: self.totalTabs)
-                .tabItem {
-                    VStack {
-                        Image("history")
-                        Text("history")
+                    .tag(1)
+                PageHistory()
+                    .tabItem {
+                        VStack {
+                            Image("history")
+                            Text("history")
+                        }
                     }
-                }
-                .tag(2)
-            PageAddresses()
-                .swipableTabs(currentTab: self.$appConfig.pageSelected, totalTabs: self.totalTabs)
-                .tabItem {
-                    VStack {
-                        Image("addressbook")
-                        Text("addresses")
+                    .tag(2)
+                PageAddresses()
+                    .tabItem {
+                        VStack {
+                            Image("addressbook")
+                            Text("addresses")
+                        }
                     }
+                    .tag(3)
+            }
+            .accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+            .swipableTabs(currentTab: self.$appConfig.pageSelected, totalTabs: self.totalTabs)
+            
+            GeometryReader { _ in
+                EmptyView()
+            }
+            .background(Color.gray.opacity(0.6))
+            .opacity(self.appConfig.showMenu ? 0.5 : 0.0)
+            .animation(Animation.easeIn.delay(0.1))
+            .onTapGesture {
+                self.appConfig.showMenu = false
+            }
+            .gesture(DragGesture()
+                .updating(self.$dragOffset, body: { (value, state, transaction) in
+                    state = value.translation
+                })
+                .onEnded { gesture in
+                    if self.appConfig.showMenu {
+                        if gesture.translation.width > 100 {
+                            withAnimation {
+                                self.appConfig.showMenu = false
+                            }
+                        }
+                    }
+                })
+            
+            SideMenuOpenTurnKey(isOpened: self.appConfig.showMenu, closeMenu: {
+                withAnimation {
+                    self.appConfig.showMenu = false
                 }
-                .tag(3)
-        }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+            })
+            .offset(x: dragOffset.width > 0 ? dragOffset.width : 0)
+            .animation(.easeInOut)
+        }
     }
 }
 

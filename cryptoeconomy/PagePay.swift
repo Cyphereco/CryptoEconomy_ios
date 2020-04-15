@@ -97,12 +97,7 @@ struct PagePay: View {
                     self.showMenu.toggle()
                 }
             }) {
-                if (showMenu) {
-                    Image("menu_collapse")
-                }
-                else {
-                    Image("menu_expand")
-                }
+                Image("menu")
             }.disabled(self.showConfigFees || self.showConfigLocalCurrency))
         }
     }

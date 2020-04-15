@@ -13,17 +13,14 @@ struct MenuItem: View {
     var completion: () -> Void = {}
         
     var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Button(action: self.completion) {
-                    Text(self.itemLabel)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .lineLimit(nil)
-                }
-                .padding(.leading, 20)
-                Divider().padding(.all, 0)
+        VStack(alignment: .leading) {
+            Button(action: self.completion) {
+                Text(self.itemLabel)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(nil)
             }
-            Spacer()
+            .padding(.leading, 20)
+            Divider().padding(.all, 0)
         }
     }
 }
