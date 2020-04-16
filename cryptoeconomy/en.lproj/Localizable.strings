@@ -52,6 +52,7 @@
 "reset" = "Reset";
 "result" = "Result";
 "save" = "Save";
+"scanning_qr_code" = "Scanning QR Code";
 "search_address" = "Search Address";
 "send_amount" = "Send Amount";
 "sender" = "Sender";

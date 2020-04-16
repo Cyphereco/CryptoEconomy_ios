@@ -10,13 +10,14 @@ import SwiftUI
 
 struct BackgroundView<Content: View>: View {
     private var content: Content
+    @Environment(\.colorScheme) var colorScheme
 
     init(@ViewBuilder content: @escaping () -> Content) {
         self.content = content()
     }
 
     var body: some View {
-        Color.white
+        (colorScheme == .dark ? Color.black : Color.white)
         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         .overlay(content)
     }

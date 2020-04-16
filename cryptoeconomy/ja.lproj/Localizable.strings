@@ -52,6 +52,7 @@
 "reset" = "リセット";
 "result" = "結果";
 "save" = "保存";
+"scanning_qr_code" = "QRコードをスキャニング";
 "search_address" = "アドレスを検索";
 "send_amount" = "送金金額";
 "sender" = "送金方";

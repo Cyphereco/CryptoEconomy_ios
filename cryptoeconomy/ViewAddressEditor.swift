@@ -22,7 +22,7 @@ struct ViewAddressEditor: View {
         NavigationView {
             BackgroundView {
                 VStack {
-                    TextFieldWithBottomLine(hint: "alias",
+                    TextFieldWithBottomLine(hint: AppStrings.alias,
                                             textContent: self.$alias,
                                             textAlign: .leading,
                                             readOnly: false).padding()
@@ -42,21 +42,19 @@ struct ViewAddressEditor: View {
                             .cornerRadius(24)
                         }
                         Button(action: {
-                            if (!self.alias.isEmpty) && (!self.address.isEmpty) {
-                                if CoreDataManager.shared.insertAddress(
-                                        addressVM: AddressViewModel(alias: self.alias,
-                                                                    address: self.address)) {
-                                    self.addressListVM.fetchAllAddresses()
-                                    self.presentationMode.wrappedValue.dismiss()
-                                }
-                                else {
-                                    self.showAlert = true
-                                    self.alertMessage = "Cannot add to database!!!"
-                                }
+                            if (self.alias.isEmpty) {
+                                self.alias = self.address.prefix(4) + "****" + self.address.suffix(4)
+                            }
+                            
+                            if CoreDataManager.shared.insertAddress(
+                                    addressVM: AddressViewModel(alias: self.alias,address: self.address))
+                            {
+                                self.addressListVM.fetchAllAddresses()
+                                self.presentationMode.wrappedValue.dismiss()
                             }
                             else {
                                 self.showAlert = true
-                                self.alertMessage = "Input is empty!!!"
+                                self.alertMessage = "Database error! Add address failed."
                             }
                         }) {
                             HStack(alignment: .center){
@@ -67,9 +65,11 @@ struct ViewAddressEditor: View {
                             .frame(minWidth: 80)
                             .padding(12)
                             .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                            .opacity(self.address.count < 1 ? 0.3 : 1)
                             .cornerRadius(24)
                             .foregroundColor(.white)
                         }
+                        .disabled(self.address.count < 1)
                         .alert(isPresented: self.$showAlert) {
                             return Alert(title: Text(self.alertMessage))
                         }
@@ -80,7 +80,6 @@ struct ViewAddressEditor: View {
             .onTapGesture {
                 UIApplication.shared.endEditing()
             }
-
             .navigationBarTitle(Text("edit_address"), displayMode: .inline)
         }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
     }

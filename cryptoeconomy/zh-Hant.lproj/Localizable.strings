@@ -52,6 +52,7 @@
 "reset" = "重置";
 "result" = "結果";
 "save" = "儲存";
+"scanning_qr_code" = "掃描二維碼";
 "search_address" = "查找地址";
 "send_amount" = "發送金額";
 "sender" = "發送方";

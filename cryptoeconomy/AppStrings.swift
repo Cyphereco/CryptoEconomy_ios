@@ -64,6 +64,9 @@ struct AppStrings {
     static let exportKey = localize("export_key")
     static let readGeneralInformation = localize("read_general_information")
     static let makeRequest = localize("make_request")
+    static let alias = localize("alias")
+    static let recipientAddress = localize("recipient_address")
+    static let scanningQrCode = localize("scanning_qr_code")
 
     private static func localize(_ str: String) -> String {
         return NSLocalizedString(str, comment: "")

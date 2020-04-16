@@ -65,8 +65,7 @@ struct ListItemAddress: View {
                 self.showAddressEditor = true
             }
             .sheet(isPresented: $showAddressEditor) {
-                ViewAddressEditor(addressListVM: self.addressListVM, alias: self.recordAddress.alias, address: self.recordAddress.address)
-                    .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))}
+                ViewAddressEditor(addressListVM: self.addressListVM, alias: self.recordAddress.alias, address: self.recordAddress.address)}
             Spacer()
             Button(action: {
                 self.showDelAlert = true

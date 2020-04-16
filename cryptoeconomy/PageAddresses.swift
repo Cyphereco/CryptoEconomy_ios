@@ -48,7 +48,6 @@ struct PageAddresses: View {
                 }
                 .sheet(isPresented: self.$showAddressEditor) {
                     ViewAddressEditor(addressListVM: self.addressListVM, alias: "", address: "")
-                        .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
             })
         }
     }
