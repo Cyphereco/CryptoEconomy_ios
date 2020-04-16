@@ -34,12 +34,13 @@ class CoreDataManager {
     func insertAddress(addressVM: AddressViewModel) -> Bool {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DBAddress")
 
-        let addr = DBAddress(context: self.moc)
-        addr.alias = addressVM.alias
-        addr.address = addressVM.address
-
         do {
             let items = try self.moc.fetch(request)
+
+            let addr = DBAddress(context: self.moc)
+            addr.alias = addressVM.alias
+            addr.address = addressVM.address
+
             for item in items as! [DBAddress] {
                 if (item.alias == addressVM.alias) && (item.address == addressVM.address) {
                     return true
@@ -89,20 +90,21 @@ class CoreDataManager {
     func insertTransaction(transactionVM: TransactionViewModel) -> Bool {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DBTransaction")
 
-        let trans = DBTransaction(context: self.moc)
-        trans.id = transactionVM.id
-        trans.time = transactionVM.time
-        trans.transHash = transactionVM.hash
-        trans.payer = transactionVM.payer
-        trans.payee = transactionVM.payee
-        trans.amountSent = transactionVM.amountSent
-        trans.amountRecv = transactionVM.amountRecv
-        trans.rawData = transactionVM.rawData
-        trans.blockHeight = transactionVM.blockHeight
-        trans.exchangeRate = transactionVM.exchangeRate
-
         do {
             let items = try self.moc.fetch(request)
+
+            let trans = DBTransaction(context: self.moc)
+            trans.id = transactionVM.id
+            trans.time = transactionVM.time
+            trans.transHash = transactionVM.hash
+            trans.payer = transactionVM.payer
+            trans.payee = transactionVM.payee
+            trans.amountSent = transactionVM.amountSent
+            trans.amountRecv = transactionVM.amountRecv
+            trans.rawData = transactionVM.rawData
+            trans.blockHeight = transactionVM.blockHeight
+            trans.exchangeRate = transactionVM.exchangeRate
+
             for item in items as! [DBTransaction] {
                 if item.id == transactionVM.id {
                     return true
