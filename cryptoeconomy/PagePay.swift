@@ -34,7 +34,7 @@ struct PagePay: View {
                                 Text(AppStrings.useAllFunds).font(.footnote)
                             }
                         }.padding(.horizontal, 20.0).padding(.top, 50)
-                        TextFieldPayAmount(localCurrency: self.$appConfig.currencySelection, strAmountBtc: "0.0", strAmountFiat: "0.0").keyboardType(.decimalPad)
+                        TextFieldPayAmount(localCurrency: self.$appConfig.currencySelection, strAmountBtc: "", strAmountFiat: "").keyboardType(.decimalPad)
                             .padding(.horizontal, 20.0)
                         Toggle(isOn: self.$appConfig.authByPin){
                             HStack {
@@ -91,6 +91,7 @@ struct PagePay: View {
                     }
                 }
             }
+            .setDismissKeyboardBackground()
             .navigationBarTitle(Text("pay"), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
                 withAnimation {

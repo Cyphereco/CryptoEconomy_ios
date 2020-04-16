@@ -19,8 +19,8 @@ struct TextFieldPayAmount: View {
             Text("amount").fontWeight(.bold)
             HStack(alignment: .center) {
                 Button(action: {
-                    self.strAmountBtc = "0.0"
-                    self.strAmountFiat = "0.0"
+                    self.strAmountBtc.removeAll()
+                    self.strAmountFiat.removeAll()
                 }){Image("clear")}
                     .padding(.top, -36.0)
                 VStack(alignment: .trailing) {

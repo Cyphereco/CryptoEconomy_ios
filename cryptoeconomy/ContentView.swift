@@ -11,7 +11,8 @@ import SwiftUI
 struct SwipableTabs: ViewModifier {
     @Binding var currentTab: Int
     let totalTabs: Int
-    
+    @State var keyboard = KeyboardResponder()
+
     func body(content: Content) -> some View {
         ZStack {
             GeometryReader {_ in
@@ -44,6 +45,12 @@ struct SwipableTabs: ViewModifier {
 extension View {
     func swipableTabs(currentTab: Binding<Int>, totalTabs: Int) -> some View {
         self.modifier(SwipableTabs(currentTab: currentTab, totalTabs: totalTabs))
+    }
+}
+
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 

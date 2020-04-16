@@ -65,6 +65,7 @@ struct ViewOpenTurnKeyInfo: View {
                     }.padding(20)
                 }
                 .padding(.horizontal, 20.0)
+                .accentColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
                 .navigationBarTitle(Text(AppStrings.openturnkeyInfo), displayMode: .inline)
                 .navigationBarItems(trailing:
                     Image("clear")

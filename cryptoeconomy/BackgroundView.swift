@@ -8,23 +8,26 @@
 
 import SwiftUI
 
-struct BackgroundView<Content: View>: View {
-    private var content: Content
+struct BackgroundView: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
 
-    init(@ViewBuilder content: @escaping () -> Content) {
-        self.content = content()
-    }
-
-    var body: some View {
-        (colorScheme == .dark ? Color.black : Color.white)
-        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        .overlay(content)
+    func body(content: Content) -> some View {
+         ZStack {
+             GeometryReader {_ in
+                 EmptyView()
+             }
+             .background(Color.white.opacity(0.001))
+             
+             content
+         }
+        .onTapGesture {
+            UIApplication.shared.endEditing()
+        }
     }
 }
 
-extension UIApplication {
-    func endEditing() {
-        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+extension View {
+    func setDismissKeyboardBackground() -> some View {
+        self.modifier(BackgroundView())
     }
 }

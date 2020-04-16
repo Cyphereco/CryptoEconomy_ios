@@ -68,6 +68,7 @@ struct PageOpenTurnKey: View {
                     }
                 }
             }
+            .setDismissKeyboardBackground()
             .navigationBarTitle(Text("OpenTurnKey"), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
                 withAnimation {

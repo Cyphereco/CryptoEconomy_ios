@@ -20,66 +20,61 @@ struct ViewAddressEditor: View {
 
     var body: some View {
         NavigationView {
-            BackgroundView {
-                VStack {
-                    TextFieldWithBottomLine(hint: AppStrings.alias,
-                                            textContent: self.$alias,
-                                            textAlign: .leading,
-                                            readOnly: false).padding()
-                    TextFieldBtcAddress(address: self.$address).padding()
-                    HStack {
-                        Spacer()
-                        Button(action: {
+            VStack {
+                TextFieldWithBottomLine(hint: AppStrings.alias,
+                                        textContent: self.$alias,
+                                        textAlign: .leading,
+                                        readOnly: false).padding()
+                TextFieldBtcAddress(address: self.$address).padding()
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }) {
+                        HStack(alignment: .center){
+                            Text("cancel")
+                                .font(.system(size: 20))
+                                .fontWeight(.bold)
+                        }
+                        .frame(minWidth: 80)
+                        .padding(12)
+                        .cornerRadius(24)
+                    }
+                    Button(action: {
+                        if (self.alias.isEmpty) {
+                            self.alias = self.address.prefix(4) + "****" + self.address.suffix(4)
+                        }
+                        
+                        if CoreDataManager.shared.insertAddress(
+                                addressVM: AddressViewModel(alias: self.alias,address: self.address))
+                        {
+                            self.addressListVM.fetchAllAddresses()
                             self.presentationMode.wrappedValue.dismiss()
-                        }) {
-                            HStack(alignment: .center){
-                                Text("cancel")
-                                    .font(.system(size: 20))
-                                    .fontWeight(.bold)
-                            }
-                            .frame(minWidth: 80)
-                            .padding(12)
-                            .cornerRadius(24)
                         }
-                        Button(action: {
-                            if (self.alias.isEmpty) {
-                                self.alias = self.address.prefix(4) + "****" + self.address.suffix(4)
-                            }
-                            
-                            if CoreDataManager.shared.insertAddress(
-                                    addressVM: AddressViewModel(alias: self.alias,address: self.address))
-                            {
-                                self.addressListVM.fetchAllAddresses()
-                                self.presentationMode.wrappedValue.dismiss()
-                            }
-                            else {
-                                self.showAlert = true
-                                self.alertMessage = "Database error! Add address failed."
-                            }
-                        }) {
-                            HStack(alignment: .center){
-                                Text("save")
-                                    .font(.system(size: 20))
-                                    .fontWeight(.bold)
-                            }
-                            .frame(minWidth: 80)
-                            .padding(12)
-                            .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
-                            .opacity(self.address.count < 1 ? 0.3 : 1)
-                            .cornerRadius(24)
-                            .foregroundColor(.white)
+                        else {
+                            self.showAlert = true
+                            self.alertMessage = "Database error! Add address failed."
                         }
-                        .disabled(self.address.count < 1)
-                        .alert(isPresented: self.$showAlert) {
-                            return Alert(title: Text(self.alertMessage))
+                    }) {
+                        HStack(alignment: .center){
+                            Text("save")
+                                .font(.system(size: 20))
+                                .fontWeight(.bold)
                         }
-                    }.padding(.top, 20.0)
-                }.padding(.horizontal, 20.0)
-                
-            }
-            .onTapGesture {
-                UIApplication.shared.endEditing()
-            }
+                        .frame(minWidth: 80)
+                        .padding(12)
+                        .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                        .opacity(self.address.count < 1 ? 0.3 : 1)
+                        .cornerRadius(24)
+                        .foregroundColor(.white)
+                    }
+                    .disabled(self.address.count < 1)
+                    .alert(isPresented: self.$showAlert) {
+                        return Alert(title: Text(self.alertMessage))
+                    }
+                }.padding(.top, 20.0)
+            }.padding(.horizontal, 20.0)
+            .setDismissKeyboardBackground()
             .navigationBarTitle(Text("edit_address"), displayMode: .inline)
         }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
     }
