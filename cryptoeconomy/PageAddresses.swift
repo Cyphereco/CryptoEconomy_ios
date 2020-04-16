@@ -41,6 +41,7 @@ struct PageAddresses: View {
                 Image("plus")
                     .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
                 .onTapGesture {
+                    UIApplication.shared.endEditing()
                     self.showAddressEditor = true
                 }
                 .sheet(isPresented: self.$showAddressEditor) {
