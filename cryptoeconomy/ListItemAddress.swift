@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct AddressQRCodeView: View {
-    @Environment(\.colorScheme) var colorScheme
     @Binding var showSheetView: Bool
     @State var alias: String = ""
     @State var address: String = ""
@@ -98,6 +97,7 @@ struct ListItemAddress: View {
                 AddressQRCodeView(showSheetView: self.$showQRCodeSheet,
                                   alias: self.recordAddress.alias,
                                   address: self.recordAddress.address)
+                    .accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
             }
 
             Button(action: {
