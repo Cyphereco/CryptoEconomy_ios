@@ -13,10 +13,13 @@
 "amount" = "金額";
 "Approach OpenTurnKey to the NFC reader." = "OpenTurnKeyをNFCリーダーに近づけます";
 "authorization_with_pin_code" = "PINコード認証";
+"btc_address" = "BTC アドレス";
+"btc_qr_code" = "BTC QRコード";
 "cancel" = "キャンセル";
 "choose_key" = "鍵を選んで";
 "clear_history" = "歴史削除";
 "confirmations" = "確認";
+"copied" = "コピーした";
 "custom" = "限定";
 "date" = "日付";
 "delete" = "削除";

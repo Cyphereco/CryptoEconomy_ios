@@ -13,10 +13,13 @@
 "amount" = "Amount";
 "Approach OpenTurnKey to the NFC reader." = "Approach OpenTurnKey to the NFC reader.";
 "authorization_with_pin_code" = "Authorization with PIN Code";
+"btc_address" = "BTC Address";
+"btc_qr_code" = "BTC QR Code";
 "cancel" = "Cancel";
 "choose_key" = "Choose Key";
 "clear_history" = "Clear History";
 "confirmations" = "Confirmations";
+"copied" = "Copied";
 "custom" = "Custom";
 "date" = "Date";
 "delete" = "Delete";

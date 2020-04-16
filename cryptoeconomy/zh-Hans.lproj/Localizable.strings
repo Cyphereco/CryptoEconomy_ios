@@ -13,10 +13,13 @@
 "amount" = "金额";
 "Approach OpenTurnKey to the NFC reader." = "将OpenTurnKey靠近NFC读写器.";
 "authorization_with_pin_code" = "使用PIN码授权";
+"btc_address" = "BTC地址";
+"btc_qr_code" = "BTC二维码";
 "cancel" = "取消";
 "choose_key" = "选择密钥";
 "clear_history" = "清除记录";
 "confirmations" = "确认";
+"copied" = "已复制";
 "custom" = "自订";
 "date" = "日期";
 "delete" = "删除";

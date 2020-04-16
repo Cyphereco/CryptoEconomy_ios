@@ -74,7 +74,7 @@ struct ViewOpenTurnKeyInfo: View {
                     })
             }
             if (self.showToastMessage) {
-                ViewToastMessage(message: "Copied", delay: 2, show: self.$showToastMessage)
+                ViewToastMessage(message: AppStrings.copied, delay: 2, show: self.$showToastMessage)
             }
         }
     }

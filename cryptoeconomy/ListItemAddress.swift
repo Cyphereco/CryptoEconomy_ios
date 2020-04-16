@@ -14,32 +14,41 @@ struct AddressQRCodeView: View {
     @State var alias: String = ""
     @State var address: String = ""
     private let pasteboard = UIPasteboard.general
+    @State var showToastMessage = false
 
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading) {
-                Text("Alias:")
-                    .padding()
-                    .font(.largeTitle)
-                Text("\(self.alias)").padding()
-                HStack {
-                    Text("BTC Address:")
-                        .font(.largeTitle)
-                    Button(action: {
-                        self.pasteboard.string = self.address
-                    }) {Image("copy")}
-                }.padding()
-                Text("\(self.address)").padding()
-                QRCodeGenerateView(inputString: "bitcoin:\(self.address)", width: 200, height: 200)
-                Spacer()
+        ZStack {
+            NavigationView {
+                VStack(alignment: .leading) {
+                    Text(AppStrings.alias)
+                        .font(.headline).padding([.horizontal, .top])
+                    Text("\(self.alias)").padding([.horizontal, .bottom])
+                    HStack {
+                        Text(AppStrings.btcAddress)
+                            .font(.headline)
+                        Button(action: {
+                            withAnimation {
+                                self.pasteboard.string = self.address
+                                self.showToastMessage = true
+                            }
+                        }) {Image("copy")}
+                    }.padding([.horizontal, .top])
+                    Text("\(self.address)").padding([.horizontal, .bottom])
+                    QRCodeGenerateView(inputString: "bitcoin:\(self.address)", width: 120, height: 120).padding()
+                    Spacer()
+                }
+                .navigationBarTitle(Text(AppStrings.btcQrCode), displayMode: .inline)
+                .navigationBarItems(trailing: Button(action: {
+                    print("Dismissing sheet view...")
+                    self.showSheetView = false
+                }) {
+                    Image("clear")
+                })
             }
-            .navigationBarTitle(Text("BTC QR Code"), displayMode: .inline)
-            .navigationBarItems(trailing: Button(action: {
-                print("Dismissing sheet view...")
-                self.showSheetView = false
-            }) {
-                Text("Done").bold()
-            })
+
+            if (self.showToastMessage) {
+                ViewToastMessage(message: AppStrings.copied, delay: 2, show: self.$showToastMessage)
+            }
         }
     }
 }

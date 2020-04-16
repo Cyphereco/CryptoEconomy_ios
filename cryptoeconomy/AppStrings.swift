@@ -67,6 +67,9 @@ struct AppStrings {
     static let alias = localize("alias")
     static let recipientAddress = localize("recipient_address")
     static let scanningQrCode = localize("scanning_qr_code")
+    static let copied = localize("copied")
+    static let btcQrCode = localize("btc_qr_code")
+    static let btcAddress = localize("btc_address")
 
     private static func localize(_ str: String) -> String {
         return NSLocalizedString(str, comment: "")
