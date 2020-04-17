@@ -25,12 +25,17 @@ struct PageOpenTurnKey: View {
                         HStack(alignment: .center, spacing: 20) {
                             Spacer()
                         }.frame(minWidth: .zero, idealWidth: .none, maxWidth: .infinity, minHeight: 80, idealHeight: .none, maxHeight: 160, alignment: .center)
+                        
                         Image("cyphereco_label").resizable().scaledToFit().frame(width: 100, height: 100)
+                        
                         Text("OpenTurnKey")
                             .fontWeight(.bold)
+                        
                         Text("(" + self.appConfig.requestHint + ")").padding()
+                        
                         VStack(alignment: .center, spacing: 20) {
                             Spacer()
+                            
                             Button(action: {
                                 self.otkNpi.beginScanning(completion: {
                                     if (self.otkNpi.otkDetected) {
@@ -47,6 +52,7 @@ struct PageOpenTurnKey: View {
                             }) {
                                 HStack(alignment: .center){
                                     Image("nfc_request")
+                                    
                                     Text(AppStrings.makeRequest)
                                         .font(.system(size: 20))
                                         .fontWeight(.bold)
@@ -63,12 +69,15 @@ struct PageOpenTurnKey: View {
                             }) {
                                 ViewOpenTurnKeyInfo(otkNpi: self.$otkNpi, btcBalance: self.$otkBtcBalance).environmentObject(AppConfig())
                             }
+                            
                             Spacer()
                         }.frame(minWidth: .zero, idealWidth: .none, maxWidth: .infinity, minHeight: 80, idealHeight: .none, maxHeight: 160, alignment: .center)
                     }
                 }
             }
-            .setDismissKeyboardBackground()
+            .onTapBackground({
+                UIApplication.shared.endEditing()
+            })
             .navigationBarTitle(Text("OpenTurnKey"), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
                 withAnimation {

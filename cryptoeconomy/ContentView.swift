@@ -8,52 +8,6 @@
 
 import SwiftUI
 
-struct SwipableTabs: ViewModifier {
-    @Binding var currentTab: Int
-    let totalTabs: Int
-    @State var keyboard = KeyboardResponder()
-
-    func body(content: Content) -> some View {
-        ZStack {
-            GeometryReader {_ in
-                EmptyView()
-            }
-            .background(Color.white.opacity(0.001))
-            
-            content
-        }
-        .gesture(DragGesture()
-            .onEnded { gesture in
-                if gesture.translation.width > 100 {
-                    withAnimation {
-                        if self.currentTab > 0 {
-                            self.currentTab -= 1
-                        }
-                    }
-                }
-                else if gesture.translation.width < -100 {
-                    withAnimation {
-                        if self.currentTab < self.totalTabs - 1 {
-                            self.currentTab += 1
-                        }
-                    }
-                }
-            })
-    }
-}
-
-extension View {
-    func swipableTabs(currentTab: Binding<Int>, totalTabs: Int) -> some View {
-        self.modifier(SwipableTabs(currentTab: currentTab, totalTabs: totalTabs))
-    }
-}
-
-extension UIApplication {
-    func endEditing() {
-        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
-
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig

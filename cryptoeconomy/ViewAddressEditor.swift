@@ -74,7 +74,9 @@ struct ViewAddressEditor: View {
                     }
                 }.padding(.top, 20.0)
             }.padding(.horizontal, 20.0)
-            .setDismissKeyboardBackground()
+                .onTapBackground({
+                    UIApplication.shared.endEditing()
+                })
             .navigationBarTitle(Text("edit_address"), displayMode: .inline)
         }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
     }

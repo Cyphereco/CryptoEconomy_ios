@@ -8,68 +8,49 @@
 
 import SwiftUI
 
-extension String {
-   func widthOfString(usingFont font: UIFont) -> CGFloat {
-        let fontAttributes = [NSAttributedString.Key.font: font]
-        let size = self.size(withAttributes: fontAttributes)
-        return size.width
-    }
-}
-
 struct SideMenuPay: View {
     let isOpened: Bool
-    let closeMenu: ()->Void
+    let closeMenu: () -> Void
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
     
     var body: some View {
-        GeometryReader { geometry in
-            HStack {
-                Spacer()
-                VStack (alignment: .leading) {
-                    Text(AppStrings.setCurrency)
-                        .padding()
-                        .onTapGesture{
-                            withAnimation {
-                                self.closeMenu()
-                                self.appConfig.interacts = .configLocalCurrency
-                            }
-                        }
-                    Text(AppStrings.setFees)
-                        .padding()
-                        .onTapGesture{
-                            withAnimation {
-                                self.closeMenu()
-                                self.appConfig.interacts = .configFees
-                            }
-                        }
-                    MenuItemToggle(itemLabel: AppStrings.feesIncluded, onState: self.$appConfig.feesIncluded)
-                        .frame(width: 200)
-                        .padding(.horizontal).padding(.bottom, 10)
-                    MenuItemToggle(itemLabel: AppStrings.useFixAddress, onState: self.$appConfig.useFixAddress)
-                        .frame(width: 200)
-                        .padding(.horizontal).padding(.bottom, 6)
-                    Text(AppStrings.userGuide)
-                        .padding()
-                        .onTapGesture{
-                            withAnimation {
-                                self.closeMenu()
-                            }
-                        }
-                    Text(AppStrings.about)
-                        .padding()
-                        .onTapGesture{
-                            withAnimation {
-                                self.closeMenu()
-                            }
-                        }
+        VStack {
+            RowButton(text: AppStrings.setCurrency){
+                withAnimation {
+                   self.closeMenu()
+                   self.appConfig.interacts = .configLocalCurrency
+               }
+            }.foregroundColor(.primary).padding()
+
+            RowButton(text: AppStrings.setFees){
+                withAnimation {
+                    self.closeMenu()
+                    self.appConfig.interacts = .configFees
                 }
-                .background(self.colorScheme == .dark ? Color.black : Color.white)
-                .offset(x: self.isOpened ? 0 : geometry.size.width * 2)
-                .animation(.easeInOut)
-            }
-            Spacer()
-        }
+            }.foregroundColor(.primary).padding()
+
+            Toggle(AppStrings.feesIncluded, isOn: self.$appConfig.feesIncluded)
+                .frame(alignment: .trailing)
+                .frame(maxWidth: 240)
+                .padding(.horizontal).padding(.bottom, 15)
+
+            Toggle(AppStrings.useFixAddress, isOn: self.$appConfig.useFixAddress)
+                .frame(maxWidth: 240)
+                .padding(.horizontal).padding(.bottom, 5)
+
+            RowButton(text: AppStrings.userGuide){
+                withAnimation {
+                    self.closeMenu()
+                }
+            }.foregroundColor(.primary).padding()
+
+            RowButton(text: AppStrings.about){
+                withAnimation {
+                    self.closeMenu()
+                }
+            }.foregroundColor(.primary).padding()
+        }.asSideMenu(isOpened: self.isOpened)
     }
 }
 

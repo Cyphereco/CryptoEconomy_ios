@@ -29,7 +29,9 @@ struct PageHistory: View {
                     }
                 }
             }
-            .setDismissKeyboardBackground()
+            .onTapBackground({
+                UIApplication.shared.endEditing()
+            })
             .navigationBarTitle(Text("history"), displayMode: .inline)
             .navigationBarItems(
                 trailing: Button(action: {self.showsAlert.toggle()}) {

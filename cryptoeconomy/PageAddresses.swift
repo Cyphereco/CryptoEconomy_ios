@@ -35,7 +35,9 @@ struct PageAddresses: View {
                     }
                 }
             }
-            .setDismissKeyboardBackground()
+            .onTapBackground({
+                UIApplication.shared.endEditing()
+            })
             .navigationBarTitle(Text("addresses"), displayMode: .inline)
             .navigationBarItems(trailing:
                 Image("plus")

@@ -9,9 +9,6 @@
 import SwiftUI
 
 struct PagePay: View {
-    @State var showConfigLocalCurrency: Bool = false
-    @State var showConfigFees: Bool = false
-        
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
     
@@ -24,23 +21,29 @@ struct PagePay: View {
                     VStack(alignment: .trailing) {
                         TextEstFeesInfo(currencySelection: self.$appConfig.currencySelection, fees: self.$appConfig.fees)
                             .padding([.top, .trailing], 20.0)
+                        
                         Spacer()
+                        
                         TextFieldBtcAddress(address: self.$appConfig.payeeAddr)
                             .padding(.horizontal, 20.0)
+                        
                         Toggle(isOn: self.$appConfig.useAllFunds){
                             HStack {
                                 Spacer()
                                 Text(AppStrings.useAllFunds).font(.footnote)
                             }
                         }.padding(.horizontal, 20.0).padding(.top, 50)
+                        
                         TextFieldPayAmount(localCurrency: self.$appConfig.currencySelection, strAmountBtc: "", strAmountFiat: "").keyboardType(.decimalPad)
                             .padding(.horizontal, 20.0)
+                        
                         Toggle(isOn: self.$appConfig.authByPin){
                             HStack {
                                 Spacer()
                                 Text(AppStrings.authByPin).font(.footnote)
                             }
                         }.padding(.horizontal, 20.0).padding(.top, 40).padding(.bottom, 10)
+                        
                         Button(action: {
                             self.otkNpi.beginScanning(completion: {})
                         }) {
@@ -65,7 +68,9 @@ struct PagePay: View {
                     }
                 }
             }
-            .setDismissKeyboardBackground()
+            .onTapBackground({
+                UIApplication.shared.endEditing()
+            })
             .navigationBarTitle(Text("pay"), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
                 withAnimation {
@@ -73,7 +78,7 @@ struct PagePay: View {
                 }
             }) {
                 Image("menu")
-            }.disabled(self.showConfigFees || self.showConfigLocalCurrency))
+            })
         }
     }
 }
