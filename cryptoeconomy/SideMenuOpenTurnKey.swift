@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct OtkCommand: ViewModifier {
+struct OtkRequest: ViewModifier {
     let command: String
     let hint: String
     let completion: () -> Void
@@ -27,8 +27,8 @@ struct OtkCommand: ViewModifier {
 }
 
 extension View {
-    func otkCommand(command: String, hint: String, completion: @escaping ()->Void) -> some View {
-        self.modifier(OtkCommand(command: command, hint: hint, completion: completion))
+    func otkRequest(command: String, hint: String, completion: @escaping ()->Void) -> some View {
+        self.modifier(OtkRequest(command: command, hint: hint, completion: completion))
     }
 }
 
@@ -43,21 +43,21 @@ struct SideMenuOpenTurnKey: View {
                 Spacer()
                 VStack (alignment: .leading) {
                     Text(AppStrings.setPinCode).padding()
-                        .otkCommand(command: "166", hint: AppStrings.setPinCode, completion: {self.closeMenu()})
+                        .otkRequest(command: "166", hint: AppStrings.setPinCode, completion: {self.closeMenu()})
                     Text(AppStrings.showKey).padding()
-                        .otkCommand(command: "162", hint: AppStrings.showKey, completion: {self.closeMenu()})
+                        .otkRequest(command: "162", hint: AppStrings.showKey, completion: {self.closeMenu()})
                     Text(AppStrings.writeNote).padding()
-                        .otkCommand(command: "165", hint: AppStrings.writeNote, completion: {self.closeMenu()})
+                        .otkRequest(command: "165", hint: AppStrings.writeNote, completion: {self.closeMenu()})
                     Text(AppStrings.msgSignVerify).padding()
-                        .otkCommand(command: "160", hint: AppStrings.msgSignVerify, completion: {self.closeMenu()})
+                        .otkRequest(command: "160", hint: AppStrings.msgSignVerify, completion: {self.closeMenu()})
                     Text(AppStrings.chooseKey).padding()
-                        .otkCommand(command: "167", hint: AppStrings.chooseKey, completion: {self.closeMenu()})
+                        .otkRequest(command: "167", hint: AppStrings.chooseKey, completion: {self.closeMenu()})
                     Text(AppStrings.unlock).padding()
-                        .otkCommand(command: "161", hint: AppStrings.unlock, completion: {self.closeMenu()})
+                        .otkRequest(command: "161", hint: AppStrings.unlock, completion: {self.closeMenu()})
                     Text(AppStrings.reset).padding()
-                        .otkCommand(command: "168", hint: AppStrings.reset, completion: {self.closeMenu()})
+                        .otkRequest(command: "168", hint: AppStrings.reset, completion: {self.closeMenu()})
                     Text(AppStrings.exportKey).padding()
-                        .otkCommand(command: "169", hint: AppStrings.exportKey, completion: {self.closeMenu()})
+                        .otkRequest(command: "169", hint: AppStrings.exportKey, completion: {self.closeMenu()})
                 }
                 .background(self.colorScheme == .dark ? Color.black : Color.white)
                 .offset(x: self.isOpened ? 0 : geometry.size.width * 2)

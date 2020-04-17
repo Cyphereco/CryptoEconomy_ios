@@ -97,6 +97,7 @@ struct ContentView: View {
                     }
                     .tag(3)
             }
+            .blur(radius: self.appConfig.showMenu ? 0.8 : 0)
             .accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
             .swipableTabs(currentTab: self.$appConfig.pageSelected, totalTabs: self.totalTabs)
             

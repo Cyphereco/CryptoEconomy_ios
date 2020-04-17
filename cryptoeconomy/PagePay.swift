@@ -64,31 +64,31 @@ struct PagePay: View {
                         .padding(.trailing, 20.0)
                         .padding(.bottom, 40)
                     }.disabled(self.showMenu || self.showConfigLocalCurrency || self.showConfigFees)
-                    if (self.showMenu) {
-                        SideMenuPay(showMenu: self.$showMenu,
-                                    showConfigLocalCurrency: self.$showConfigLocalCurrency,
-                                    showConfigFees: self.$showConfigFees)
-                            .frame(width: geometry.size.width/2)
-                            .transition(.move(edge: .top))
-                    }
-                    if (self.showConfigLocalCurrency) {
-                        VStack {
-                            Spacer()
-                            ConfigLocalCurrency(showConfigLocalCurrency: self.$showConfigLocalCurrency)
-                                .cornerRadius(20)
-                                .frame(height: geometry.size.height/2)
-                                .transition(.move(edge: .bottom))
-                        }
-                    }
-                    if (self.showConfigFees) {
-                        VStack {
-                            Spacer()
-                            ConfigFees(showConfigFees: self.$showConfigFees)
-                                .cornerRadius(20)
-                                .frame(height: geometry.size.height/2)
-                                .transition(.move(edge: .bottom))
-                        }
-                    }
+//                    if (self.showMenu) {
+//                        SideMenuPay(showMenu: self.$showMenu,
+//                                    showConfigLocalCurrency: self.$showConfigLocalCurrency,
+//                                    showConfigFees: self.$showConfigFees)
+//                            .frame(width: geometry.size.width/2)
+//                            .transition(.move(edge: .top))
+//                    }
+//                    if (self.showConfigLocalCurrency) {
+//                        VStack {
+//                            Spacer()
+//                            ConfigLocalCurrency(showConfigLocalCurrency: self.$showConfigLocalCurrency)
+//                                .cornerRadius(20)
+//                                .frame(height: geometry.size.height/2)
+//                                .transition(.move(edge: .bottom))
+//                        }
+//                    }
+//                    if (self.showConfigFees) {
+//                        VStack {
+//                            Spacer()
+//                            ConfigFees(showConfigFees: self.$showConfigFees)
+//                                .cornerRadius(20)
+//                                .frame(height: geometry.size.height/2)
+//                                .transition(.move(edge: .bottom))
+//                        }
+//                    }
                 }
             }
             .setDismissKeyboardBackground()
