@@ -15,17 +15,12 @@ struct MenuItemToggle: View {
 
     var body: some View {
         HStack {
-            VStack(alignment: .leading) {
-                Toggle(isOn: self.$onState) {
-                    Text(self.itemLabel)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .lineLimit(nil)
-                        .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
-                }
-                .padding(.leading, 20)
-                Divider().padding(.all, 0)
-            }
+            Text(self.itemLabel)
+                .frame(alignment: .leading)
             Spacer()
+            Toggle("", isOn: self.$onState)
+                .labelsHidden()
+                .frame(alignment: .trailing)
         }
     }
 }

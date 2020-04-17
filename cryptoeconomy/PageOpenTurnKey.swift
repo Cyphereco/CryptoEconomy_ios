@@ -72,7 +72,7 @@ struct PageOpenTurnKey: View {
             .navigationBarTitle(Text("OpenTurnKey"), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
                 withAnimation {
-                    self.appConfig.showMenu = true
+                    self.appConfig.interacts = .menuOpenTurnKey
                 }
             }) {
                 Image("menu")

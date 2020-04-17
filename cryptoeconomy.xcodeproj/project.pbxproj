@@ -24,7 +24,6 @@
 		BA2EEAD52432209400522A63 /* ViewAddressEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */; };
 		BA2EEAD724330E8A00522A63 /* SideMenuPay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */; };
 		BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */; };
-		BA2EEADB2433110800522A63 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEADA2433110800522A63 /* MenuItem.swift */; };
 		BA2EEADD2433B07900522A63 /* MenuItemToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEADC2433B07900522A63 /* MenuItemToggle.swift */; };
 		BA2EEADF243450F200522A63 /* ConfigLocalCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */; };
 		BA2EEAE324346C6C00522A63 /* ConfigFees.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE224346C6C00522A63 /* ConfigFees.swift */; };
@@ -98,7 +97,6 @@
 		BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAddressEditor.swift; sourceTree = "<group>"; };
 		BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuPay.swift; sourceTree = "<group>"; };
 		BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOpenTurnKey.swift; sourceTree = "<group>"; };
-		BA2EEADA2433110800522A63 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		BA2EEADC2433B07900522A63 /* MenuItemToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemToggle.swift; sourceTree = "<group>"; };
 		BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigLocalCurrency.swift; sourceTree = "<group>"; };
 		BA2EEAE224346C6C00522A63 /* ConfigFees.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFees.swift; sourceTree = "<group>"; };
@@ -253,7 +251,6 @@
 				BA2EEAE62435839E00522A63 /* ListItemAddress.swift */,
 				BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */,
 				BAADC81124386A6E00799FD0 /* Localizable.strings */,
-				BA2EEADA2433110800522A63 /* MenuItem.swift */,
 				BA2EEADC2433B07900522A63 /* MenuItemToggle.swift */,
 				BAADC8162439B02A00799FD0 /* OtkNPI.swift */,
 				BA3FC537243048AB00F41471 /* PageAddresses.swift */,
@@ -643,7 +640,6 @@
 				B23FB94C243741BC00A2B80F /* BlockChainInfoService.swift in Sources */,
 				BA3FC53A2430576100F41471 /* SearchBar.swift in Sources */,
 				BA1F873C24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift in Sources */,
-				BA2EEADB2433110800522A63 /* MenuItem.swift in Sources */,
 				BA9595E9242EFD8900C48B37 /* SceneDelegate.swift in Sources */,
 				BAADC8172439B02B00799FD0 /* OtkNPI.swift in Sources */,
 				BA9595EB242EFD8900C48B37 /* ContentView.swift in Sources */,

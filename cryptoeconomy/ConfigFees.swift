@@ -9,53 +9,59 @@
 import SwiftUI
 
 struct ConfigFees: View {
-    @Binding var showConfigFees: Bool
-    
+    let isOpened: Bool
+    let closeMenu: ()->Void
+
     @State var strFees = "0.00001"
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
 
     var body: some View {
-        VStack {
-            Text(AppStrings.setTransactionFees).fontWeight(.bold).padding()
-            Spacer()
-            Text(feesPriorityDesc(feesSelection: self.appConfig.feesSelection)).padding(.bottom, 10)
-            Slider(value: self.$appConfig.feesSelection, in: 0...3, step: 1, onEditingChanged: { data in
-                self.strFees = AppTools.btcToFormattedString(self.appConfig.getFees())
-            }).padding().accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
-            HStack {
-                Text("\(AppStrings.fees) = ")
-                if (self.appConfig.feesSelection == 0) {
-                    TextFieldWithBottomLine(hint: "",
-                                            textContent: self.$strFees,
-                                            textAlign: .center,
-                                            readOnly: false,
-                        onEditingChanged: { text in
-                        print(text)
-                    })
-                    .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
-                    .frame(width: 100)
-                    .padding(.top, 10)
-                }
-                else {
-                    Text(AppTools.btcToFormattedString(self.appConfig.fees))
-                }
-                Text(" BTC")
-            }
-            Button(action: {
-                withAnimation {
-                    if (self.appConfig.feesSelection == FeesPriority.CUSTOM.sliderValue) {
-                        self.appConfig.fees = Double(self.strFees)!
+        GeometryReader { geometry in
+            VStack {
+                Spacer()
+                VStack {
+                    Image(systemName: "minus").imageScale(.large)
+                    Text(AppStrings.setTransactionFees).font(.headline).padding([.horizontal, .bottom])
+                    Text(self.feesPriorityDesc(feesSelection: self.appConfig.feesSelection)).padding([.horizontal, .top])
+                    Slider(value: self.$appConfig.feesSelection, in: 0...3, step: 1, onEditingChanged: { data in
+                        self.strFees = AppTools.btcToFormattedString(self.appConfig.getFees())
+                    }).padding()
+                    HStack {
+                        Text("\(AppStrings.fees) = ")
+                        if (self.appConfig.feesSelection == 0) {
+                            TextFieldWithBottomLine(hint: "",
+                                                    textContent: self.$strFees,
+                                                    textAlign: .center,
+                                                    readOnly: false,
+                                onEditingChanged: { text in
+                                print(text)
+                            })
+                            .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                            .frame(width: 100)
+                            .padding(.top, 10)
+                        }
+                        else {
+                            Text(AppTools.btcToFormattedString(self.appConfig.fees))
+                        }
+                        Text(" BTC")
                     }
-                    self.showConfigFees = false
+                    Button(action: {
+                        withAnimation {
+                            if (self.appConfig.feesSelection == FeesPriority.CUSTOM.sliderValue) {
+                                self.appConfig.fees = Double(self.strFees)!
+                            }
+                            self.closeMenu()
+                        }
+                    }) {
+                        Image("ok")
+                    }.padding()
                 }
-            }) {
-                Image("ok")
-            }.padding().accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
-            Spacer()
-        }
-        .frame(maxHeight: .infinity, alignment: .bottom)
-        .background(AppConfig.getMenuBackgroundColor(colorScheme: self.colorScheme))
+                .background(self.colorScheme == .dark ? Color.black : Color.white)
+                .offset(y: self.isOpened ? 0 : geometry.size.height)
+                .animation(.easeInOut)
+            }
+        }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
     }
     
     func feesPriorityDesc(feesSelection: Double) -> String {
@@ -76,6 +82,7 @@ struct ConfigFees: View {
 
 struct ConfigFees_Previews: PreviewProvider {
     static var previews: some View {
-        ConfigFees(showConfigFees: .constant(false)).environmentObject(AppConfig())
+        ConfigFees(isOpened: true, closeMenu: {})
+            .environmentObject(AppConfig())
     }
 }

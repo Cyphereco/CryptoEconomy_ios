@@ -83,6 +83,13 @@ enum FiatCurrency: CaseIterable{
         }
     }
 }
+enum Interacts: CaseIterable{
+    case none
+    case menuPay
+    case menuOpenTurnKey
+    case configLocalCurrency
+    case configFees
+}
 
 class AppConfig: ObservableObject {
     // fake fees for demo/test, should be updated with online fees
@@ -104,7 +111,7 @@ class AppConfig: ObservableObject {
     @Published var amountSend: String = "0.0"
     @Published var amountRecv: String = "0.0"
     @Published var pageSelected: Int = 0
-    @Published var showMenu: Bool = false
+    @Published var interacts: Interacts = .none
     @Published var payeeAddr: String = ""
     @Published var requestHint: String = AppStrings.readGeneralInformation
     @Published var requestCommand: String = ""

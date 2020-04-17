@@ -97,7 +97,8 @@ struct ContentView: View {
                     }
                     .tag(3)
             }
-            .blur(radius: self.appConfig.showMenu ? 0.8 : 0)
+            .blur(radius: self.appConfig.interacts != .none ? 0.8 : 0)
+            .animation(.easeInOut)
             .accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
             .swipableTabs(currentTab: self.$appConfig.pageSelected, totalTabs: self.totalTabs)
             
@@ -105,32 +106,65 @@ struct ContentView: View {
                 EmptyView()
             }
             .background(Color.gray.opacity(0.6))
-            .opacity(self.appConfig.showMenu ? 0.5 : 0.0)
-            .animation(Animation.easeIn.delay(0.1))
+            .opacity(self.appConfig.interacts != .none ? 0.5 : 0.0)
+            .animation(.easeInOut)
             .onTapGesture {
-                self.appConfig.showMenu = false
+                self.closeMenu()
             }
             .gesture(DragGesture()
                 .updating(self.$dragOffset, body: { (value, state, transaction) in
                     state = value.translation
                 })
                 .onEnded { gesture in
-                    if self.appConfig.showMenu {
+                    if self.appConfig.interacts == .menuPay || self.appConfig.interacts == .menuOpenTurnKey {
                         if gesture.translation.width > 100 {
                             withAnimation {
-                                self.appConfig.showMenu = false
+                                self.closeMenu()
+                            }
+                        }
+                    }
+                    else if self.appConfig.interacts == .configLocalCurrency || self.appConfig.interacts == .configFees {
+                        if gesture.translation.height > 100 {
+                            withAnimation {
+                                self.closeMenu()
                             }
                         }
                     }
                 })
             
-            SideMenuOpenTurnKey(isOpened: self.appConfig.showMenu, closeMenu: {
-                withAnimation {
-                    self.appConfig.showMenu = false
-                }
+            SideMenuPay(isOpened: self.appConfig.interacts == .menuPay, closeMenu: {
+                self.closeMenu()
             })
             .offset(x: dragOffset.width > 0 ? dragOffset.width : 0)
             .animation(.easeInOut)
+
+            SideMenuOpenTurnKey(isOpened: self.appConfig.interacts == .menuOpenTurnKey, closeMenu: {
+                self.closeMenu()
+            })
+            .offset(x: dragOffset.width > 0 ? dragOffset.width : 0)
+            .animation(.easeInOut)
+
+            ConfigLocalCurrency(isOpened: self.appConfig.interacts == .configLocalCurrency, closeMenu: {
+                withAnimation {
+                    self.closeMenu()
+                }
+            })
+            .offset(y: dragOffset.height > 0 ? dragOffset.height : 0)
+            .animation(.easeInOut)
+
+            ConfigFees(isOpened: self.appConfig.interacts == .configFees, closeMenu: {
+                withAnimation {
+                    self.closeMenu()
+                }
+            })
+            .offset(y: dragOffset.height > 0 ? dragOffset.height : 0)
+            .animation(.easeInOut)
+        }
+    }
+    
+    func closeMenu() {
+        withAnimation {
+            self.appConfig.interacts = .none
         }
     }
 }
