@@ -37,6 +37,7 @@ struct ConfigFees: View {
                                 onEditingChanged: { text in
                                 print(text)
                             })
+                            .keyboardType(.decimalPad)
                             .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
                             .frame(width: 100)
                             .padding(.top, 10)
@@ -47,10 +48,9 @@ struct ConfigFees: View {
                         Text(" BTC")
                     }
                     Button(action: {
+                        self.appConfig.setFeesPriority(priority: self.appConfig.feesSelection)
+                        self.appConfig.setFees(fees: self.appConfig.fees)
                         withAnimation {
-                            if (self.appConfig.feesSelection == FeesPriority.CUSTOM.sliderValue) {
-                                self.appConfig.fees = Double(self.strFees)!
-                            }
                             self.closeMenu()
                         }
                     }) {

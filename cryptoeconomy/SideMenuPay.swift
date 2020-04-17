@@ -13,7 +13,7 @@ struct SideMenuPay: View {
     let closeMenu: () -> Void
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
-    
+        
     var body: some View {
         VStack {
             RowButton(text: AppStrings.setCurrency){

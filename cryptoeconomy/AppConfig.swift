@@ -99,11 +99,11 @@ class AppConfig: ObservableObject {
     static var fiatRates = [48352.46, 6301.76, 736225.0, 206318.37, 6825.40]
 
     // default values
-    @Published var currencySelection: Int = FiatCurrency.USD.ordinal
-    @Published var feesSelection: Double = FeesPriority.MID.sliderValue
-    @Published var fees: Double = 0.0
-    @Published var feesIncluded: Bool = false
-    @Published var useFixAddress: Bool = false
+    @Published var currencySelection: Int = UserDefaults.standard.integer(forKey: "LocalCurrency") { didSet { setLocalCurrency(selection: currencySelection) } }
+    @Published var feesSelection: Double = UserDefaults.standard.double(forKey: "FeesPriority") { didSet { setFeesPriority(priority: feesSelection) } }
+    @Published var fees: Double = UserDefaults.standard.double(forKey: "Fees") { didSet { setFees(fees: fees) } }
+    @Published var feesIncluded: Bool = UserDefaults.standard.bool(forKey: "FeesIncluded") { didSet { setFeesIncluded(included: feesIncluded) } }
+    @Published var useFixAddress: Bool = UserDefaults.standard.bool(forKey: "UseFixAddress") { didSet { setUseFixAddress(use: useFixAddress) } }
     @Published var useAllFunds: Bool = false
     @Published var authByPin: Bool = false
     @Published var payee: String = ""
@@ -118,10 +118,23 @@ class AppConfig: ObservableObject {
 
     init() {
         fees = priorityFees[1]
+        UserDefaults.standard.register(defaults: ["LocalCurrency": 5])
+        UserDefaults.standard.register(defaults: ["FeesPriority": 1.0])
+        UserDefaults.standard.register(defaults: ["FeesIncluded": false])
+        UserDefaults.standard.register(defaults: ["UseFixAddress": false])
+        UserDefaults.standard.register(defaults: ["Fees": 0.00001])
+    }
+    
+    func setLocalCurrency(selection: Int) -> Void {
+        UserDefaults.standard.set(selection, forKey: "LocalCurrency")
     }
     
     func getLocalCurrency() -> FiatCurrency {
         return FiatCurrency.allCases[currencySelection]
+    }
+    
+    func setFeesPriority(priority: Double) {
+        UserDefaults.standard.set(priority, forKey: "FeesPriority")
     }
     
     func getFeesPriority() -> FeesPriority {
@@ -139,6 +152,10 @@ class AppConfig: ObservableObject {
         }
     }
     
+    func setFees(fees: Double) {
+        UserDefaults.standard.set(fees, forKey: "Fees")
+    }
+    
     func getFees() -> Double {
         if (getFeesPriority() == FeesPriority.CUSTOM) {
             return fees
@@ -147,6 +164,14 @@ class AppConfig: ObservableObject {
             fees = priorityFees[getFeesPriority().ordinal - 1]
         }
         return fees
+    }
+    
+    func setFeesIncluded(included: Bool) {
+        UserDefaults.standard.set(included, forKey: "FeesIncluded")
+    }
+    
+    func setUseFixAddress(use: Bool) {
+        UserDefaults.standard.set(use, forKey: "UseFixAddress")
     }
     
     static let accentColorLight: Color = .blue
