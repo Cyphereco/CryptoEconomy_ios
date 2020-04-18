@@ -20,7 +20,7 @@ struct PagePay: View {
             GeometryReader {geometry in
                 ZStack(alignment: .trailing) {
                     VStack(alignment: .trailing) {
-                        TextEstFeesInfo(currencySelection: self.$appConfig.currencySelection, fees: self.$appConfig.fees)
+                        TextEstFeesInfo()
                             .padding([.top, .trailing], 20.0)
                         
                         Spacer()

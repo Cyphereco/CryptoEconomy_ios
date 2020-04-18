@@ -9,8 +9,6 @@
 import SwiftUI
 
 struct TextEstFeesInfo: View {
-    @Binding var currencySelection: Int
-    @Binding var fees: Double
     @EnvironmentObject var appConfig: AppConfig
     
     var body: some View {
@@ -26,7 +24,7 @@ struct TextEstFeesInfo: View {
                     Text("BTC").font(.footnote).padding(.trailing, 10)
                 }
                 VStack(alignment: .trailing) {
-                    Text(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.fees, currencySelection: self.currencySelection)))
+                    Text(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.appConfig.fees, currencySelection: self.appConfig.currencySelection)))
                     Text("\(self.appConfig.getLocalCurrency().label)")
                         .font(.footnote)
                 }
@@ -37,6 +35,6 @@ struct TextEstFeesInfo: View {
 
 struct TextEstFeesInfo_Previews: PreviewProvider {
     static var previews: some View {
-        TextEstFeesInfo(currencySelection: .constant(4), fees: .constant(0.00001)).environmentObject(AppConfig())
+        TextEstFeesInfo().environmentObject(AppConfig())
     }
 }

@@ -102,10 +102,14 @@ class AppConfig: ObservableObject {
     // default values
     @Published var currencySelection: Int = UserDefaults.standard.integer(forKey: "LocalCurrency") { didSet { setLocalCurrency(selection: currencySelection) } }
     @Published var feesSelection: Double = UserDefaults.standard.double(forKey: "FeesPriority") { didSet {
-            setFeesPriority(priority: feesSelection)
-            setFees(fees: getFees())
+            setFeesPriority(selection: feesSelection)
         } }
-    @Published var fees: Double = UserDefaults.standard.double(forKey: "Fees")
+    @Published var fees: Double = UserDefaults.standard.double(forKey: "Fees") { didSet {
+            UserDefaults.standard.set(fees, forKey: "Fees")
+        } }
+    @Published var strFees: String = "\(AppTools.btcToFormattedString(UserDefaults.standard.double(forKey: "Fees")))" { didSet {
+        fees = (strFees as NSString).doubleValue
+    } }
     @Published var feesIncluded: Bool = UserDefaults.standard.bool(forKey: "FeesIncluded") { didSet { setFeesIncluded(included: feesIncluded) } }
     @Published var useFixedAddress: Bool = UserDefaults.standard.bool(forKey: "UseFixedAddress") { didSet {
             setUseFixedAddress(use: useFixedAddress)
@@ -124,7 +128,6 @@ class AppConfig: ObservableObject {
     @Published var requestCommand: String = ""
 
     init() {
-        fees = priorityFees[1]
         UserDefaults.standard.register(defaults: ["LocalCurrency": 5])
         UserDefaults.standard.register(defaults: ["FeesPriority": 1.0])
         UserDefaults.standard.register(defaults: ["FeesIncluded": false])
@@ -141,9 +144,12 @@ class AppConfig: ObservableObject {
         return FiatCurrency.allCases[currencySelection]
     }
     
-    func setFeesPriority(priority: Double) {
-        UserDefaults.standard.set(priority, forKey: "FeesPriority")
-        setFees(fees: getFees())
+    func setFeesPriority(selection: Double) {
+        UserDefaults.standard.set(selection, forKey: "FeesPriority")
+        if (getFeesPriority() != FeesPriority.CUSTOM) {
+            fees = priorityFees[getFeesPriority().ordinal - 1]
+            strFees = "\(AppTools.btcToFormattedString(fees))"
+        }
     }
     
     func getFeesPriority() -> FeesPriority {
@@ -161,21 +167,11 @@ class AppConfig: ObservableObject {
         }
     }
     
-    func setFees(fees: Double) {
-        UserDefaults.standard.set(fees, forKey: "Fees")
-    }
-    
-    func getFees() -> Double {
-        if (getFeesPriority() == FeesPriority.CUSTOM) {
-            return fees
-        }
-        else {
-            fees = priorityFees[getFeesPriority().ordinal - 1]
-            setFees(fees: priorityFees[getFeesPriority().ordinal - 1])
-        }
-        return fees
-    }
-    
+//    func setFees(fees: Double) {
+//        self.fees = fees
+//        UserDefaults.standard.set(fees, forKey: "Fees")
+//    }
+       
     func setFeesIncluded(included: Bool) {
         UserDefaults.standard.set(included, forKey: "FeesIncluded")
     }

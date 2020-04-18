@@ -12,7 +12,6 @@ struct ConfigFees: View {
     let isOpened: Bool
     let closeMenu: ()->Void
 
-    @State var strFees = "0.00001"
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
 
@@ -24,20 +23,14 @@ struct ConfigFees: View {
                     Image(systemName: "minus").imageScale(.large)
                     Text(AppStrings.setTransactionFees).font(.headline).padding([.horizontal, .bottom])
                     Text(self.feesPriorityDesc(feesSelection: self.appConfig.feesSelection)).padding([.horizontal, .top])
-                    Slider(value: self.$appConfig.feesSelection, in: 0...3, step: 1, onEditingChanged: { data in
-                        self.strFees = AppTools.btcToFormattedString(self.appConfig.getFees())
-                    }).padding()
+                    Slider(value: self.$appConfig.feesSelection, in: 0...3, step: 1).padding()
                     HStack {
                         Text("\(AppStrings.fees) = ")
                         if (self.appConfig.feesSelection == 0) {
                             TextFieldWithBottomLine(hint: "",
-                                                    textContent: self.$strFees,
+                                                    textContent: self.$appConfig.strFees,
                                                     textAlign: .center,
-                                                    readOnly: false,
-                                onEditingChanged: { text in
-                                print(text)
-                                    self.appConfig.setFees(fees: (self.strFees as NSString).doubleValue)
-                            })
+                                                    readOnly: false)
                             .keyboardType(.decimalPad)
                             .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
                             .frame(width: 100)
