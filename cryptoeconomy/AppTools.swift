@@ -10,11 +10,11 @@ import Foundation
 
 struct AppTools {
     static func fiatToFormattedString(_ fiat: Double) -> String {
-        return String(format: "%.3f", fiat)
+        return fiat > 1000 ? (fiat > 1000000 ? String(format: "%.0f", fiat) : String(format: "%.2f", fiat)) : String(format: "%.3f", fiat)
     }
     
     static func btcToFormattedString(_ btc: Double) -> String {
-        return btc > 1000 ? (btc > 1000000 ? String(format: "%.2f", btc) : String(format: "%.4f", btc)) : String(format: "%.8f", btc)
+        return btc > 10 ? (btc > 100 ? String(format: "%.2f", btc) : String(format: "%.4f", btc)) : String(format: "%.8f", btc)
     }
     
     static func getExchangeRate(currency: Int) -> Double {

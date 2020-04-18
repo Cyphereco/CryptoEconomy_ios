@@ -134,7 +134,13 @@ class AppConfig: ObservableObject {
             UserDefaults.standard.set(fees, forKey: "Fees")
         } }
     @Published var strFees: String = "\(AppTools.btcToFormattedString(UserDefaults.standard.double(forKey: "Fees")))" { didSet {
-        fees = (strFees as NSString).doubleValue
+        if let value = Double(strFees) {
+            fees = value
+        }
+        else {
+            strFees = "0.00001"
+            fees = 0.00001
+        }
     } }
     @Published var feesIncluded: Bool = UserDefaults.standard.bool(forKey: "FeesIncluded") { didSet { setFeesIncluded(included: feesIncluded) } }
     @Published var useFixedAddress: Bool = UserDefaults.standard.bool(forKey: "UseFixedAddress") { didSet {
@@ -146,23 +152,33 @@ class AppConfig: ObservableObject {
     @Published var payee: String = ""
     @Published var payer: String = ""
     @Published var amountSend: String = "" { didSet {
-            if !editLock {
-                editLock = true
-                self.amountSendFiat = "\(AppTools.fiatToFormattedString(AppTools.btcToFiat((self.amountSend as NSString).doubleValue, currencySelection: self.currencySelection)))"
+            if let amount = Double(amountSend) {
+                if !editLock {
+                    editLock = true
+                    self.amountSendFiat = amount > 0 ? "\(AppTools.fiatToFormattedString(AppTools.btcToFiat(amount, currencySelection: self.currencySelection)))" : "0"
+                }
+                else {
+                    editLock = false
+                }
             }
             else {
-                editLock = false
+                amountSend = "0"
             }
         } }
     @Published var amountRecv: String = ""
     @Published var amountSendFiat: String = "" { didSet {
-            if !editLock {
-                editLock = true
-                self.amountSend = "\(AppTools.btcToFormattedString(AppTools.fiatToBtc((self.amountSendFiat as NSString).doubleValue, currencySelection: self.currencySelection)))"
+            if let amount = Double(amountSendFiat) {
+                    if !editLock {
+                        editLock = true
+                        self.amountSend = amount > 0 ? "\(AppTools.btcToFormattedString(AppTools.fiatToBtc(amount, currencySelection: self.currencySelection)))" : "0"
+                    }
+                    else {
+                        editLock = false
+                }
             }
             else {
-                editLock = false
-        }
+                amountSendFiat = "0"
+            }
         } }
     @Published var pageSelected: Int = 0
     @Published var interacts: Interacts = .none

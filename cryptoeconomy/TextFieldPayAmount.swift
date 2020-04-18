@@ -24,6 +24,7 @@ struct TextFieldPayAmount: View {
                 VStack(alignment: .trailing) {
                     TextFieldWithBottomLine(hint: "0.0", textContent: self.$appConfig.amountSend, textAlign: .trailing, readOnly: false, onEditingChanged: {_ in
                     })
+                    .font(.custom("", size: 24))
                     .introspectTextField { textField in
                         textField.addTarget(
                             self.textFieldObserver,
@@ -36,6 +37,7 @@ struct TextFieldPayAmount: View {
                 VStack(alignment: .trailing) {
                     TextFieldWithBottomLine(hint: "0.0", textContent: self.$appConfig.amountSendFiat, textAlign: .trailing, readOnly: false, onEditingChanged: {_ in
                     })
+                    .font(.custom("", size: 24))
                     .introspectTextField { textField in
                         textField.addTarget(
                             self.textFieldObserver,
