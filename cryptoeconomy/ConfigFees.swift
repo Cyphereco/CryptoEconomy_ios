@@ -52,6 +52,9 @@ struct ConfigFees: View {
                 .background(self.colorScheme == .dark ? Color.black : Color.white)
                 .offset(y: self.isOpened ? 0 : geometry.size.height)
                 .animation(.easeInOut)
+                .onTapGesture {
+                    UIApplication.shared.endEditing()
+                }
             }
        }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
         .keyboardResponsive()
