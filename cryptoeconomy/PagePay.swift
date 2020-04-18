@@ -13,6 +13,7 @@ struct PagePay: View {
     @EnvironmentObject var appConfig: AppConfig
     
     @ObservedObject var otkNpi = OtkNfcProtocolInterface()
+    @State var alertUseFixedAddress = false
 
     var body: some View {
         NavigationView {
@@ -26,7 +27,14 @@ struct PagePay: View {
                         
                         TextFieldBtcAddress(address: self.$appConfig.payeeAddr)
                             .padding(.horizontal, 20.0)
-                        
+                            .disabled(self.appConfig.useFixedAddress)
+                            .onTapGesture {
+                                self.alertUseFixedAddress = true
+                            }
+                            .alert(isPresented: self.$alertUseFixedAddress){
+                                Alert(title: Text("use_fixed_address"))
+                            }
+
                         Toggle(isOn: self.$appConfig.useAllFunds){
                             HStack {
                                 Spacer()

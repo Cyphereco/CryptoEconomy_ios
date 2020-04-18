@@ -24,6 +24,7 @@
 "date" = "Date";
 "delete" = "Delete";
 "delete_all_transaction_records?" = "Delete all transaction records?";
+"Delete this address?" = "Delete this address?";
 "edit_address" = "Edit Address";
 "estimated_fees" = "Estimated Fees";
 "excluded" = "Excluded";
@@ -49,6 +50,7 @@
 "read_general_information" = "Read General Information";
 "recipient" = "Recipient";
 "recipient_address" = "Recipient Address";
+"Recipient address is empty!" = "Recipient address is empty!";
 "received_amount" = "Received Amount";
 "Request has been sent." = "Request has been sent.";
 "Request processed." = "Request processed.";
@@ -77,7 +79,8 @@
 "Unknown NDEF tag status." = "Unknown NDEF tag status.";
 "unlock" = "Unlock";
 "use_all_funds" = "Use All Funds";
-"use_fix_address" = "Use Fix Address";
+"use_fixed_address" = "Use Fixed Address";
 "user_guide" = "User Guide";
+"Version" = "Version";
 "write_note" = "Write Note";
 

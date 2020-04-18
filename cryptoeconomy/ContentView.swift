@@ -117,7 +117,14 @@ struct ContentView: View {
     }
     
     func closeMenu() {
+        UIApplication.shared.endEditing()
         withAnimation {
+            if self.appConfig.interacts == .configLocalCurrency {
+                
+            }
+            else if self.appConfig.interacts == .configFees {
+                
+            }
             self.appConfig.interacts = .none
         }
     }

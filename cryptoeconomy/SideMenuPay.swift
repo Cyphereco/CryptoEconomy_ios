@@ -13,6 +13,9 @@ struct SideMenuPay: View {
     let closeMenu: () -> Void
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
+    @State var alertEmptyAddress = false
+    @State var alertAbout = false
+    
         
     var body: some View {
         VStack {
@@ -35,21 +38,45 @@ struct SideMenuPay: View {
                 .frame(maxWidth: 240)
                 .padding(.horizontal).padding(.bottom, 15)
 
-            Toggle(AppStrings.useFixAddress, isOn: self.$appConfig.useFixAddress)
-                .frame(maxWidth: 240)
-                .padding(.horizontal).padding(.bottom, 5)
+            ZStack {
+                Toggle(AppStrings.useFixedAddress, isOn: self.$appConfig.useFixedAddress)
+                    .frame(maxWidth: 240)
+                    .padding(.horizontal).padding(.bottom, 5)
+                    .disabled(self.appConfig.payeeAddr.count < 1)
+             
+                if(self.appConfig.payeeAddr.count < 1) {
+                    Color.white.opacity(0.001)
+                    .frame(maxHeight: 44)
+                    .onTapGesture {
+                        if self.appConfig.payeeAddr.count < 1 {
+                            self.alertEmptyAddress = true
+                        }
+                    }
+                    .alert(isPresented: self.$alertEmptyAddress){
+                        Alert(title: Text("Recipient address is empty!"))
+                    }
+                }
+            }
 
             RowButton(text: AppStrings.userGuide){
                 withAnimation {
                     self.closeMenu()
+                    if let url = URL(string: "https://www.openturnkey.com/guide") {
+                        UIApplication.shared.open(url)
+                    }
                 }
             }.foregroundColor(.primary).padding()
 
             RowButton(text: AppStrings.about){
                 withAnimation {
                     self.closeMenu()
+                    self.alertAbout = true
                 }
             }.foregroundColor(.primary).padding()
+            .alert(isPresented: self.$alertAbout){
+                Alert(title: Text("Version") + Text(": \(AppConfig.version)"))
+            }
+
         }.asSideMenu(isOpened: self.isOpened)
     }
 }

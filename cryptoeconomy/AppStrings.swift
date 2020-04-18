@@ -50,7 +50,7 @@ struct AppStrings {
     static let setCurrency = localize("set_local_currency" )
     static let setFees = localize("set_transaction_fees" )
     static let feesIncluded = localize("fees_included" )
-    static let useFixAddress = localize("use_fix_address" )
+    static let useFixedAddress = localize("use_fixed_address" )
     static let userGuide = localize("user_guide" )
     static let about = localize("about" )
     static let searchAddress = localize("search_address")

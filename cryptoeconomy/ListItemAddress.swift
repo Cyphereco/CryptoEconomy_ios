@@ -79,15 +79,15 @@ struct ListItemAddress: View {
                 self.showDelAlert = true
             }) {Image("delete")}.buttonStyle(BorderlessButtonStyle())
             .alert(isPresented: self.$showDelAlert) {
-                return Alert(title: Text("Are you sure to delete it?"),
-                    primaryButton: .default(Text("YES"), action: {
+                return Alert(title: Text("Delete this address?"),
+                    primaryButton: .default(Text("delete"), action: {
                         if CoreDataManager.shared.deleteAddress(
                                 addressVM: AddressViewModel(alias: self.recordAddress.alias,
                                                             address: self.recordAddress.address)) {
                             self.addressListVM.fetchAllAddresses()
                         }
                     }),
-                    secondaryButton: .default(Text("NO")))
+                    secondaryButton: .default(Text("cancel")))
             }
 
             Button(action: {

@@ -36,6 +36,7 @@ struct ConfigFees: View {
                                                     readOnly: false,
                                 onEditingChanged: { text in
                                 print(text)
+                                    self.appConfig.setFees(fees: (self.strFees as NSString).doubleValue)
                             })
                             .keyboardType(.decimalPad)
                             .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
@@ -48,8 +49,6 @@ struct ConfigFees: View {
                         Text(" BTC")
                     }
                     Button(action: {
-                        self.appConfig.setFeesPriority(priority: self.appConfig.feesSelection)
-                        self.appConfig.setFees(fees: self.appConfig.fees)
                         withAnimation {
                             self.closeMenu()
                         }
@@ -61,7 +60,8 @@ struct ConfigFees: View {
                 .offset(y: self.isOpened ? 0 : geometry.size.height)
                 .animation(.easeInOut)
             }
-        }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+       }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+        .keyboardResponsive()
     }
     
     func feesPriorityDesc(feesSelection: Double) -> String {

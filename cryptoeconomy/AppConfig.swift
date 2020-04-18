@@ -92,6 +92,7 @@ enum Interacts: CaseIterable{
 }
 
 class AppConfig: ObservableObject {
+    static let version = "1.0"
     // fake fees for demo/test, should be updated with online fees
     var priorityFees = [0.000008, 0.00001, 0.00002]
 
@@ -100,10 +101,16 @@ class AppConfig: ObservableObject {
 
     // default values
     @Published var currencySelection: Int = UserDefaults.standard.integer(forKey: "LocalCurrency") { didSet { setLocalCurrency(selection: currencySelection) } }
-    @Published var feesSelection: Double = UserDefaults.standard.double(forKey: "FeesPriority") { didSet { setFeesPriority(priority: feesSelection) } }
-    @Published var fees: Double = UserDefaults.standard.double(forKey: "Fees") { didSet { setFees(fees: fees) } }
+    @Published var feesSelection: Double = UserDefaults.standard.double(forKey: "FeesPriority") { didSet {
+            setFeesPriority(priority: feesSelection)
+            setFees(fees: getFees())
+        } }
+    @Published var fees: Double = UserDefaults.standard.double(forKey: "Fees")
     @Published var feesIncluded: Bool = UserDefaults.standard.bool(forKey: "FeesIncluded") { didSet { setFeesIncluded(included: feesIncluded) } }
-    @Published var useFixAddress: Bool = UserDefaults.standard.bool(forKey: "UseFixAddress") { didSet { setUseFixAddress(use: useFixAddress) } }
+    @Published var useFixedAddress: Bool = UserDefaults.standard.bool(forKey: "UseFixedAddress") { didSet {
+            setUseFixedAddress(use: useFixedAddress)
+            setFixedAddress(addr: useFixedAddress ? payeeAddr : "")
+        } }
     @Published var useAllFunds: Bool = false
     @Published var authByPin: Bool = false
     @Published var payee: String = ""
@@ -112,7 +119,7 @@ class AppConfig: ObservableObject {
     @Published var amountRecv: String = "0.0"
     @Published var pageSelected: Int = 0
     @Published var interacts: Interacts = .none
-    @Published var payeeAddr: String = ""
+    @Published var payeeAddr: String = UserDefaults.standard.string(forKey: "FixedAddress") ?? ""
     @Published var requestHint: String = AppStrings.readGeneralInformation
     @Published var requestCommand: String = ""
 
@@ -121,8 +128,9 @@ class AppConfig: ObservableObject {
         UserDefaults.standard.register(defaults: ["LocalCurrency": 5])
         UserDefaults.standard.register(defaults: ["FeesPriority": 1.0])
         UserDefaults.standard.register(defaults: ["FeesIncluded": false])
-        UserDefaults.standard.register(defaults: ["UseFixAddress": false])
         UserDefaults.standard.register(defaults: ["Fees": 0.00001])
+        UserDefaults.standard.register(defaults: ["UseFixedAddress": false])
+        UserDefaults.standard.register(defaults: ["FixedAddress": ""])
     }
     
     func setLocalCurrency(selection: Int) -> Void {
@@ -135,6 +143,7 @@ class AppConfig: ObservableObject {
     
     func setFeesPriority(priority: Double) {
         UserDefaults.standard.set(priority, forKey: "FeesPriority")
+        setFees(fees: getFees())
     }
     
     func getFeesPriority() -> FeesPriority {
@@ -162,6 +171,7 @@ class AppConfig: ObservableObject {
         }
         else {
             fees = priorityFees[getFeesPriority().ordinal - 1]
+            setFees(fees: priorityFees[getFeesPriority().ordinal - 1])
         }
         return fees
     }
@@ -170,8 +180,12 @@ class AppConfig: ObservableObject {
         UserDefaults.standard.set(included, forKey: "FeesIncluded")
     }
     
-    func setUseFixAddress(use: Bool) {
-        UserDefaults.standard.set(use, forKey: "UseFixAddress")
+    func setUseFixedAddress(use: Bool) {
+        UserDefaults.standard.set(use, forKey: "UseFixedAddress")
+    }
+    
+    func setFixedAddress(addr: String) {
+        UserDefaults.standard.set(addr, forKey: "FixedAddress")
     }
     
     static let accentColorLight: Color = .blue

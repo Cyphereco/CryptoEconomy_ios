@@ -24,6 +24,7 @@
 "date" = "日付";
 "delete" = "削除";
 "delete_all_transaction_records?" = "すべての取引記録を削除しますか？";
+"Delete this address?" = "このアドレスを削除?";
 "edit_address" = "アドレス編集";
 "estimated_fees" = "推定手数料";
 "excluded" = "抜き";
@@ -50,6 +51,7 @@
 "received_amount" = "受金金額";
 "recipient" = "受金方";
 "recipient_address" = "入金アドレス";
+"Recipient address is empty!" = "入金アドレスが空です!";
 "Request has been sent." = "リクエストが送信されました。";
 "Request processed." = "リクエストを処理しました。";
 "reset" = "リセット";
@@ -77,7 +79,8 @@
 "Unknown NDEF tag status." = "不明なNDEFタグのステータス。";
 "unlock" = "ロック解除";
 "use_all_funds" = "すべての資金を出す";
-"use_fix_address" = "固定支払いアドレスを使用";
+"use_fixed_address" = "固定支払いアドレスを使用";
 "user_guide" = "ユーザーガイド";
+"Version" = "バージョン";
 "write_note" = "メモを書きます";
 
