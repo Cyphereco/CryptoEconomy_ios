@@ -29,6 +29,7 @@ class BlockChainInfoService {
     static let webService = BaseWebServices()
     static let baseUrl = "https://blockchain.info/"
     static let pathBalance = "balance"
+    static let pathTicker = "ticker"
     static let paramActive = "active"
     static let keyFinalBalance = "final_balance"
     
@@ -87,6 +88,61 @@ class BlockChainInfoService {
             }
         })
     }
+    
+    static func updateBtcExchangeRates() -> Promise<String> {
+        // return Promise
+        return Promise<String>.init(resolver: { (resolver) in
+            //
+            var parameters = [String: AnyObject]()
+                        
+            parameters.updateValue("USD" as AnyObject, forKey: paramActive)
+
+            // generate Request
+            let req = webService.requestGenerator(baseUrl: baseUrl, route: pathTicker, parameters: parameters, method: .get)
+            
+            firstly {
+                // send request and get json response
+                webService.setupResponse(req)
+            }.then { (responseJSON) -> Promise<String> in
+                // process response
+                return Promise<String>.init(resolver: { (resolver) in
+                    Logger.shared.debug(responseJSON)
+                    // get the balacne from response
+                    // The response is like:
+                    // {
+                    //  "13GNvHaSjhs8dLbEWrRP7Lvbb8ZBsKUU4P" : {
+                    //    "n_tx" : 11,
+                    //    "final_balance" : 4987000,
+                    //    "total_received" : 54918000
+                    //  }
+                    // }
+                    let ticker: String? = responseJSON.stringValue
+                    let cny: String? = responseJSON["CNY"]["last"].stringValue
+                    let eur: String? = responseJSON["EUR"]["last"].stringValue
+                    let jpy: String? = responseJSON["JPY"]["last"].stringValue
+                    let twd: String? = responseJSON["TWD"]["last"].stringValue
+                    let usd: String? = responseJSON["USD"]["last"].stringValue
+
+                    AppConfig.exchageRates = ExchangeRates(cny: (cny! as NSString).doubleValue, eur: (eur! as NSString).doubleValue, jpy: (jpy! as NSString).doubleValue, twd: (twd! as NSString).doubleValue, usd: (usd! as NSString).doubleValue)
+
+                    if let ticker = ticker {
+                        resolver.fulfill(ticker)
+                    } else {
+                        resolver.reject(WebServiceError.decodeContentFailure)
+                    }
+                })
+            }.done { ticker in
+                // Complete
+                resolver.fulfill(ticker)
+            }.catch(policy: .allErrors) { (error) in
+                // error handling
+                Logger.shared.debug(error)
+                // XXX parse error
+                resolver.reject(WebServiceError.otherErrors)
+            }
+        })
+    }
+
 }
 
 

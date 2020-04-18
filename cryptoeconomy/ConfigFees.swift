@@ -14,6 +14,7 @@ struct ConfigFees: View {
 
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appConfig: AppConfig
+    private let textFieldObserver = TextFieldObserver()
 
     var body: some View {
         GeometryReader { geometry in
@@ -35,6 +36,12 @@ struct ConfigFees: View {
                             .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
                             .frame(width: 100)
                             .padding(.top, 10)
+                            .introspectTextField { textField in
+                                textField.addTarget(
+                                    self.textFieldObserver,
+                                    action: #selector(TextFieldObserver.textFieldDidBeginEditing),
+                                    for: .editingDidBegin
+                                )}
                         }
                         else {
                             Text(AppTools.btcToFormattedString(self.appConfig.fees))

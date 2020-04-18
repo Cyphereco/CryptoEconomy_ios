@@ -1,6 +1,7 @@
 ${PODS_ROOT}/Target Support Files/Pods-cryptoeconomy-cryptoeconomyUITests/Pods-cryptoeconomy-cryptoeconomyUITests-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework
+${BUILT_PRODUCTS_DIR}/Introspect/Introspect.framework
 ${BUILT_PRODUCTS_DIR}/Log4swift/Log4swift.framework
 ${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework
 ${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework

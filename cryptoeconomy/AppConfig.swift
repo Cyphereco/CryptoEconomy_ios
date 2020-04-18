@@ -9,6 +9,30 @@
 import SwiftUI
 import Foundation
 
+struct ExchangeRates {
+    var cny: Double
+    var eur: Double
+    var jpy: Double
+    var twd: Double
+    var usd: Double
+    
+    init() {
+        self.cny = 0
+        self.eur = 0
+        self.jpy = 0
+        self.twd = 0
+        self.usd = 0
+    }
+    
+    init(cny: Double, eur: Double, jpy: Double, twd: Double, usd: Double) {
+        self.cny = cny
+        self.eur = eur
+        self.jpy = jpy
+        self.twd = twd
+        self.usd = usd
+    }
+}
+
 enum FeesPriority: CaseIterable {
     case CUSTOM
     case LOW
@@ -93,11 +117,13 @@ enum Interacts: CaseIterable{
 
 class AppConfig: ObservableObject {
     static let version = "1.0"
+    
+    static var exchageRates = ExchangeRates()
+    
     // fake fees for demo/test, should be updated with online fees
     var priorityFees = [0.000008, 0.00001, 0.00002]
-
-    // fake rates for demo/test, should be updated with online rates
-    static var fiatRates = [48352.46, 6301.76, 736225.0, 206318.37, 6825.40]
+    
+    private var editLock = false
 
     // default values
     @Published var currencySelection: Int = UserDefaults.standard.integer(forKey: "LocalCurrency") { didSet { setLocalCurrency(selection: currencySelection) } }
@@ -119,8 +145,25 @@ class AppConfig: ObservableObject {
     @Published var authByPin: Bool = false
     @Published var payee: String = ""
     @Published var payer: String = ""
-    @Published var amountSend: String = "0.0"
-    @Published var amountRecv: String = "0.0"
+    @Published var amountSend: String = "" { didSet {
+            if !editLock {
+                editLock = true
+                self.amountSendFiat = "\(AppTools.fiatToFormattedString(AppTools.btcToFiat((self.amountSend as NSString).doubleValue, currencySelection: self.currencySelection)))"
+            }
+            else {
+                editLock = false
+            }
+        } }
+    @Published var amountRecv: String = ""
+    @Published var amountSendFiat: String = "" { didSet {
+            if !editLock {
+                editLock = true
+                self.amountSend = "\(AppTools.btcToFormattedString(AppTools.fiatToBtc((self.amountSendFiat as NSString).doubleValue, currencySelection: self.currencySelection)))"
+            }
+            else {
+                editLock = false
+        }
+        } }
     @Published var pageSelected: Int = 0
     @Published var interacts: Interacts = .none
     @Published var payeeAddr: String = UserDefaults.standard.string(forKey: "FixedAddress") ?? ""
@@ -166,11 +209,6 @@ class AppConfig: ObservableObject {
             return .HIGH
         }
     }
-    
-//    func setFees(fees: Double) {
-//        self.fees = fees
-//        UserDefaults.standard.set(fees, forKey: "Fees")
-//    }
        
     func setFeesIncluded(included: Bool) {
         UserDefaults.standard.set(included, forKey: "FeesIncluded")

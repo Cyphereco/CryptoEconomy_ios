@@ -42,7 +42,7 @@ struct PagePay: View {
                             }
                         }.padding(.horizontal, 20.0).padding(.top, 50)
                         
-                        TextFieldPayAmount(localCurrency: self.$appConfig.currencySelection, strAmountBtc: "", strAmountFiat: "").keyboardType(.decimalPad)
+                        TextFieldPayAmount()
                             .padding(.horizontal, 20.0)
                         
                         Toggle(isOn: self.$appConfig.authByPin){

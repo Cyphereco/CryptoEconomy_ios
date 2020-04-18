@@ -7,6 +7,14 @@
 //
 
 import SwiftUI
+import Introspect
+
+class TextFieldObserver: NSObject {
+    @objc
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.selectAll(nil)
+    }
+}
 
 struct RowButton: View {
     var text: String

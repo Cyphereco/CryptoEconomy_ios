@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (4.9.1)
   - BigInt (5.0.0)
+  - Introspect (0.1.0)
   - Log4swift (1.0.4)
   - PromiseKit/Alamofire (6.13.1):
     - Alamofire (~> 4.0)
@@ -10,6 +11,7 @@ PODS:
 
 DEPENDENCIES:
   - BigInt (~> 5.0)
+  - Introspect
   - Log4swift (= 1.0.4)
   - PromiseKit/Alamofire (~> 6.0)
   - SwiftyJSON (~> 4.0)
@@ -18,6 +20,7 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - BigInt
+    - Introspect
     - Log4swift
     - PromiseKit
     - SwiftyJSON
@@ -25,10 +28,11 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   BigInt: 74b4d88367b0e819d9f77393549226d36faeb0d8
+  Introspect: ad32f2b7b9e7ac2c008b9dfec3d5325fbd3660fa
   Log4swift: 72cdc47e8ad2a3b6168c8bcafeb7f51c587561fb
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: 019d068948fc8b8eaf104dc935761afb5b4e2303
+PODFILE CHECKSUM: cee7d951812349ec1c90a411f285f8fefff84358
 
 COCOAPODS: 1.9.1

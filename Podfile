@@ -10,6 +10,7 @@ target 'cryptoeconomy' do
   pod 'SwiftyJSON', '~> 4.0'
   pod 'PromiseKit/Alamofire', '~> 6.0'
   pod 'BigInt', '~> 5.0'
+  pod 'Introspect'
 
   target 'cryptoeconomyTests' do
     inherit! :search_paths
