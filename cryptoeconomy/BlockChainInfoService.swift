@@ -33,6 +33,8 @@ class BlockChainInfoService {
     static let paramActive = "active"
     static let keyFinalBalance = "final_balance"
     
+    static let txFeesUrl = "https://bitcoinfees.earn.com/api/v1/fees/recommended"
+    
     static let shared = BlockChainInfoService()
     
     static func getBalance(address: String) -> Promise<Int64> {
@@ -92,13 +94,8 @@ class BlockChainInfoService {
     static func updateBtcExchangeRates() -> Promise<ExchangeRates> {
         // return Promise
         return Promise<ExchangeRates>.init(resolver: { (resolver) in
-            //
-            var parameters = [String: AnyObject]()
-                        
-            parameters.updateValue("USD" as AnyObject, forKey: paramActive)
-
             // generate Request
-            let req = webService.requestGenerator(baseUrl: baseUrl, route: pathTicker, parameters: parameters, method: .get)
+            let req = webService.requestGenerator(baseUrl: baseUrl, route: pathTicker, parameters: nil, method: .get)
             
             firstly {
                 // send request and get json response
@@ -119,6 +116,38 @@ class BlockChainInfoService {
                 })
             }.done{ exchangeRates in
                 resolver.fulfill(exchangeRates)
+            }.catch(policy: .allErrors) { (error) in
+                // error handling
+                Logger.shared.debug(error)
+                // XXX parse error
+                resolver.reject(WebServiceError.otherErrors)
+            }
+        })
+    }
+
+    static func updateBestTxFees() -> Promise<BestFees> {
+        // return Promise
+        return Promise<BestFees>.init(resolver: { (resolver) in
+            // generate Request
+            let req = webService.requestGenerator(baseUrl: txFeesUrl, route: "", parameters: nil, method: .get)
+            
+            firstly {
+                // send request and get json response
+                webService.setupResponse(req)
+            }.then { (responseJSON) -> Promise<BestFees> in
+                // process response
+                return Promise<BestFees>.init(resolver: { (resolver) in
+                    Logger.shared.debug(responseJSON)
+                    let high: String? = responseJSON["fastestFee"].stringValue
+                    let mid: String? = responseJSON["halfHourFee"].stringValue
+                    let low: String? = responseJSON["hourFee"].stringValue
+
+                    let bestFees = BestFees(low: Int((low! as NSString).intValue), mid: Int((mid! as NSString).intValue), high: Int((high! as NSString).intValue))
+                    
+                    resolver.fulfill(bestFees)
+                })
+            }.done{ bestFees in
+                resolver.fulfill(bestFees)
             }.catch(policy: .allErrors) { (error) in
                 // error handling
                 Logger.shared.debug(error)

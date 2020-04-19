@@ -9,6 +9,38 @@
 import SwiftUI
 import Foundation
 
+class BestFees {
+    var low: Int
+    var mid: Int
+    var high: Int
+    
+    init() {
+        self.low = 0
+        self.mid = 0
+        self.high = 0
+    }
+    
+    init(low: Int, mid: Int, high: Int) {
+        self.low = low
+        self.mid = mid
+        self.high = high
+    }
+    
+    func copy(bestFees: BestFees) {
+        self.low = bestFees.low
+        self.mid = bestFees.mid
+        self.high = bestFees.high
+        
+        if self.mid == self.high || self.mid == self.low {
+            self.mid = Int((self.low + self.high) / 2)
+        }
+    }
+    
+    func toString() -> String {
+        return "[low: \(low), mid: \(mid), high: \(high)]"
+    }
+}
+
 class ExchangeRates {
     var cny: Double
     var eur: Double
@@ -129,13 +161,12 @@ enum Interacts: CaseIterable{
 
 class AppConfig: ObservableObject {
     static let version = "1.0"
-    
-    @State static var exchangeRates = ExchangeRates()
-    
-    // fake fees for demo/test, should be updated with online fees
-    var priorityFees = [0.000008, 0.00001, 0.00002]
+    static let estBlockSize = 200
     
     private var editLock = false
+
+    @State static var exchangeRates = ExchangeRates()
+    @State static var bestFees = BestFees()
 
     // default values
     @Published var currencySelection: Int = UserDefaults.standard.integer(forKey: "LocalCurrency") { didSet { setLocalCurrency(selection: currencySelection) } }
@@ -206,10 +237,31 @@ class AppConfig: ObservableObject {
         UserDefaults.standard.register(defaults: ["UseFixedAddress": false])
         UserDefaults.standard.register(defaults: ["FixedAddress": ""])
         
+        updateTxFees()
         updateExchangeRates()
     }
     
+    @objc func updateTxFees() {
+        var nextUpdate = 10.0  // seconds
+
+        _ = BlockChainInfoService.updateBestTxFees().done({ bestFees in
+            AppConfig.bestFees.copy(bestFees: bestFees)
+            print(AppConfig.bestFees.toString())
+
+            if AppConfig.bestFees.high > 0 {
+                self.setFeesPriority(selection: self.feesSelection)
+                nextUpdate = 300.0
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
+                       self.updateTxFees()
+            }
+        })
+    }
+
     @objc func updateExchangeRates() {
+        var nextUpdate = 10.0  // seconds
+
         _ = BlockChainInfoService.updateBtcExchangeRates().done({ exchangeRates in
             AppConfig.exchangeRates.copy(exchangeRates: exchangeRates)
             print(AppConfig.exchangeRates.toString())
@@ -217,16 +269,11 @@ class AppConfig: ObservableObject {
             if AppConfig.exchangeRates.usd > 0 {
                 self.strFees = "\(AppTools.btcToFormattedString(self.fees))"
                 _ = Timer.scheduledTimer(timeInterval: 300.0, target: self, selector: #selector(self.updateExchangeRates), userInfo: nil, repeats: true)
+                    nextUpdate = 300.0
             }
-            else {
-                Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { timer in
-                    if AppConfig.exchangeRates.usd > 0 {
-                        timer.invalidate()
-                    }
-                    else {
-                        self.updateExchangeRates()
-                    }
-                }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
+                       self.updateExchangeRates()
             }
         })
     }
@@ -241,10 +288,18 @@ class AppConfig: ObservableObject {
     
     func setFeesPriority(selection: Double) {
         UserDefaults.standard.set(selection, forKey: "FeesPriority")
-        if (getFeesPriority() != FeesPriority.CUSTOM) {
-            fees = priorityFees[getFeesPriority().ordinal - 1]
-            strFees = "\(AppTools.btcToFormattedString(fees))"
+        switch selection {
+            case 1.0:
+                self.fees = Double(AppConfig.bestFees.low * AppConfig.estBlockSize) / 100000000
+            case 2.0:
+                self.fees = Double(AppConfig.bestFees.mid * AppConfig.estBlockSize) / 100000000
+            case 3.0:
+                self.fees = Double(AppConfig.bestFees.high * AppConfig.estBlockSize) / 100000000
+            default:
+                fees = UserDefaults.standard.double(forKey: "Fees")
         }
+
+        strFees = "\(AppTools.btcToFormattedString(fees))"
     }
     
     func getFeesPriority() -> FeesPriority {
