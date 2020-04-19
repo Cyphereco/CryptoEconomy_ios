@@ -117,11 +117,9 @@ struct ContentView: View {
     }
     
     init() {
-        _ = BlockChainInfoService.updateBtcExchangeRates().done({result in
-            print(AppConfig.exchageRates)
-        })
+
     }
-    
+        
     func closeMenu() {
         UIApplication.shared.endEditing()
         withAnimation {

@@ -9,7 +9,7 @@
 import SwiftUI
 import Foundation
 
-struct ExchangeRates {
+class ExchangeRates {
     var cny: Double
     var eur: Double
     var jpy: Double
@@ -30,6 +30,18 @@ struct ExchangeRates {
         self.jpy = jpy
         self.twd = twd
         self.usd = usd
+    }
+    
+    func copy(exchangeRates: ExchangeRates) {
+        self.cny = exchangeRates.cny
+        self.eur = exchangeRates.eur
+        self.jpy = exchangeRates.jpy
+        self.twd = exchangeRates.twd
+        self.usd = exchangeRates.usd
+    }
+    
+    func toString() -> String {
+        return "[cny: \(cny), eur: \(eur), jpy: \(jpy), twd: \(twd), usd: \(usd)]"
     }
 }
 
@@ -118,7 +130,7 @@ enum Interacts: CaseIterable{
 class AppConfig: ObservableObject {
     static let version = "1.0"
     
-    static var exchageRates = ExchangeRates()
+    @State static var exchangeRates = ExchangeRates()
     
     // fake fees for demo/test, should be updated with online fees
     var priorityFees = [0.000008, 0.00001, 0.00002]
@@ -185,7 +197,7 @@ class AppConfig: ObservableObject {
     @Published var payeeAddr: String = UserDefaults.standard.string(forKey: "FixedAddress") ?? ""
     @Published var requestHint: String = AppStrings.readGeneralInformation
     @Published var requestCommand: String = ""
-
+    
     init() {
         UserDefaults.standard.register(defaults: ["LocalCurrency": 5])
         UserDefaults.standard.register(defaults: ["FeesPriority": 1.0])
@@ -193,6 +205,30 @@ class AppConfig: ObservableObject {
         UserDefaults.standard.register(defaults: ["Fees": 0.00001])
         UserDefaults.standard.register(defaults: ["UseFixedAddress": false])
         UserDefaults.standard.register(defaults: ["FixedAddress": ""])
+        
+        updateExchangeRates()
+    }
+    
+    @objc func updateExchangeRates() {
+        _ = BlockChainInfoService.updateBtcExchangeRates().done({ exchangeRates in
+            AppConfig.exchangeRates.copy(exchangeRates: exchangeRates)
+            print(AppConfig.exchangeRates.toString())
+
+            if AppConfig.exchangeRates.usd > 0 {
+                self.strFees = "\(AppTools.btcToFormattedString(self.fees))"
+                _ = Timer.scheduledTimer(timeInterval: 300.0, target: self, selector: #selector(self.updateExchangeRates), userInfo: nil, repeats: true)
+            }
+            else {
+                Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { timer in
+                    if AppConfig.exchangeRates.usd > 0 {
+                        timer.invalidate()
+                    }
+                    else {
+                        self.updateExchangeRates()
+                    }
+                }
+            }
+        })
     }
     
     func setLocalCurrency(selection: Int) -> Void {

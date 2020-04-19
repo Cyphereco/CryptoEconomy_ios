@@ -20,15 +20,15 @@ struct AppTools {
     static func getExchangeRate(currency: Int) -> Double {
         switch currency {
             case FiatCurrency.CNY.ordinal:
-                return AppConfig.exchageRates.cny
+                return AppConfig.exchangeRates.cny
             case FiatCurrency.EUR.ordinal:
-                return AppConfig.exchageRates.eur
+                return AppConfig.exchangeRates.eur
             case FiatCurrency.JPY.ordinal:
-                return AppConfig.exchageRates.jpy
+                return AppConfig.exchangeRates.jpy
             case FiatCurrency.TWD.ordinal:
-                return AppConfig.exchageRates.twd
+                return AppConfig.exchangeRates.twd
             default:
-                return AppConfig.exchageRates.usd
+                return AppConfig.exchangeRates.usd
         }
     }
     
