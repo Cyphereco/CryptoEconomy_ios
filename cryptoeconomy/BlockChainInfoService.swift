@@ -251,7 +251,7 @@ class BlockChainInfoService: WebService {
             }.then { (responseJSON) -> Promise<ExchangeRates> in
                 // process response
                 return Promise<ExchangeRates>.init(resolver: { (resolver) in
-                    Logger.shared.debug(responseJSON)
+//                    Logger.shared.debug(responseJSON)
                     let cny: String? = responseJSON["CNY"]["last"].stringValue
                     let eur: String? = responseJSON["EUR"]["last"].stringValue
                     let jpy: String? = responseJSON["JPY"]["last"].stringValue
@@ -285,7 +285,7 @@ class BlockChainInfoService: WebService {
             }.then { (responseJSON) -> Promise<BestFees> in
                 // process response
                 return Promise<BestFees>.init(resolver: { (resolver) in
-                    Logger.shared.debug(responseJSON)
+//                    Logger.shared.debug(responseJSON)
                     let high: String? = responseJSON["fastestFee"].stringValue
                     let mid: String? = responseJSON["halfHourFee"].stringValue
                     let low: String? = responseJSON["hourFee"].stringValue
