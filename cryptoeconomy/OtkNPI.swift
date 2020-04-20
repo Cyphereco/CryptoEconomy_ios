@@ -9,6 +9,69 @@
 import Combine
 import CoreNFC
 
+enum OtkCommand: CaseIterable{
+    case invalid
+    case unlock
+    case showKey
+    case sign
+    case setKey
+    case setPin
+    case setNote
+    case cancel
+    case reset
+    case exportKey
+    
+    var code: Int {
+        switch self {
+        case .unlock:
+            return 161
+        case .showKey:
+            return 162
+        case .sign:
+            return 163
+        case .setKey:
+            return 164
+        case .setPin:
+            return 165
+        case .setNote:
+            return 166
+        case .cancel:
+            return 167
+        case .reset:
+            return 168
+        case .exportKey:
+            return 169
+        default:
+            return 0
+        }
+    }
+    
+    var string: String {
+        switch self {
+        case .unlock:
+            return "161"
+        case .showKey:
+            return "162"
+        case .sign:
+            return "163"
+        case .setKey:
+            return "164"
+        case .setPin:
+            return "165"
+        case .setNote:
+            return "166"
+        case .cancel:
+            return "167"
+        case .reset:
+            return "168"
+        case .exportKey:
+            return "169"
+        default:
+            return "0"
+        }
+    }
+}
+
 struct OtkNDEFTag {
     var info = ""
     var state = ""
@@ -48,8 +111,8 @@ struct OtkData {
     var signatures: Array<String> = []
 }
 
-struct OtkRequestCommand {
-    var commandCode = ""
+struct OtkRequest {
+    var command: OtkCommand = .invalid
     var pin = ""
     var data = ""
     var option = ""
@@ -64,7 +127,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
     @Published var otkInfo = OtkInfo() { didSet { didChange.send() } }
     @Published var otkState = OtkState() { didSet { didChange.send() } }
     @Published var otkData = OtkData() { didSet { didChange.send() } }
-    @Published var requestCommand = OtkRequestCommand() { didSet { didChange.send() } }
+    @Published var request = OtkRequest() { didSet { didChange.send() } }
     @Published var otkDetected = false { didSet { didChange.send() } }
 
     // Private variables
@@ -81,7 +144,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         self.otkInfo = OtkInfo()
         self.otkState = OtkState()
         self.otkData = OtkData()
-        self.requestCommand = OtkRequestCommand()
+        self.request = OtkRequest()
         self.otkDetected = false
     }
 
@@ -186,25 +249,24 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                                         self.sessionId = strArray[1]
                                         let otkState = OtkNfcProtocolInterface.parseOtkState(strState: self.readTag.state)
                                         
-                                        if self.requestCommand.commandCode == "" ||
-                                            self.requestCommand.commandCode == "160" ||
+                                        if self.request.command == .invalid ||
                                             otkState.executionResult > 0 {
                                             session.alertMessage = AppStrings.strRequestProcessed
                                             session.invalidate()
                                             self.otkDetected = true
                                         }
                                         else {
-                                            session.alertMessage = AppStrings.strSendingRequest + " (\(self.requestCommand.commandCode))..."
+//                                            session.alertMessage = AppStrings.strSendingRequest + " (\(self.request.command.string))..."
                                             print("Session ID: \(self.sessionId)")
                                             let sessId = self.payloadConstruct(str: self.sessionId)
                                             let reqId = self.payloadConstruct(str: self.sessionId)
-                                            let reqCmd = self.payloadConstruct(str: self.requestCommand.commandCode)
-                                            let reqData = self.payloadConstruct(str: self.requestCommand.data)
+                                            let reqCmd = self.payloadConstruct(str: self.request.command.string)
+                                            let reqData = self.payloadConstruct(str: self.request.data)
                                             var opt = ""
-                                            if self.requestCommand.pin != "" {
-                                                opt = "pin=\(self.requestCommand.pin)"
-                                                if self.requestCommand.option != "" {
-                                                    opt = "\(opt),\(self.requestCommand.option)"
+                                            if self.request.pin.count == 8 {
+                                                opt = "pin=\(self.request.pin)"
+                                                if self.request.option.count > 0 {
+                                                    opt = "\(opt),\(self.request.option)"
                                                 }
                                             }
                                             let reqOpt = self.payloadConstruct(str: opt)

@@ -13,54 +13,63 @@ struct SideMenuOpenTurnKey: View {
     let closeMenu: ()->Void
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appController: AppController
-
+    
     var body: some View {
-        VStack {
+        var otkRequest = OtkRequest()
+        
+        return VStack {
             RowButton(text: AppStrings.setPinCode){
-                self.setOtkRequest(command: "166", hint: AppStrings.setPinCode)
+                otkRequest.command = .setPin
+                self.setOtkRequest(otkRequest, hint: AppStrings.setPinCode)
                 self.closeMenu()
             }.foregroundColor(.primary).padding()
             
             RowButton(text: AppStrings.showKey){
-                self.setOtkRequest(command: "162", hint: AppStrings.showKey)
+                otkRequest.command = .showKey
+                self.setOtkRequest(otkRequest, hint: AppStrings.showKey)
                 self.closeMenu()
             }.foregroundColor(.primary).padding()
             
             RowButton(text: AppStrings.writeNote){
-                self.setOtkRequest(command: "167", hint: AppStrings.writeNote)
+                otkRequest.command = .setNote
+                self.setOtkRequest(otkRequest, hint: AppStrings.writeNote)
                 self.closeMenu()
             }.foregroundColor(.primary).padding()
             
             RowButton(text: AppStrings.msgSignVerify){
-                self.setOtkRequest(command: "160", hint: AppStrings.msgSignVerify)
+                self.setOtkRequest(otkRequest, hint: AppStrings.msgSignVerify)
                 self.closeMenu()
             }.foregroundColor(.primary).padding()
             
             RowButton(text: AppStrings.chooseKey){
-                self.setOtkRequest(command: "165", hint: AppStrings.chooseKey)
+                otkRequest.command = .setKey
+                self.setOtkRequest(otkRequest, hint: AppStrings.chooseKey)
                 self.closeMenu()
             }.foregroundColor(.primary).padding()
             
             RowButton(text: AppStrings.unlock){
-                self.setOtkRequest(command: "161", hint: AppStrings.unlock)
+                otkRequest.command = .unlock
+                self.setOtkRequest(otkRequest, hint: AppStrings.unlock)
                 self.closeMenu()
             }.foregroundColor(.primary).padding()
             
             RowButton(text: AppStrings.reset){
-                self.setOtkRequest(command: "168", hint: AppStrings.reset)
+                otkRequest.command = .reset
+                self.setOtkRequest(otkRequest, hint: AppStrings.reset)
                 self.closeMenu()
             }.foregroundColor(.primary).padding()
             
             RowButton(text: AppStrings.exportKey){
-                self.setOtkRequest(command: "169", hint: AppStrings.exportKey)
+                otkRequest.command = .exportKey
+                self.setOtkRequest(otkRequest, hint: AppStrings.exportKey)
                 self.closeMenu()
             }.foregroundColor(.primary).padding()
             
         }.asSideMenu(isOpened: self.isOpened)
     }
     
-    func setOtkRequest(command: String, hint: String) {
-        AppController.otkNpi.requestCommand.commandCode = command
+    func setOtkRequest(_ request: OtkRequest, hint: String) {
+        AppController.otkNpi.request = request
         self.appController.requestHint = hint
     }
 }

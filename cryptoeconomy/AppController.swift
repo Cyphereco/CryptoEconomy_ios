@@ -151,6 +151,7 @@ enum FiatCurrency: CaseIterable{
         }
     }
 }
+
 enum Interacts: CaseIterable{
     case none
     case menuPay
@@ -228,7 +229,12 @@ class AppController: ObservableObject {
                 amountSendFiat = "0"
             }
         } }
-    @Published var pageSelected: Int = 0
+    @Published var pageSelected: Int = 0 { didSet {
+            if pageSelected != 1 {
+                AppController.otkNpi.request = OtkRequest()
+                self.requestHint = AppStrings.readGeneralInformation
+            }
+        }}
     @Published var interacts: Interacts = .none
     @Published var payeeAddr: String = UserDefaults.standard.string(forKey: "FixedAddress") ?? ""
     @Published var requestHint: String = AppStrings.readGeneralInformation

@@ -35,19 +35,25 @@ struct PageOpenTurnKey: View {
                         Text("(" + self.appController.requestHint + ")").padding()
                         
                         VStack(alignment: .center, spacing: 20) {
-                            if (self.otkNpi.requestCommand.commandCode != "" &&
-                                self.otkNpi.requestCommand.commandCode != "160") {
-                                if (self.appController.authByPin) {
+                            if (self.otkNpi.request.command != .invalid &&
+                                self.otkNpi.request.command != .reset) {
+                                if (self.otkNpi.request.command == .unlock || self.appController.authByPin) {
                                     Image(systemName: "ellipsis").font(.system(size: 19)).padding(4)
                                 }
-                                else {
+                                
+                                if (self.otkNpi.request.command != .unlock && !self.appController.authByPin) {
                                     Image("fingerprint")
                                 }
 
-                                HStack {
-                                    Text(AppStrings.authByPin).font(.footnote)
-                                    Toggle("", isOn: self.$appController.authByPin)
-                                        .labelsHidden()
+                                if (self.otkNpi.request.command != .exportKey && self.otkNpi.request.command != .unlock) {
+                                    HStack {
+                                        Text(AppStrings.authByPin).font(.footnote)
+                                        Toggle("", isOn: self.$appController.authByPin)
+                                            .labelsHidden()
+                                    }
+                                }
+                                else {
+                                    Spacer().frame(height: 29)
                                 }
                             }
                             else {
@@ -55,8 +61,6 @@ struct PageOpenTurnKey: View {
                             }
                             
                             Button(action: {
-                                self.otkNpi.requestCommand.commandCode = "162"
-                                self.otkNpi.requestCommand.pin = "99999999"
                                 self.otkNpi.beginScanning(completion: {
                                     if (self.otkNpi.otkDetected) {
                                         print(self.otkNpi)
