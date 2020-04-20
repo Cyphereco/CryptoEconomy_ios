@@ -14,11 +14,36 @@ protocol WebService {
 }
 
 class WebServices {
-    static func getBalance(webService: AnyClass = BlockChainInfoService.self, address: String) -> Promise<Int64> {
-        if webService.self is BlockChainInfoService.Type {
+    /**
+      Usage:
+        -Use default service provider
+	     WebServices.getBalance(address: "13GNvHaSjhs8dLbEWrRP7Lvbb8ZBsKUU4P").done { (balance) in
+	        // Success case
+	        Logger.shared.debug(balance)
+	     }.catch { error in
+	        // Error case
+	        Logger.shared.debug(error)
+	     }.finally {
+	        // No matter success or fail will run finally
+	        Logger.shared.debug("finally")
+	     }
+      	-Assign a service provider
+	     WebServices.getBalance(webServiceProvider: BlockCypherService.self as AnyClass, address: "13GNvHaSjhs8dLbEWrRP7Lvbb8ZBsKUU4P").done { (balance) in
+	        // Success case
+	        Logger.shared.debug(balance)
+	     }.catch { error in
+	        // Error case
+	        Logger.shared.debug(error)
+	     }.finally {
+	        // No matter success or fail will run finally
+	        Logger.shared.debug("finally")
+	     }
+     */
+    static func getBalance(webServiceProvider: AnyClass = BlockChainInfoService.self, address: String) -> Promise<Int64> {
+        if webServiceProvider.self is BlockChainInfoService.Type {
             return BlockChainInfoService.getBalance(address: address)
         }
-        else if webService.self is BlockCypherService.Type {
+        else if webServiceProvider.self is BlockCypherService.Type {
             return BlockCypherService.getBalance(address: address)
         }
         return Promise<Int64>.init(resolver: { (resolver) in
