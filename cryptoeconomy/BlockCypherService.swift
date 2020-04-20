@@ -24,8 +24,14 @@ import SwiftyJSON
         Logger.shared.debug("finally")
     }
  */
-class BlockCypherService: BaseWebServices {
-    static let shared = BlockCypherService()
+class BlockCypherService: WebService {
+    static func getBalance(address: String) -> Promise<Int64> {
+        return Promise<Int64>.init(resolver: { (resolver) in
+            resolver.reject(WebServiceError.serviceUnavailable)
+        })
+    }
+    
+    //static let shared = BlockCypherService()
     static let webService = BaseWebServices()
     static let baseMainNetUrl = "https://api.blockcypher.com/v1/btc/main/"
     static let baseTestNetUrl = "https://api.blockcypher.com/v1/btc/test3/"

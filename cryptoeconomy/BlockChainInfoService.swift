@@ -12,8 +12,7 @@ import Alamofire
 import SwiftyJSON
 
 
-class BlockChainInfoService: BaseWebServices {
-    
+class BlockChainInfoService: WebService {
     static let webService = BaseWebServices()
     static let baseMainNetUrl = "https://blockchain.info/"
     static let baseTestNetUrl = "https://testnet.blockchain.info/"

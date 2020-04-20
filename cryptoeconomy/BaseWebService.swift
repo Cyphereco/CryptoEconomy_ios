@@ -10,6 +10,7 @@ import Alamofire
 import PromiseKit
 import SwiftyJSON
 
+
 extension Request {
     public func debugLog() -> Self {
         #if DEBUG
@@ -22,6 +23,11 @@ extension Request {
 }
 
 class BaseWebServices {
+    
+//    class func getBalance(address: String) -> Promise<Int64> {
+//        return Promise<Int64>.init(resolver: { (resolver) in
+//        })
+//    }
     
     /**
      * Base Http Request Generator
