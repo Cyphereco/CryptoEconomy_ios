@@ -26,19 +26,19 @@ import SwiftyJSON
  */
 class BlockCypherService: BaseWebServices {
     static let shared = BlockCypherService()
-
-    let baseMainNetUrl = "https://api.blockcypher.com/v1/btc/main/"
-    let baseTestNetUrl = "https://api.blockcypher.com/v1/btc/test3/"
-    let pathNewTx = "txs/new"
-    let pathSendTx = "txs/send"
-    let pathGetTx = "txs/"
-    let paramToken = "?token=7744d177ce1e4ef48c7431fcb55531b9"
-    let paramInclueHex = "?includeHex=true"
+    static let webService = BaseWebServices()
+    static let baseMainNetUrl = "https://api.blockcypher.com/v1/btc/main/"
+    static let baseTestNetUrl = "https://api.blockcypher.com/v1/btc/test3/"
+    static let pathNewTx = "txs/new"
+    static let pathSendTx = "txs/send"
+    static let pathGetTx = "txs/"
+    static let paramToken = "?token=7744d177ce1e4ef48c7431fcb55531b9"
+    static let paramInclueHex = "?includeHex=true"
     
     /*
      * Get base url for main net or test net depends on address prefix
      */
-    private func _getBaseUrl(address: String) -> String {
+    static private func _getBaseUrl(address: String) -> String {
         // Main net address must be start with '1'
         if BtcUtils.isMainNet(address: address) {
             return baseMainNetUrl
@@ -46,7 +46,7 @@ class BlockCypherService: BaseWebServices {
         return baseTestNetUrl
     }
     
-    private func _getBaseUrl(isMainNet: Bool) -> String {
+    static private func _getBaseUrl(isMainNet: Bool) -> String {
         // Main net address must be start with '1'
         if isMainNet {
             return baseMainNetUrl
@@ -69,7 +69,7 @@ class BlockCypherService: BaseWebServices {
         }
      
      */
-    func newTransaction(from: String, to: String, amountInSatoshi: Int64, fees: Int64) -> Promise<UnsignedTx> {
+    static func newTransaction(from: String, to: String, amountInSatoshi: Int64, fees: Int64) -> Promise<UnsignedTx> {
         // return Promise
         return Promise<UnsignedTx>.init(resolver: { (resolver) in
             // Set parametere
@@ -89,11 +89,11 @@ class BlockCypherService: BaseWebServices {
             Logger.shared.debug(JSON(parameters))
             
             // generate Request
-            let req = self.requestGenerator(baseUrl: _getBaseUrl(address: from), route: pathNewTx, urlParameters: paramToken, parameters: parameters, method: .post, encoding: JSONEncoding.default)
+            let req = webService.requestGenerator(baseUrl: _getBaseUrl(address: from), route: pathNewTx, urlParameters: paramToken, parameters: parameters, method: .post, encoding: JSONEncoding.default)
 
             firstly {
                 // send request and get json response
-                self.getJSONResponse(req)
+                webService.getJSONResponse(req)
             }.then { (responseJSON) -> Promise<UnsignedTx> in
                 // process response
                 return Promise<UnsignedTx>.init(resolver: { (resolver) in
@@ -183,7 +183,7 @@ class BlockCypherService: BaseWebServices {
             Logger.shared.debug("finally")
         }
      */
-    func sendTransaction(unsignedTx: UnsignedTx, signatures: Array<String>, publicKey: String) -> Promise<Transaction> {
+    static func sendTransaction(unsignedTx: UnsignedTx, signatures: Array<String>, publicKey: String) -> Promise<Transaction> {
         // return Promise
         return Promise<Transaction>.init(resolver: { (resolver) in
             var sigArray = Array<String>()
@@ -209,11 +209,11 @@ class BlockCypherService: BaseWebServices {
                 }
             }
             // generate Request
-            let req = self.requestGenerator(baseUrl: _getBaseUrl(address: unsignedTx.from), route: pathSendTx, urlParameters: paramToken, parameters: parameters, method: .post, encoding: JSONEncoding.default)
+            let req = webService.requestGenerator(baseUrl: _getBaseUrl(address: unsignedTx.from), route: pathSendTx, urlParameters: paramToken, parameters: parameters, method: .post, encoding: JSONEncoding.default)
 
             firstly {
                 // send request and get json response
-                self.getJSONResponse(req)
+                webService.getJSONResponse(req)
             }.then { (responseJSON) -> Promise<Transaction> in
                 // process response
                 return Promise<Transaction>.init(resolver: { (resolver) in
@@ -255,15 +255,15 @@ class BlockCypherService: BaseWebServices {
       Currently this function is only use to get block height, confirmations and raw data of a transaction.
       It's suggested to use BlochChainInfoService to get those transaction's info since the request might be rejected by BlockCypher due to response 429.
      */
-    func getTransaction(hash: String, isMainNet: Bool = true) -> Promise<Transaction> {
+    static func getTransaction(hash: String, isMainNet: Bool = true) -> Promise<Transaction> {
         // return Promise
         return Promise<Transaction>.init(resolver: { (resolver) in
                         // generate Request
-            let req = self.requestGenerator(baseUrl: _getBaseUrl(isMainNet: isMainNet), route: pathGetTx + hash, urlParameters: paramToken, parameters: nil, method: .get)
+            let req = webService.requestGenerator(baseUrl: _getBaseUrl(isMainNet: isMainNet), route: pathGetTx + hash, urlParameters: paramToken, parameters: nil, method: .get)
 
             firstly {
                 // send request and get json response
-                self.getJSONResponse(req)
+                webService.getJSONResponse(req)
             }.then { (responseJSON) -> Promise<Transaction> in
                 // process response
                 return Promise<Transaction>.init(resolver: { (resolver) in
