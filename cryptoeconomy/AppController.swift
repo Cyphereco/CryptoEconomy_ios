@@ -230,9 +230,15 @@ class AppController: ObservableObject {
             }
         } }
     @Published var pageSelected: Int = 0 { didSet {
-            if pageSelected != 1 {
-                AppController.otkNpi.request = OtkRequest()
-                self.requestHint = AppStrings.readGeneralInformation
+            AppController.otkNpi.request = OtkRequest()
+            self.amountSend = ""
+            self.amountSendFiat = ""
+            self.useAllFunds = false
+            self.authByPin = false
+            self.requestHint = AppStrings.readGeneralInformation
+        
+            if !self.useFixedAddress {
+                self.payeeAddr = ""
             }
         }}
     @Published var interacts: Interacts = .none
@@ -264,7 +270,7 @@ class AppController: ObservableObject {
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
-                       self.updateTxFees()
+               self.updateTxFees()
             }
         })
     }
@@ -278,8 +284,7 @@ class AppController: ObservableObject {
 
             if AppController.exchangeRates.usd > 0 {
                 self.strFees = "\(AppTools.btcToFormattedString(self.fees))"
-                _ = Timer.scheduledTimer(timeInterval: 300.0, target: self, selector: #selector(self.updateExchangeRates), userInfo: nil, repeats: true)
-                    nextUpdate = 300.0
+                nextUpdate = 300.0
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
