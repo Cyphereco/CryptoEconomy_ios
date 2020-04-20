@@ -10,14 +10,14 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appConfig: AppConfig
+    @EnvironmentObject var appController: AppController
     
     let totalTabs = 4
     @GestureState  var dragOffset = CGSize.zero
 
     var body: some View {
         ZStack {
-            TabView(selection: self.$appConfig.pageSelected){
+            TabView(selection: self.$appController.pageSelected){
                 PagePay()
                     .tabItem {
                         VStack {
@@ -51,16 +51,16 @@ struct ContentView: View {
                     }
                     .tag(3)
             }
-            .blur(radius: self.appConfig.interacts != .none ? 0.8 : 0)
+            .blur(radius: self.appController.interacts != .none ? 0.8 : 0)
             .animation(.easeInOut)
-            .accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
-            .swipableTabs(currentTab: self.$appConfig.pageSelected, totalTabs: self.totalTabs)
+            .accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
+            .swipableTabs(currentTab: self.$appController.pageSelected, totalTabs: self.totalTabs)
             
             GeometryReader { _ in
                 EmptyView()
             }
             .background(Color.gray.opacity(0.6))
-            .opacity(self.appConfig.interacts != .none ? 0.5 : 0.0)
+            .opacity(self.appController.interacts != .none ? 0.5 : 0.0)
             .animation(.easeInOut)
             .onTapGesture {
                 self.closeMenu()
@@ -70,14 +70,14 @@ struct ContentView: View {
                     state = value.translation
                 })
                 .onEnded { gesture in
-                    if self.appConfig.interacts == .menuPay || self.appConfig.interacts == .menuOpenTurnKey {
+                    if self.appController.interacts == .menuPay || self.appController.interacts == .menuOpenTurnKey {
                         if gesture.translation.width > 100 {
                             withAnimation {
                                 self.closeMenu()
                             }
                         }
                     }
-                    else if self.appConfig.interacts == .configLocalCurrency || self.appConfig.interacts == .configFees {
+                    else if self.appController.interacts == .configLocalCurrency || self.appController.interacts == .configFees {
                         if gesture.translation.height > 100 {
                             withAnimation {
                                 self.closeMenu()
@@ -86,19 +86,19 @@ struct ContentView: View {
                     }
                 })
             
-            SideMenuPay(isOpened: self.appConfig.interacts == .menuPay, closeMenu: {
+            SideMenuPay(isOpened: self.appController.interacts == .menuPay, closeMenu: {
                 self.closeMenu()
             })
             .offset(x: dragOffset.width > 0 ? dragOffset.width : 0)
             .animation(.easeInOut)
 
-            SideMenuOpenTurnKey(isOpened: self.appConfig.interacts == .menuOpenTurnKey, closeMenu: {
+            SideMenuOpenTurnKey(isOpened: self.appController.interacts == .menuOpenTurnKey, closeMenu: {
                 self.closeMenu()
             })
             .offset(x: dragOffset.width > 0 ? dragOffset.width : 0)
             .animation(.easeInOut)
 
-            ConfigLocalCurrency(isOpened: self.appConfig.interacts == .configLocalCurrency, closeMenu: {
+            ConfigLocalCurrency(isOpened: self.appController.interacts == .configLocalCurrency, closeMenu: {
                 withAnimation {
                     self.closeMenu()
                 }
@@ -106,7 +106,7 @@ struct ContentView: View {
             .offset(y: dragOffset.height > 0 ? dragOffset.height : 0)
             .animation(.easeInOut)
 
-            ConfigFees(isOpened: self.appConfig.interacts == .configFees, closeMenu: {
+            ConfigFees(isOpened: self.appController.interacts == .configFees, closeMenu: {
                 withAnimation {
                     self.closeMenu()
                 }
@@ -123,13 +123,13 @@ struct ContentView: View {
     func closeMenu() {
         UIApplication.shared.endEditing()
         withAnimation {
-            if self.appConfig.interacts == .configLocalCurrency {
+            if self.appController.interacts == .configLocalCurrency {
                 
             }
-            else if self.appConfig.interacts == .configFees {
+            else if self.appController.interacts == .configFees {
                 
             }
-            self.appConfig.interacts = .none
+            self.appController.interacts = .none
         }
     }
 }
@@ -138,7 +138,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["en", "zh-Hant", "zh-Hans", "ja"], id: \.self) {localeIdentifier in
             ContentView()
-                .environmentObject(AppConfig())
+                .environmentObject(AppController())
                 .environment(\.locale, .init(identifier: localeIdentifier))
                 .previewDisplayName(localeIdentifier)
         }

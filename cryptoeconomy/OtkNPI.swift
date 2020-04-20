@@ -72,10 +72,18 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
     private var detectedMessages = [NFCNDEFMessage]()
     private var sessionId = ""
     private var dispatchQ: DispatchQueue?
-    private var waitForResult = false
     private var completion: ()->Void = {}
     
     // MARK: - Actions
+    
+    func reset() {
+        self.readTag = OtkNDEFTag()
+        self.otkInfo = OtkInfo()
+        self.otkState = OtkState()
+        self.otkData = OtkData()
+        self.requestCommand = OtkRequestCommand()
+        self.otkDetected = false
+    }
 
     /// - Tag: beginScanning
     func beginScanning(completion: @escaping ()->Void) {
@@ -184,7 +192,6 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                                             session.alertMessage = AppStrings.strRequestProcessed
                                             session.invalidate()
                                             self.otkDetected = true
-                                            self.waitForResult = false
                                         }
                                         else {
                                             session.alertMessage = AppStrings.strSendingRequest + " (\(self.requestCommand.commandCode))..."
@@ -211,8 +218,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                                                 }
                                                 else {
                                                     session.alertMessage = AppStrings.strRequestSent
-                                                    session.invalidate()
-                                                    self.waitForResult = true
+                                                    session.restartPolling()
                                                 }
                                             })
                                         }
@@ -260,9 +266,6 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
 
         // To read new tags, a new session instance is required.
         self.session = nil
-        if (self.waitForResult) {
-            self.beginScanning(completion: self.completion)
-        }
         self.completion()
     }
     
@@ -387,7 +390,11 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                 else if (words[0].contains("Master_Extended_Key")) {
                     otkData.masterKey = trimSting(words[1])
                 }
-                else if (words[0].contains("Derivative_Exttended_Key")) {
+                else if (words[0].contains("Derivative_Extended_Key")) {
+                    otkData.derivativeKey = trimSting(words[1])
+                }
+                else if (words[0].contains("Derivative_Exteded_Key")) {
+                    // for backward compatible
                     otkData.derivativeKey = trimSting(words[1])
                 }
                 else if (words[0].contains("Derivative_Path")) {

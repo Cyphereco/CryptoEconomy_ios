@@ -52,7 +52,7 @@
 "recipient" = "受金方";
 "recipient_address" = "入金アドレス";
 "Recipient address is empty!" = "入金アドレスが空です!";
-"Request has been sent." = "リクエストが送信されました。";
+"Request has been sent." = "リクエストが送信されました、処理が完了する前に、OpenTurnKeyを移動しないでください。";
 "Request processed." = "リクエストを処理しました。";
 "reset" = "リセット";
 "result" = "結果";

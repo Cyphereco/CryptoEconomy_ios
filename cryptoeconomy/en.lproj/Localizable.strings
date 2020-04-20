@@ -52,7 +52,7 @@
 "recipient_address" = "Recipient Address";
 "Recipient address is empty!" = "Recipient address is empty!";
 "received_amount" = "Received Amount";
-"Request has been sent." = "Request has been sent.";
+"Request has been sent." = "Request has been sent. Do not remove OpenTurnKey until request processed.";
 "Request processed." = "Request processed.";
 "reset" = "Reset";
 "result" = "Result";

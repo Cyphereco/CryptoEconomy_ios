@@ -13,7 +13,7 @@ struct ConfigFees: View {
     let closeMenu: ()->Void
 
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appConfig: AppConfig
+    @EnvironmentObject var appController: AppController
     private let textFieldObserver = TextFieldObserver()
 
     var body: some View {
@@ -23,17 +23,17 @@ struct ConfigFees: View {
                 VStack {
                     Image(systemName: "minus").imageScale(.large)
                     Text(AppStrings.setTransactionFees).font(.headline).padding([.horizontal, .bottom])
-                    Text(self.feesPriorityDesc(feesSelection: self.appConfig.feesSelection)).padding([.horizontal, .top])
-                    Slider(value: self.$appConfig.feesSelection, in: 0...3, step: 1).padding()
+                    Text(self.feesPriorityDesc(feesSelection: self.appController.feesSelection)).padding([.horizontal, .top])
+                    Slider(value: self.$appController.feesSelection, in: 0...3, step: 1).padding()
                     HStack {
                         Text("\(AppStrings.fees) = ")
-                        if (self.appConfig.feesSelection == 0) {
+                        if (self.appController.feesSelection == 0) {
                             TextFieldWithBottomLine(hint: "",
-                                                    textContent: self.$appConfig.strFees,
+                                                    textContent: self.$appController.strFees,
                                                     textAlign: .center,
                                                     readOnly: false)
                             .keyboardType(.decimalPad)
-                            .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                            .foregroundColor(AppController.getAccentColor(colorScheme: self.colorScheme))
                             .frame(width: 100)
                             .padding(.top, 10)
                             .introspectTextField { textField in
@@ -44,7 +44,7 @@ struct ConfigFees: View {
                                 )}
                         }
                         else {
-                            Text(AppTools.btcToFormattedString(self.appConfig.fees))
+                            Text(AppTools.btcToFormattedString(self.appController.fees))
                         }
                         Text(" BTC")
                     }
@@ -63,7 +63,7 @@ struct ConfigFees: View {
                     UIApplication.shared.endEditing()
                 }
             }
-       }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+       }.accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
         .keyboardResponsive()
     }
     
@@ -86,6 +86,6 @@ struct ConfigFees: View {
 struct ConfigFees_Previews: PreviewProvider {
     static var previews: some View {
         ConfigFees(isOpened: true, closeMenu: {})
-            .environmentObject(AppConfig())
+            .environmentObject(AppController())
     }
 }

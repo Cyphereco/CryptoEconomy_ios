@@ -41,7 +41,7 @@ struct PageAddresses: View {
             .navigationBarTitle(Text("addresses"), displayMode: .inline)
             .navigationBarItems(trailing:
                 Image("plus")
-                    .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
+                    .foregroundColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
                 .onTapGesture {
                     UIApplication.shared.endEditing()
                     self.showAddressEditor = true

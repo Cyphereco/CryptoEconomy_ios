@@ -10,7 +10,7 @@ import SwiftUI
 
 struct PagePay: View {
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appConfig: AppConfig
+    @EnvironmentObject var appController: AppController
     
     @ObservedObject var otkNpi = OtkNfcProtocolInterface()
     @State var alertUseFixedAddress = false
@@ -25,9 +25,9 @@ struct PagePay: View {
                         
                         Spacer()
                         
-                        TextFieldBtcAddress(address: self.$appConfig.payeeAddr)
+                        TextFieldBtcAddress(address: self.$appController.payeeAddr)
                             .padding(.horizontal, 20.0)
-                            .disabled(self.appConfig.useFixedAddress)
+                            .disabled(self.appController.useFixedAddress)
                             .onTapGesture {
                                 self.alertUseFixedAddress = true
                             }
@@ -35,7 +35,7 @@ struct PagePay: View {
                                 Alert(title: Text("use_fixed_address"))
                             }
 
-                        Toggle(isOn: self.$appConfig.useAllFunds){
+                        Toggle(isOn: self.$appController.useAllFunds){
                             HStack {
                                 Spacer()
                                 Text(AppStrings.useAllFunds).font(.footnote)
@@ -45,7 +45,7 @@ struct PagePay: View {
                         TextFieldPayAmount()
                             .padding(.horizontal, 20.0)
                         
-                        Toggle(isOn: self.$appConfig.authByPin){
+                        Toggle(isOn: self.$appController.authByPin){
                             HStack {
                                 Spacer()
                                 Text(AppStrings.authByPin).font(.footnote)
@@ -56,7 +56,7 @@ struct PagePay: View {
                             self.otkNpi.beginScanning(completion: {})
                         }) {
                             HStack{
-                                if (self.appConfig.authByPin) {
+                                if (self.appController.authByPin) {
                                     Image(systemName: "ellipsis").font(.system(size: 19)).padding(4)
                                 }
                                 else {
@@ -67,7 +67,7 @@ struct PagePay: View {
                                 .fontWeight(.bold)
                             }
                             .padding(12)
-                            .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                            .background(AppController.getAccentColor(colorScheme: self.colorScheme))
                             .cornerRadius(24)
                             .foregroundColor(.white)
                         }
@@ -82,7 +82,7 @@ struct PagePay: View {
             .navigationBarTitle(Text("pay"), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
                 withAnimation {
-                    self.appConfig.interacts = .menuPay
+                    self.appController.interacts = .menuPay
                 }
             }) {
                 Image("menu")
@@ -93,6 +93,6 @@ struct PagePay: View {
 
 struct PagePay_Previews: PreviewProvider {
     static var previews: some View {
-        PagePay().environmentObject(AppConfig())
+        PagePay().environmentObject(AppController())
     }
 }

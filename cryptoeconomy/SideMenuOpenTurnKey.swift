@@ -12,7 +12,7 @@ struct SideMenuOpenTurnKey: View {
     let isOpened: Bool
     let closeMenu: ()->Void
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appConfig: AppConfig
+    @EnvironmentObject var appController: AppController
 
     var body: some View {
         VStack {
@@ -60,8 +60,8 @@ struct SideMenuOpenTurnKey: View {
     }
     
     func setOtkRequest(command: String, hint: String) {
-        self.appConfig.requestCommand = command
-        self.appConfig.requestHint = hint
+        AppController.otkNpi.requestCommand.commandCode = command
+        self.appController.requestHint = hint
     }
 }
 

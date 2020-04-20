@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct TextFieldPayAmount: View {
-    @EnvironmentObject var appConfig: AppConfig
+    @EnvironmentObject var appController: AppController
     private let textFieldObserver = TextFieldObserver()
 
     var body: some View {
@@ -17,12 +17,12 @@ struct TextFieldPayAmount: View {
             Text("amount").fontWeight(.bold)
             HStack(alignment: .center) {
                 Button(action: {
-                    self.appConfig.amountSend = ""
-                    self.appConfig.amountSendFiat = ""
+                    self.appController.amountSend = ""
+                    self.appController.amountSendFiat = ""
                 }){Image("clear")}
                     .padding(.top, -36.0)
                 VStack(alignment: .trailing) {
-                    TextFieldWithBottomLine(hint: "0.0", textContent: self.$appConfig.amountSend, textAlign: .trailing, readOnly: false, onEditingChanged: {_ in
+                    TextFieldWithBottomLine(hint: "0.0", textContent: self.$appController.amountSend, textAlign: .trailing, readOnly: false, onEditingChanged: {_ in
                     })
                     .font(.custom("", size: 24))
                     .introspectTextField { textField in
@@ -35,7 +35,7 @@ struct TextFieldPayAmount: View {
                 }
                 Text(" = ").padding(.top, -30)
                 VStack(alignment: .trailing) {
-                    TextFieldWithBottomLine(hint: "0.0", textContent: self.$appConfig.amountSendFiat, textAlign: .trailing, readOnly: false, onEditingChanged: {_ in
+                    TextFieldWithBottomLine(hint: "0.0", textContent: self.$appController.amountSendFiat, textAlign: .trailing, readOnly: false, onEditingChanged: {_ in
                     })
                     .font(.custom("", size: 24))
                     .introspectTextField { textField in
@@ -44,7 +44,7 @@ struct TextFieldPayAmount: View {
                             action: #selector(TextFieldObserver.textFieldDidBeginEditing),
                             for: .editingDidBegin
                         )}
-                    Text(self.appConfig.getLocalCurrency().label)
+                    Text(self.appController.getLocalCurrency().label)
                 }
                 .padding(.leading, 4.0)
             }.keyboardType(.decimalPad)
@@ -54,6 +54,6 @@ struct TextFieldPayAmount: View {
 
 struct TextFieldPayAmount_Previews: PreviewProvider {
     static var previews: some View {
-        TextFieldPayAmount().environmentObject(AppConfig())
+        TextFieldPayAmount().environmentObject(AppController())
     }
 }

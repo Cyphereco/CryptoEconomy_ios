@@ -26,7 +26,7 @@
 		BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */; };
 		BA2EEADF243450F200522A63 /* ConfigLocalCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */; };
 		BA2EEAE324346C6C00522A63 /* ConfigFees.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE224346C6C00522A63 /* ConfigFees.swift */; };
-		BA2EEAE52434826A00522A63 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE42434826A00522A63 /* AppConfig.swift */; };
+		BA2EEAE52434826A00522A63 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE42434826A00522A63 /* AppController.swift */; };
 		BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE62435839E00522A63 /* ListItemAddress.swift */; };
 		BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */; };
 		BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC537243048AB00F41471 /* PageAddresses.swift */; };
@@ -98,7 +98,7 @@
 		BA2EEAD824330EB300522A63 /* SideMenuOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOpenTurnKey.swift; sourceTree = "<group>"; };
 		BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigLocalCurrency.swift; sourceTree = "<group>"; };
 		BA2EEAE224346C6C00522A63 /* ConfigFees.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFees.swift; sourceTree = "<group>"; };
-		BA2EEAE42434826A00522A63 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		BA2EEAE42434826A00522A63 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		BA2EEAE62435839E00522A63 /* ListItemAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemAddress.swift; sourceTree = "<group>"; };
 		BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemTransaction.swift; sourceTree = "<group>"; };
 		BA2EEAEF2435BEDE00522A63 /* BlockChainInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockChainInfoService.swift; sourceTree = "<group>"; };
@@ -237,7 +237,7 @@
 				B23FB94A243741AB00A2B80F /* WebService */,
 				BA9595EC242EFE4000C48B37 /* Assets.xcassets */,
 				BA9595E6242EFD8800C48B37 /* AppDelegate.swift */,
-				BA2EEAE42434826A00522A63 /* AppConfig.swift */,
+				BA2EEAE42434826A00522A63 /* AppController.swift */,
 				BAADC80B243867F800799FD0 /* AppStrings.swift */,
 				BA7DDB9F243665E50072412F /* AppTools.swift */,
 				BAC387542449F11A0061C1EF /* AppUIComponents.swift */,
@@ -600,7 +600,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA40150C2431D80C0094F6CF /* TextEstFeesInfo.swift in Sources */,
-				BA2EEAE52434826A00522A63 /* AppConfig.swift in Sources */,
+				BA2EEAE52434826A00522A63 /* AppController.swift in Sources */,
 				BA3FC53E2431004D00F41471 /* PagePay.swift in Sources */,
 				BA4015102431E3950094F6CF /* TextFieldWithBottomLine.swift in Sources */,
 				BA9595E7242EFD8800C48B37 /* AppDelegate.swift in Sources */,

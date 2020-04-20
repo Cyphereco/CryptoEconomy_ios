@@ -54,7 +54,7 @@ struct AddressQRCodeView: View {
 
 struct ListItemAddress: View {
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appConfig: AppConfig
+    @EnvironmentObject var appController: AppController
     @ObservedObject var addressListVM: AddressListViewModel
 
     @State private var showDelAlert: Bool = false
@@ -97,12 +97,12 @@ struct ListItemAddress: View {
                 AddressQRCodeView(showSheetView: self.$showQRCodeSheet,
                                   alias: self.recordAddress.alias,
                                   address: self.recordAddress.address)
-                    .accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                    .accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
             }
 
             Button(action: {
-                self.appConfig.payeeAddr = self.recordAddress.address
-                self.appConfig.pageSelected = 0
+                self.appController.payeeAddr = self.recordAddress.address
+                self.appController.pageSelected = 0
             }){Image("send")}.buttonStyle(BorderlessButtonStyle())
         }.padding(.horizontal, 5)
     }

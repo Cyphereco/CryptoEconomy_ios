@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ViewTransactionInformation: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var appConfig: AppConfig
+    @EnvironmentObject var appController: AppController
     @Environment(\.colorScheme) var colorScheme
     @State var showAlert = false
     @State var msg = ""
@@ -47,7 +47,7 @@ struct ViewTransactionInformation: View {
                                     .padding(.leading, 5.0)
                             }
                         }
-                        .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                        .foregroundColor(AppController.getAccentColor(colorScheme: self.colorScheme))
                         .frame(width: geometry.size.width / 4)
                     }
                     .padding([.top, .leading, .trailing])
@@ -100,7 +100,7 @@ struct ViewTransactionInformation: View {
                     HStack {
                         Spacer()
                         Image("pay")
-                            .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                            .foregroundColor(AppController.getAccentColor(colorScheme: self.colorScheme))
                         Text(AppStrings.showLocalCurrency).lineLimit(1).font(.headline)
                         Toggle("", isOn: self.$showLocalCurrency)
                             .labelsHidden()
@@ -111,7 +111,7 @@ struct ViewTransactionInformation: View {
                         Text("\(AppStrings.transactionId):")
                             .font(.headline)
                         Image("eye")
-                            .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                            .foregroundColor(AppController.getAccentColor(colorScheme: self.colorScheme))
                         Spacer()
                     }.padding(.horizontal)
                     Text("5dc7bee70b2d4d486d2e9ca997354e6909769049b2d971dc4034e2c03df909c7").padding(.horizontal).frame(height: 50.0)
@@ -127,7 +127,7 @@ struct ViewTransactionInformation: View {
                             Alert(title: Text(self.msg))
                         }
                         .padding(.bottom)
-                        .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                        .foregroundColor(AppController.getAccentColor(colorScheme: self.colorScheme))
                         .frame(width: geometry.size.width/2)
 
                         VStack {
@@ -141,7 +141,7 @@ struct ViewTransactionInformation: View {
                             Alert(title: Text(self.msg))
                         }
                         .padding(.bottom)
-                        .foregroundColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                        .foregroundColor(AppController.getAccentColor(colorScheme: self.colorScheme))
                         .frame(width: geometry.size.width/2)
                    }
                 }
@@ -149,7 +149,7 @@ struct ViewTransactionInformation: View {
             .navigationBarTitle(Text(AppStrings.transactionInfo), displayMode: .inline)
             .navigationBarItems(trailing:
                 Image("clear")
-                    .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
+                    .foregroundColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
                     .onTapGesture {
                     self.presentationMode.wrappedValue.dismiss()
                 })
@@ -159,6 +159,6 @@ struct ViewTransactionInformation: View {
 
 struct ViewTransactionRecord_Previews: PreviewProvider {
     static var previews: some View {
-        ViewTransactionInformation().environmentObject(AppConfig())
+        ViewTransactionInformation().environmentObject(AppController())
     }
 }

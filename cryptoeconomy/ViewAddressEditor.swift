@@ -63,7 +63,7 @@ struct ViewAddressEditor: View {
                         }
                         .frame(minWidth: 80)
                         .padding(12)
-                        .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                        .background(AppController.getAccentColor(colorScheme: self.colorScheme))
                         .opacity(self.address.count < 1 ? 0.3 : 1)
                         .cornerRadius(24)
                         .foregroundColor(.white)
@@ -78,7 +78,7 @@ struct ViewAddressEditor: View {
                     UIApplication.shared.endEditing()
                 })
             .navigationBarTitle(Text("edit_address"), displayMode: .inline)
-        }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+        }.accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
     }
 }
 

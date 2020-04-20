@@ -12,7 +12,7 @@ struct SideMenuPay: View {
     let isOpened: Bool
     let closeMenu: () -> Void
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appConfig: AppConfig
+    @EnvironmentObject var appController: AppController
     @State var alertEmptyAddress = false
     @State var alertAbout = false
     
@@ -22,33 +22,33 @@ struct SideMenuPay: View {
             RowButton(text: AppStrings.setCurrency){
                 withAnimation {
                    self.closeMenu()
-                   self.appConfig.interacts = .configLocalCurrency
+                   self.appController.interacts = .configLocalCurrency
                }
             }.foregroundColor(.primary).padding()
 
             RowButton(text: AppStrings.setFees){
                 withAnimation {
                     self.closeMenu()
-                    self.appConfig.interacts = .configFees
+                    self.appController.interacts = .configFees
                 }
             }.foregroundColor(.primary).padding()
 
-            Toggle(AppStrings.feesIncluded, isOn: self.$appConfig.feesIncluded)
+            Toggle(AppStrings.feesIncluded, isOn: self.$appController.feesIncluded)
                 .frame(alignment: .trailing)
                 .frame(maxWidth: 240)
                 .padding(.horizontal).padding(.bottom, 15)
 
             ZStack {
-                Toggle(AppStrings.useFixedAddress, isOn: self.$appConfig.useFixedAddress)
+                Toggle(AppStrings.useFixedAddress, isOn: self.$appController.useFixedAddress)
                     .frame(maxWidth: 240)
                     .padding(.horizontal).padding(.bottom, 5)
-                    .disabled(self.appConfig.payeeAddr.count < 1)
+                    .disabled(self.appController.payeeAddr.count < 1)
              
-                if(self.appConfig.payeeAddr.count < 1) {
+                if(self.appController.payeeAddr.count < 1) {
                     Color.white.opacity(0.001)
                     .frame(maxHeight: 44)
                     .onTapGesture {
-                        if self.appConfig.payeeAddr.count < 1 {
+                        if self.appController.payeeAddr.count < 1 {
                             self.alertEmptyAddress = true
                         }
                     }
@@ -74,7 +74,7 @@ struct SideMenuPay: View {
                 }
             }.foregroundColor(.primary).padding()
             .alert(isPresented: self.$alertAbout){
-                Alert(title: Text("Version") + Text(": \(AppConfig.version)"))
+                Alert(title: Text("Version") + Text(": \(AppController.version)"))
             }
 
         }.asSideMenu(isOpened: self.isOpened)
@@ -84,6 +84,6 @@ struct SideMenuPay: View {
 struct SideMenuPay_Previews: PreviewProvider {
     static var previews: some View {
         SideMenuPay(isOpened: true, closeMenu: {})
-            .environmentObject(AppConfig())
+            .environmentObject(AppController())
     }
 }

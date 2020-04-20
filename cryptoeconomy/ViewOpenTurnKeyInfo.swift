@@ -9,14 +9,15 @@
 import SwiftUI
 
 struct ViewOpenTurnKeyInfo: View {
-    @Binding var otkNpi : OtkNfcProtocolInterface
     @Binding var btcBalance: Double
     var fiatBalance: Double = 0.0
-    @EnvironmentObject var appConfig: AppConfig
+    @EnvironmentObject var appController: AppController
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
     @State var showOtkInfo = false
     @State var showToastMessage = false
+    
+    let otkNpi = AppController.otkNpi
     
     var pasteboard = UIPasteboard.general
  
@@ -26,16 +27,16 @@ struct ViewOpenTurnKeyInfo: View {
                 VStack {
                     HStack {
                         Spacer()
-                        showLockState(state: otkNpi.otkState.isLocked).foregroundColor(otkNpi.otkState.isLocked ? .red : .green)
-                        showBatteryLevel(level: otkNpi.otkInfo.batteryPercentage).foregroundColor(otkNpi.otkInfo.batteryPercentage.contains("10%") ? .red : (colorScheme == .dark ? .white : .black))
-                        Text(otkNpi.otkInfo.batteryPercentage)
+                        showLockState(state: self.otkNpi.otkState.isLocked).foregroundColor(self.otkNpi.otkState.isLocked ? .red : .green)
+                        showBatteryLevel(level: self.otkNpi.otkInfo.batteryPercentage).foregroundColor(self.otkNpi.otkInfo.batteryPercentage.contains("10%") ? .red : (colorScheme == .dark ? .white : .black))
+                        Text(self.otkNpi.otkInfo.batteryPercentage)
                     }.padding()
                     VStack {
                         Text("\(AppTools.btcToFormattedString(self.btcBalance)) BTC").font(.title)
-                        Text("(~ \(AppTools.fiatToFormattedString(self.fiatBalance)) \(appConfig.getLocalCurrency().label))").font(.footnote)
+                        Text("(~ \(AppTools.fiatToFormattedString(self.fiatBalance)) \(appController.getLocalCurrency().label))").font(.footnote)
                     }.padding()
                     VStack {
-                        Image(uiImage: UIImage(data: getQrCodeData(str: otkNpi.otkData.btcAddress))!).resizable().frame(width: 100, height: 100)
+                        Image(uiImage: UIImage(data: getQrCodeData(str: self.otkNpi.otkData.btcAddress))!).resizable().frame(width: 100, height: 100)
                         Text(self.otkNpi.otkData.btcAddress).multilineTextAlignment(.center).padding()
                         Button(action: {
                             withAnimation {
@@ -49,8 +50,8 @@ struct ViewOpenTurnKeyInfo: View {
                     Spacer()
                     HStack {
                         Text("\(AppStrings.note):")
-                        TextFieldWithBottomLine(textContent: .constant(otkNpi.otkInfo.note), textAlign: .leading, readOnly: true)
-                        Image("info").foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
+                        TextFieldWithBottomLine(textContent: .constant(self.otkNpi.otkInfo.note), textAlign: .leading, readOnly: true)
+                        Image("info").foregroundColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
                             .onTapGesture {
                                 self.showOtkInfo = true
                         }
@@ -65,11 +66,11 @@ struct ViewOpenTurnKeyInfo: View {
                     }.padding(20)
                 }
                 .padding(.horizontal, 20.0)
-                .accentColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
+                .accentColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
                 .navigationBarTitle(Text(AppStrings.openturnkeyInfo), displayMode: .inline)
                 .navigationBarItems(trailing:
                     Image("clear")
-                        .foregroundColor(AppConfig.getAccentColor(colorScheme:  self.colorScheme))
+                        .foregroundColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
                         .onTapGesture {
                         self.presentationMode.wrappedValue.dismiss()
                     })
@@ -119,7 +120,7 @@ struct ViewOpenTurnKeyInfo: View {
 
 struct ViewOpenTurnKeyInfo_Previews: PreviewProvider {
     static var previews: some View {
-        ViewOpenTurnKeyInfo(otkNpi: .constant(OtkNfcProtocolInterface()), btcBalance: .constant(0.0))
-            .environmentObject(AppConfig())
+        ViewOpenTurnKeyInfo(btcBalance: .constant(0.0))
+            .environmentObject(AppController())
     }
 }

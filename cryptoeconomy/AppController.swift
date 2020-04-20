@@ -159,17 +159,22 @@ enum Interacts: CaseIterable{
     case configFees
 }
 
-class AppConfig: ObservableObject {
+class AppController: ObservableObject {
     static let version = "1.0"
     static let estBlockSize = 200
     
     private var editLock = false
 
+    static var otkNpi = OtkNfcProtocolInterface()
+    
     @State static var exchangeRates = ExchangeRates()
     @State static var bestFees = BestFees()
 
     // default values
-    @Published var currencySelection: Int = UserDefaults.standard.integer(forKey: "LocalCurrency") { didSet { setLocalCurrency(selection: currencySelection) } }
+    @Published var currencySelection: Int = UserDefaults.standard.integer(forKey: "LocalCurrency") { didSet {
+            setLocalCurrency(selection: currencySelection)
+            self.amountSend = "\(self.amountSend)"
+        } }
     @Published var feesSelection: Double = UserDefaults.standard.double(forKey: "FeesPriority") { didSet {
             setFeesPriority(selection: feesSelection)
         } }
@@ -227,7 +232,6 @@ class AppConfig: ObservableObject {
     @Published var interacts: Interacts = .none
     @Published var payeeAddr: String = UserDefaults.standard.string(forKey: "FixedAddress") ?? ""
     @Published var requestHint: String = AppStrings.readGeneralInformation
-    @Published var requestCommand: String = ""
     
     init() {
         UserDefaults.standard.register(defaults: ["LocalCurrency": 5])
@@ -245,10 +249,10 @@ class AppConfig: ObservableObject {
         var nextUpdate = 10.0  // seconds
 
         _ = BlockChainInfoService.updateBestTxFees().done({ bestFees in
-            AppConfig.bestFees.copy(bestFees: bestFees)
-            print(AppConfig.bestFees.toString())
+            AppController.bestFees.copy(bestFees: bestFees)
+            print(AppController.bestFees.toString())
 
-            if AppConfig.bestFees.high > 0 {
+            if AppController.bestFees.high > 0 {
                 self.setFeesPriority(selection: self.feesSelection)
                 nextUpdate = 300.0
             }
@@ -263,10 +267,10 @@ class AppConfig: ObservableObject {
         var nextUpdate = 10.0  // seconds
 
         _ = BlockChainInfoService.updateBtcExchangeRates().done({ exchangeRates in
-            AppConfig.exchangeRates.copy(exchangeRates: exchangeRates)
-            print(AppConfig.exchangeRates.toString())
+            AppController.exchangeRates.copy(exchangeRates: exchangeRates)
+            print(AppController.exchangeRates.toString())
 
-            if AppConfig.exchangeRates.usd > 0 {
+            if AppController.exchangeRates.usd > 0 {
                 self.strFees = "\(AppTools.btcToFormattedString(self.fees))"
                 _ = Timer.scheduledTimer(timeInterval: 300.0, target: self, selector: #selector(self.updateExchangeRates), userInfo: nil, repeats: true)
                     nextUpdate = 300.0
@@ -290,11 +294,11 @@ class AppConfig: ObservableObject {
         UserDefaults.standard.set(selection, forKey: "FeesPriority")
         switch selection {
             case 1.0:
-                self.fees = Double(AppConfig.bestFees.low * AppConfig.estBlockSize) / 100000000
+                self.fees = Double(AppController.bestFees.low * AppController.estBlockSize) / 100000000
             case 2.0:
-                self.fees = Double(AppConfig.bestFees.mid * AppConfig.estBlockSize) / 100000000
+                self.fees = Double(AppController.bestFees.mid * AppController.estBlockSize) / 100000000
             case 3.0:
-                self.fees = Double(AppConfig.bestFees.high * AppConfig.estBlockSize) / 100000000
+                self.fees = Double(AppController.bestFees.high * AppController.estBlockSize) / 100000000
             default:
                 fees = UserDefaults.standard.double(forKey: "Fees")
         }

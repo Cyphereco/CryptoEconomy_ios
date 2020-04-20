@@ -13,7 +13,7 @@ struct ConfigLocalCurrency: View {
     let closeMenu: ()->Void
 
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appConfig: AppConfig
+    @EnvironmentObject var appController: AppController
 
     var body: some View {
         GeometryReader { geometry in
@@ -22,7 +22,7 @@ struct ConfigLocalCurrency: View {
                 VStack {
                     Image(systemName: "minus").imageScale(.large)
                     Text("set_local_currency").font(.headline).padding(.bottom, 40)
-                    Picker("set_local_currency", selection: self.$appConfig.currencySelection) {
+                    Picker("set_local_currency", selection: self.$appController.currencySelection) {
                         ForEach(0 ..< FiatCurrency.allCases.count) {
                             Text(FiatCurrency.allCases[$0].label)
                         }
@@ -40,12 +40,12 @@ struct ConfigLocalCurrency: View {
                 .offset(y: self.isOpened ? 0 : geometry.size.height)
                 .animation(.easeInOut)
             }
-        }.accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+        }.accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
     }
 }
 
 struct ConfigLocalCurrency_Previews: PreviewProvider {
     static var previews: some View {
-        ConfigLocalCurrency(isOpened: true, closeMenu: {}).environmentObject(AppConfig())
+        ConfigLocalCurrency(isOpened: true, closeMenu: {}).environmentObject(AppController())
     }
 }

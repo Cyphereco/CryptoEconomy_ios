@@ -52,7 +52,7 @@
 "recipient" = "收款方";
 "recipient_address" = "收款地址";
 "Recipient address is empty!" = "收款地址為空!";
-"Request has been sent." = "請求已發送。";
+"Request has been sent." = "請求已發送，處理完成前，請勿移開OpenTurnKey。";
 "Request processed." = "請求已處理。";
 "reset" = "重置";
 "result" = "結果";

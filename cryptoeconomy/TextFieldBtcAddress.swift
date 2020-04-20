@@ -87,7 +87,7 @@ struct TextFieldBtcAddress: View {
                             }
                         }
                     }
-                    .accentColor(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                    .accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
                 }
                 Spacer().fixedSize().frame(width: 40, height: 0, alignment: .leading)
             }

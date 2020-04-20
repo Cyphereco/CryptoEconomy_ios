@@ -11,12 +11,13 @@ import SwiftUI
 struct PageOpenTurnKey: View {
     @State var requestHint: String = AppStrings.readGeneralInformation
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appConfig: AppConfig
+    @EnvironmentObject var appController: AppController
 
-    @State var otkNpi = OtkNfcProtocolInterface()
     @State var showOpenTurnKeyInfo = false
     @State var otkBtcBalance = 0.0
     
+    let otkNpi = AppController.otkNpi
+
     var body: some View {
         NavigationView {
             GeometryReader {geometry in
@@ -24,19 +25,38 @@ struct PageOpenTurnKey: View {
                     VStack{
                         HStack(alignment: .center, spacing: 20) {
                             Spacer()
-                        }.frame(minWidth: .zero, idealWidth: .none, maxWidth: .infinity, minHeight: 80, idealHeight: .none, maxHeight: 160, alignment: .center)
+                        }.frame(minWidth: .zero, idealWidth: .none, maxWidth: .infinity, minHeight: 80, idealHeight: .none, maxHeight: 100, alignment: .center)
                         
                         Image("cyphereco_label").resizable().scaledToFit().frame(width: 100, height: 100)
                         
                         Text("OpenTurnKey")
                             .fontWeight(.bold)
                         
-                        Text("(" + self.appConfig.requestHint + ")").padding()
+                        Text("(" + self.appController.requestHint + ")").padding()
                         
                         VStack(alignment: .center, spacing: 20) {
-                            Spacer()
+                            if (self.otkNpi.requestCommand.commandCode != "" &&
+                                self.otkNpi.requestCommand.commandCode != "160") {
+                                if (self.appController.authByPin) {
+                                    Image(systemName: "ellipsis").font(.system(size: 19)).padding(4)
+                                }
+                                else {
+                                    Image("fingerprint")
+                                }
+
+                                HStack {
+                                    Text(AppStrings.authByPin).font(.footnote)
+                                    Toggle("", isOn: self.$appController.authByPin)
+                                        .labelsHidden()
+                                }
+                            }
+                            else {
+                                Spacer().frame(height: 88)
+                            }
                             
                             Button(action: {
+                                self.otkNpi.requestCommand.commandCode = "162"
+                                self.otkNpi.requestCommand.pin = "99999999"
                                 self.otkNpi.beginScanning(completion: {
                                     if (self.otkNpi.otkDetected) {
                                         print(self.otkNpi)
@@ -60,14 +80,14 @@ struct PageOpenTurnKey: View {
                                 }
                                 .frame(minWidth: 200)
                                 .padding(12)
-                                .background(AppConfig.getAccentColor(colorScheme: self.colorScheme))
+                                .background(AppController.getAccentColor(colorScheme: self.colorScheme))
                                 .cornerRadius(24)
                                 .foregroundColor(.white)
                             }
                             .sheet(isPresented: self.$showOpenTurnKeyInfo, onDismiss: {
-                                self.otkNpi = OtkNfcProtocolInterface()
+                                self.otkNpi.reset()
                             }) {
-                                ViewOpenTurnKeyInfo(otkNpi: self.$otkNpi, btcBalance: self.$otkBtcBalance).environmentObject(AppConfig())
+                                ViewOpenTurnKeyInfo(btcBalance: self.$otkBtcBalance).environmentObject(AppController())
                             }
                             
                             Spacer()
@@ -81,7 +101,7 @@ struct PageOpenTurnKey: View {
             .navigationBarTitle(Text("OpenTurnKey"), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
                 withAnimation {
-                    self.appConfig.interacts = .menuOpenTurnKey
+                    self.appController.interacts = .menuOpenTurnKey
                 }
             }) {
                 Image("menu")
@@ -92,6 +112,6 @@ struct PageOpenTurnKey: View {
 
 struct PageOpenTurnKey_Previews: PreviewProvider {
     static var previews: some View {
-        PageOpenTurnKey().environmentObject(AppConfig())
+        PageOpenTurnKey().environmentObject(AppController())
     }
 }
