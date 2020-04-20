@@ -15,20 +15,22 @@ class Transaction {
     var fees: Int64
     var hash: String
     var blockHeight: Int64
+    var confirmations: Int64
     var rawData: String
-    
-    init(hash: String, from: String, to: String, amount: Double, fees: Int64, blockHeight: Int64, rawData: String) {
-        Logger.shared.debug("hash:\(hash), from:\(from), to:\(to), amount:\(amount), fees:\(fees), block height:\(blockHeight), raw:\(rawData)")
+
+    init(hash: String, from: String, to: String, amount: Double, fees: Int64, blockHeight: Int64, confirmations: Int64, rawData: String) {
+        Logger.shared.debug("hash:\(hash), from:\(from), to:\(to), amount:\(amount), fees:\(fees), block height:\(blockHeight), confirmations:\(confirmations), raw:\(rawData)")
         self.from = from
         self.to = to
         self.amount = amount
         self.fees = fees
         self.hash = hash
         self.blockHeight = blockHeight
+        self.confirmations = confirmations
         self.rawData = rawData
     }
-    
+
     func toString() -> String {
-        return "hash:\(hash), from:\(from), to:\(to), amount:\(amount), fees:\(fees), block height:\(blockHeight), raw:\(rawData)"
+        return "hash:\(hash), from:\(from), to:\(to), amount:\(amount), fees:\(fees), block height:\(blockHeight), confirmations:\(confirmations), raw:\(rawData)"
     }
 }

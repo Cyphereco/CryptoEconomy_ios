@@ -7,12 +7,16 @@
 //
 
 import Foundation
-import Log4swift
+import SwiftyBeaver
 
 class Logger {
     static let shared = Logger()
-    
-    let logger = Log4swift.Logger.getLogger("Cyphereco")
+    private let logger = SwiftyBeaver.self
+    private let console = ConsoleDestination()
+
+    private init() {
+        logger.addDestination(console)
+    }
     
     public func debug<T>(_ object: T, filename: String = #file, line: Int = #line, funcname: String = #function) {
         logger.debug("***** \(filename.components(separatedBy: "/").last ?? "") (line: \(line)) :: \(funcname) :: \(object)")

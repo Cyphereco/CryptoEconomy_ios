@@ -53,15 +53,46 @@ class BaseWebServices {
             encoding: encoding
         )
     }
+    
+    public func getStringResponse(_ dataRequest: DataRequest) -> Promise<String> {
+        return Promise<String>.init(resolver: { (resolver) in
+            dataRequest.debugLog().validate().responseString(completionHandler: { (response) in
+                switch response.result {
+                    
+                case .success(let response):
+                    Logger.shared.debug("Success:\(response)")
+                    resolver.fulfill(response)
+                case .failure(let error):
+                    Logger.shared.debug(error)
+                    
+                    if let aferror = error as? AFError {
+                        // Error Catch
+                        switch aferror {
+                        case .invalidURL:
+                            ()
+                        case .parameterEncodingFailed:
+                            ()
+                        case .multipartEncodingFailed:
+                            ()
+                        case .responseValidationFailed:
+                            ()
+                        case .responseSerializationFailed:
+                            ()
+                        }
+                    }
+                    resolver.reject(error)
+                }
+            })
+        })
+    }
    
-    public func setupResponse(_ dataRequest: DataRequest) -> Promise<JSON> {
+    public func getJSONResponse(_ dataRequest: DataRequest) -> Promise<JSON> {
         return Promise<JSON>.init(resolver: { (resolver) in
             dataRequest.debugLog().validate().responseJSON(queue: DispatchQueue.global(), options: JSONSerialization.ReadingOptions.mutableContainers, completionHandler: { (response) in
-                
                 switch response.result {
                     
                 case .success(let json):
-                    Logger.shared.debug("Success")
+                    Logger.shared.debug("Success:\(json)")
                     let content = JSON(json)
                     resolver.fulfill(content)
                 case .failure(let error):
@@ -90,6 +121,7 @@ class BaseWebServices {
 }
 
 enum WebServiceError: Error {
+    case serviceUnavailable
     case decodeContentFailure
     case otherErrors
     
@@ -103,6 +135,8 @@ enum WebServiceError: Error {
             
         case .decodeContentFailure:
             return "Decode response content failure."
+        case .serviceUnavailable:
+            return "Service is unavailable."
         case .otherErrors:
             return "Other errors"
         }

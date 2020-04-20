@@ -6,7 +6,7 @@ target 'cryptoeconomy' do
   use_frameworks!
 
   # Pods for cryptoeconomy
-  pod 'Log4swift', '1.0.4'
+  pod 'SwiftyBeaver'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'PromiseKit/Alamofire', '~> 6.0'
   pod 'BigInt', '~> 5.0'

@@ -27,21 +27,31 @@ import SwiftyJSON
 class BlockCypherService: BaseWebServices {
     static let shared = BlockCypherService()
 
-    let baseMainUrl = "https://api.blockcypher.com/v1/btc/main/"
-    let baseTestUrl = "https://api.blockcypher.com/v1/btc/test3/"
+    let baseMainNetUrl = "https://api.blockcypher.com/v1/btc/main/"
+    let baseTestNetUrl = "https://api.blockcypher.com/v1/btc/test3/"
     let pathNewTx = "txs/new"
     let pathSendTx = "txs/send"
+    let pathGetTx = "txs/"
     let paramToken = "?token=7744d177ce1e4ef48c7431fcb55531b9"
+    let paramInclueHex = "?includeHex=true"
     
     /*
      * Get base url for main net or test net depends on address prefix
      */
     private func _getBaseUrl(address: String) -> String {
         // Main net address must be start with '1'
-        if address.prefix(1) == "1" {
-            return baseMainUrl
+        if BtcUtils.isMainNet(address: address) {
+            return baseMainNetUrl
         }
-        return baseTestUrl
+        return baseTestNetUrl
+    }
+    
+    private func _getBaseUrl(isMainNet: Bool) -> String {
+        // Main net address must be start with '1'
+        if isMainNet {
+            return baseMainNetUrl
+        }
+        return baseTestNetUrl
     }
         
     /*
@@ -83,7 +93,7 @@ class BlockCypherService: BaseWebServices {
 
             firstly {
                 // send request and get json response
-                self.setupResponse(req)
+                self.getJSONResponse(req)
             }.then { (responseJSON) -> Promise<UnsignedTx> in
                 // process response
                 return Promise<UnsignedTx>.init(resolver: { (resolver) in
@@ -203,7 +213,7 @@ class BlockCypherService: BaseWebServices {
 
             firstly {
                 // send request and get json response
-                self.setupResponse(req)
+                self.getJSONResponse(req)
             }.then { (responseJSON) -> Promise<Transaction> in
                 // process response
                 return Promise<Transaction>.init(resolver: { (resolver) in
@@ -225,7 +235,54 @@ class BlockCypherService: BaseWebServices {
                     let blockHeight = responseJSON["tx"]["block_height"].int64Value
                     // Get raw
                     let rawData = responseJSON["tx"]["hex"].stringValue
-                    let tx = Transaction(hash: hash, from: unsignedTx.from, to: unsignedTx.to, amount: unsignedTx.amount, fees: fees, blockHeight: blockHeight, rawData: rawData)
+                    let tx = Transaction(hash: hash, from: unsignedTx.from, to: unsignedTx.to, amount: unsignedTx.amount, fees: fees, blockHeight: blockHeight, confirmations: -1, rawData: rawData)
+                    resolver.fulfill(tx)
+                })
+            }.done { (tx) in
+                // Complete
+                resolver.fulfill(tx)
+            }.catch(policy: .allErrors) { (error) in
+                // error handling
+                Logger.shared.debug(error)
+                // XXX parse error
+                resolver.reject(WebServiceError.otherErrors)
+            }
+        })
+    }
+    
+    /*
+      Get transaction from BlockCypher service
+      Currently this function is only use to get block height, confirmations and raw data of a transaction.
+      It's suggested to use BlochChainInfoService to get those transaction's info since the request might be rejected by BlockCypher due to response 429.
+     */
+    func getTransaction(hash: String, isMainNet: Bool = true) -> Promise<Transaction> {
+        // return Promise
+        return Promise<Transaction>.init(resolver: { (resolver) in
+                        // generate Request
+            let req = self.requestGenerator(baseUrl: _getBaseUrl(isMainNet: isMainNet), route: pathGetTx + hash, urlParameters: paramToken, parameters: nil, method: .get)
+
+            firstly {
+                // send request and get json response
+                self.getJSONResponse(req)
+            }.then { (responseJSON) -> Promise<Transaction> in
+                // process response
+                return Promise<Transaction>.init(resolver: { (resolver) in
+                    Logger.shared.debug(responseJSON)
+                    // get the tx from response
+                    // The response is like:
+                    // {
+                    //    "block_height": 1696713,
+                    //    "hex": "..."
+                    //    "confirmations: 704
+                    // }
+                    
+                    // Get block height
+                    let blockHeight = responseJSON["block_height"].int64Value
+                    // Get confirmations
+                    let confirmations = responseJSON["confirmations"].int64Value
+                    // Get raw data
+                    let rawData = responseJSON["hex"].stringValue
+                    let tx = Transaction(hash: hash, from: "", to: "", amount: 0, fees: 0, blockHeight: blockHeight, confirmations: confirmations, rawData: rawData)
                     resolver.fulfill(tx)
                 })
             }.done { (tx) in

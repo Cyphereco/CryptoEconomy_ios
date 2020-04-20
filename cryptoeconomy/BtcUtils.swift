@@ -166,4 +166,15 @@ class BtcUtils {
         let bitCoinIDTest = NSPredicate(format:"SELF MATCHES %@", pattern)
         return bitCoinIDTest.evaluate(with: addr)
     }
+    
+    /*
+     * Return if it's main net depends on address prefix
+     */
+    static func isMainNet(address: String) -> Bool {
+        // Main net address must be start with '1'
+        if address.prefix(1) == "1" {
+            return true
+        }
+        return false
+    }
 }
