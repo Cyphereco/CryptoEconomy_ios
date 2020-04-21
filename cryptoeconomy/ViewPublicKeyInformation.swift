@@ -29,7 +29,7 @@ struct ViewPublicKeyInformation: View {
                         self.showToast = true
                     }
                     Image("qrcode")
-                }.padding(.horizontal)
+                }.padding([.horizontal, .top])
                 Text(self.otkNpi.otkData.masterKey)
                     .lineLimit(5)
                     .multilineTextAlignment(.leading)

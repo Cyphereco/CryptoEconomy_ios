@@ -15,68 +15,61 @@ struct ViewOpenTurnKeyInfo: View {
     @Environment(\.presentationMode) var presentationMode
     @State var showOtkInfo = false
     @State var showToastMessage = false
-    
+    @State var toastMessage = ""
+
     let otkNpi = AppController.otkNpi
     
     var pasteboard = UIPasteboard.general
  
     var body: some View {
-        ZStack {
-            NavigationView {
-                VStack {
-                    HStack {
-                        Spacer()
-                        showLockState(state: self.otkNpi.otkState.isLocked).foregroundColor(self.otkNpi.otkState.isLocked ? .red : .green)
-                        showBatteryLevel(level: self.otkNpi.otkInfo.batteryPercentage).foregroundColor(self.otkNpi.otkInfo.batteryPercentage.contains("10%") ? .red : (colorScheme == .dark ? .white : .black))
-                        Text(self.otkNpi.otkInfo.batteryPercentage)
-                    }.padding()
-                    VStack {
-                        Text("\(AppTools.btcToFormattedString(self.btcBalance)) BTC").font(.title)
-                        Text("(~ \(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btcBalance, currencySelection: self.appController.getLocalCurrency().ordinal))) \(appController.getLocalCurrency().label))").font(.headline)
-                    }.padding()
-                    VStack {
-                        Image(uiImage: UIImage(data: getQrCodeData(str: self.otkNpi.otkData.btcAddress))!).resizable().frame(width: 100, height: 100)
-                        Text(self.otkNpi.otkData.btcAddress).multilineTextAlignment(.center).padding()
-                        Button(action: {
-                            withAnimation {
-                                self.pasteboard.string = self.otkNpi.otkData.btcAddress
-                                self.showToastMessage = true
-                            }
-                        }){
-                            Image("copy")
-                        }
-                    }.padding()
+        NavigationView {
+            VStack {
+                HStack {
                     Spacer()
-                    HStack {
-                        Text("\(AppStrings.note):")
-                        TextFieldWithBottomLine(textContent: .constant(self.otkNpi.otkInfo.note), textAlign: .leading, readOnly: true)
-                        Image("info").foregroundColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
-                            .onTapGesture {
-                                self.showOtkInfo = true
-                        }
-                        .alert(
-                            isPresented: self.$showOtkInfo,
-                            content: {
-                                Alert(title: Text(AppStrings.mintInfo),
-                                      message: Text(self.otkNpi.readTag.info)
-                                )
-                            }
-                        )
-                    }.padding(20)
-                }
-                .padding(.horizontal, 20.0)
-                .accentColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
-                .navigationBarTitle(Text(AppStrings.openturnkeyInfo), displayMode: .inline)
-                .navigationBarItems(trailing:
-                    Image("clear")
-                        .foregroundColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
+                    showLockState(state: self.otkNpi.otkState.isLocked).foregroundColor(self.otkNpi.otkState.isLocked ? .red : .green)
+                    showBatteryLevel(level: self.otkNpi.otkInfo.batteryPercentage).foregroundColor(self.otkNpi.otkInfo.batteryPercentage.contains("10%") ? .red : (colorScheme == .dark ? .white : .black))
+                    Text(self.otkNpi.otkInfo.batteryPercentage)
+                }.padding()
+                VStack {
+                    Text("\(AppTools.btcToFormattedString(self.btcBalance)) BTC").font(.title)
+                    Text("(~ \(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btcBalance, currencySelection: self.appController.getLocalCurrency().ordinal))) \(appController.getLocalCurrency().label))").font(.headline)
+                }.padding()
+                VStack {
+                    Image(uiImage: UIImage(data: getQrCodeData(str: self.otkNpi.otkData.btcAddress))!).resizable().frame(width: 100, height: 100)
+                    Text(self.otkNpi.otkData.btcAddress).multilineTextAlignment(.center).padding()
+                    CopyButton(copyString: self.otkNpi.otkData.btcAddress){
+                        self.toastMessage = AppStrings.btcAddress + AppStrings.copied
+                        self.showToastMessage = true
+                    }
+                }.padding()
+                Spacer()
+                HStack {
+                    Text("\(AppStrings.note):")
+                    TextFieldWithBottomLine(textContent: .constant(self.otkNpi.otkInfo.note), textAlign: .leading, readOnly: true)
+                    Image("info").foregroundColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
                         .onTapGesture {
-                        self.presentationMode.wrappedValue.dismiss()
-                    })
+                            self.showOtkInfo = true
+                    }
+                    .alert(
+                        isPresented: self.$showOtkInfo,
+                        content: {
+                            Alert(title: Text(AppStrings.mintInfo),
+                                  message: Text(self.otkNpi.readTag.info)
+                            )
+                        }
+                    )
+                }.padding(20)
             }
-            if (self.showToastMessage) {
-                ViewToastMessage(message: AppStrings.copied, delay: 2, show: self.$showToastMessage)
-            }
+            .padding(.horizontal, 20.0)
+            .accentColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
+            .navigationBarTitle(Text(AppStrings.openturnkeyInfo), displayMode: .inline)
+            .navigationBarItems(trailing:
+                Image("clear")
+                    .foregroundColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
+                    .onTapGesture {
+                    self.presentationMode.wrappedValue.dismiss()
+                })
+                .toastMessage(message: self.$toastMessage, show: self.$showToastMessage)
         }
     }
     
