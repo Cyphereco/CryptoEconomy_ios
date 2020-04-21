@@ -293,6 +293,15 @@ class AppController: ObservableObject {
         })
     }
     
+    func cancelOtkRequest(continueAfterStarted: Bool) {
+        if !continueAfterStarted || (continueAfterStarted && !AppController.otkNpi.readStarted) {
+            AppController.otkNpi.cancelSession()
+            AppController.otkNpi = OtkNfcProtocolInterface()
+            self.requestHint = AppStrings.readGeneralInformation
+            self.authByPin = false
+        }
+    }
+    
     func setLocalCurrency(selection: Int) -> Void {
         UserDefaults.standard.set(selection, forKey: "LocalCurrency")
     }

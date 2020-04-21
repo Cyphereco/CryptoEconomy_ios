@@ -53,7 +53,7 @@ struct PagePay: View {
                         }.padding(.horizontal, 20.0).padding(.top, 40).padding(.bottom, 10)
                         
                         Button(action: {
-                            self.otkNpi.beginScanning(completion: {})
+                            self.otkNpi.beginScanning(onCompleted: {}, onCanceled: {})
                         }) {
                             HStack{
                                 if (self.appController.authByPin) {

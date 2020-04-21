@@ -61,8 +61,8 @@ struct PageOpenTurnKey: View {
                             }
                             
                             Button(action: {
-                                self.otkNpi.beginScanning(completion: {
-                                    if (self.otkNpi.otkDetected) {
+                                self.otkNpi.beginScanning(onCompleted: {
+                                    if (self.otkNpi.readCompleted) {
                                         print(self.otkNpi)
                                         self.showOpenTurnKeyInfo = true
                                         _ = BlockChainInfoService.getBalance(address: self.otkNpi.otkData.btcAddress).done({result in
@@ -71,8 +71,9 @@ struct PageOpenTurnKey: View {
                                             }
                                         })
                                     }
+                                }, onCanceled: {
+                                    self.appController.cancelOtkRequest(continueAfterStarted: false)
                                 })
-                                self.requestHint = AppStrings.readGeneralInformation
                             }) {
                                 HStack(alignment: .center){
                                     Image("nfc_request")

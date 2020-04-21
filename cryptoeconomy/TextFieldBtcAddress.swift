@@ -39,11 +39,11 @@ struct TextFieldBtcAddress: View {
                 }){Image("paste")}
 
                 Button(action: {
-                    self.otkNpi.beginScanning(completion: {
+                    self.otkNpi.beginScanning(onCompleted: {
                         if !self.updateAddress(addr: self.otkNpi.otkData.btcAddress) {
                             Logger.shared.warning("Invalide BTC address")
                         }
-                    })
+                    }, onCanceled: {})
                 }){Image("read_nfc")}
                     .padding(.horizontal, 10.0)
                     .padding(.trailing, 4.0)
