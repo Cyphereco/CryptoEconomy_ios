@@ -80,12 +80,12 @@ struct SideMenuOpenTurnKey: View {
         
         let cachedReuqet = request
         
-        // set a timeout cancel, if scan not started in time
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-            if AppController.otkNpi.request.command == cachedReuqet.command {
-                self.appController.cancelOtkRequest(continueAfterStarted: true)
-            }
-        }
+//        // set a timeout cancel, if scan not started in time
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+//            if AppController.otkNpi.request.command == cachedReuqet.command {
+//                self.appController.cancelOtkRequest(continueAfterStarted: true)
+//            }
+//        }
     }
 }
 

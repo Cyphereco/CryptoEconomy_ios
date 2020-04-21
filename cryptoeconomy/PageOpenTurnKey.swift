@@ -13,7 +13,7 @@ struct PageOpenTurnKey: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appController: AppController
 
-    @State var showOpenTurnKeyInfo = false
+    @State var showResult = false
     @State var otkBtcBalance = 0.0
     
     let otkNpi = AppController.otkNpi
@@ -64,12 +64,19 @@ struct PageOpenTurnKey: View {
                                 self.otkNpi.beginScanning(onCompleted: {
                                     if (self.otkNpi.readCompleted) {
                                         print(self.otkNpi)
-                                        self.showOpenTurnKeyInfo = true
-                                        _ = BlockChainInfoService.getBalance(address: self.otkNpi.otkData.btcAddress).done({result in
-                                            if (result > 0) {
-                                                self.otkBtcBalance = Double(result) / 100000000
+                                        if self.otkNpi.otkState.command == .invalid || self.otkNpi.otkState.execState == .success {
+                                            if self.otkNpi.otkState.command == .invalid {
+                                                _ = BlockChainInfoService.getBalance(address: self.otkNpi.otkData.btcAddress).done({result in
+                                                    if (result > 0) {
+                                                        self.otkBtcBalance = Double(result) / 100000000
+                                                    }
+                                                })
                                             }
-                                        })
+                                            self.showResult = true
+                                        }
+                                        else {
+                                            // alert failure
+                                        }
                                     }
                                 }, onCanceled: {
                                     self.appController.cancelOtkRequest(continueAfterStarted: false)
@@ -89,12 +96,17 @@ struct PageOpenTurnKey: View {
                                 .cornerRadius(24)
                                 .foregroundColor(.white)
                             }
-                            .sheet(isPresented: self.$showOpenTurnKeyInfo, onDismiss: {
+                            .sheet(isPresented: self.$showResult, onDismiss: {
                                 self.otkNpi.reset()
                             }) {
-                                ViewOpenTurnKeyInfo(btcBalance: self.$otkBtcBalance).environmentObject(AppController())
+                                if self.otkNpi.otkState.command == .invalid {
+                                    ViewOpenTurnKeyInfo(btcBalance: self.$otkBtcBalance).environmentObject(self.appController)
+                                }
+                                else if self.otkNpi.otkState.command == .showKey {
+                                    ViewPublicKeyInformation().environmentObject(self.appController)
+                                }
                             }
-                            
+
                             Spacer()
                         }.frame(minWidth: .zero, idealWidth: .none, maxWidth: .infinity, minHeight: 80, idealHeight: .none, maxHeight: 160, alignment: .center)
                     }

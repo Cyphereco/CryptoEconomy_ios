@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ViewOpenTurnKeyInfo: View {
     @Binding var btcBalance: Double
-    var fiatBalance: Double = 0.0
     @EnvironmentObject var appController: AppController
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
@@ -33,7 +32,7 @@ struct ViewOpenTurnKeyInfo: View {
                     }.padding()
                     VStack {
                         Text("\(AppTools.btcToFormattedString(self.btcBalance)) BTC").font(.title)
-                        Text("(~ \(AppTools.fiatToFormattedString(self.fiatBalance)) \(appController.getLocalCurrency().label))").font(.footnote)
+                        Text("(~ \(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btcBalance, currencySelection: self.appController.getLocalCurrency().ordinal))) \(appController.getLocalCurrency().label))").font(.headline)
                     }.padding()
                     VStack {
                         Image(uiImage: UIImage(data: getQrCodeData(str: self.otkNpi.otkData.btcAddress))!).resizable().frame(width: 100, height: 100)

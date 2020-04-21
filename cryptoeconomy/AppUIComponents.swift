@@ -16,6 +16,24 @@ class TextFieldObserver: NSObject {
     }
 }
 
+struct CopyButton: View {
+    var copyString: String
+    var completion: ()->Void
+    
+    var pasteboard = UIPasteboard.general
+    
+    var body: some View {
+        Button(action: {
+            withAnimation {
+                self.pasteboard.string = self.copyString
+                self.completion()
+            }
+        }){
+            Image("copy")
+        }
+    }
+}
+
 struct RowButton: View {
     var text: String
     let completion: () -> Void
@@ -29,6 +47,27 @@ struct RowButton: View {
                 Spacer()
             }
         }
+    }
+}
+
+struct ToastMessage: ViewModifier {
+    @Binding var message: String
+    @Binding var showToastMessage: Bool
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+            
+            if (self.showToastMessage) {
+                ViewToastMessage(message: self.message, delay: 2, show: self.$showToastMessage)
+            }
+        }
+    }
+}
+
+extension View {
+    func toastMessage(message: Binding<String>, show: Binding<Bool>) -> some View {
+        self.modifier(ToastMessage(message: message, showToastMessage: show))
     }
 }
 
@@ -54,6 +93,20 @@ struct TappableBackground: ViewModifier {
 extension View {
     func onTapBackground(_ completion: @escaping ()->Void ) -> some View {
         self.modifier(TappableBackground(completion: completion))
+    }
+}
+
+struct AddUnderline: ViewModifier {
+    func body(content: Content) -> some View {
+        VStack {
+            content
+            Divider().frame(height: 1).padding(.top, -10)
+        }
+    }
+}
+extension View {
+    func addUnderline() -> some View {
+        self.modifier(AddUnderline())
     }
 }
 
