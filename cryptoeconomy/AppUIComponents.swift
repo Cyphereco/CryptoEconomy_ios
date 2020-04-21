@@ -100,7 +100,7 @@ struct AddUnderline: ViewModifier {
     func body(content: Content) -> some View {
         VStack {
             content
-            Divider().frame(height: 1).padding(.top, -10)
+            Divider().frame(height: 1).padding(.vertical, -10)
         }
     }
 }

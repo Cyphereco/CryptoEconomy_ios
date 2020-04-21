@@ -58,6 +58,7 @@ struct ListItemAddress: View {
     @State var showAddressEditor = false
 
     var recordAddress: AddressViewModel
+    @State var alertUseFixedAddress = false
 
     var body: some View {
         HStack {
@@ -97,9 +98,17 @@ struct ListItemAddress: View {
             }
 
             Button(action: {
-                self.appController.payeeAddr = self.recordAddress.address
-                self.appController.pageSelected = 0
+                if !self.appController.useFixedAddress {
+                    self.appController.pageSelected = 0
+                    self.appController.payeeAddr = self.recordAddress.address
+                }
+                else {
+                    self.alertUseFixedAddress = true
+                }
             }){Image("send")}.buttonStyle(BorderlessButtonStyle())
+            .alert(isPresented: self.$alertUseFixedAddress){
+                Alert(title: Text("use_fixed_address"))
+            }
         }.padding(.horizontal, 5)
     }
 }

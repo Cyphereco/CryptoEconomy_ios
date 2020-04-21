@@ -26,7 +26,7 @@ struct PagePay: View {
                         Spacer()
                         
                         TextFieldBtcAddress(address: self.$appController.payeeAddr)
-                            .padding(.horizontal, 20.0)
+                            .padding()
                             .disabled(self.appController.useFixedAddress)
                             .onTapGesture {
                                 self.alertUseFixedAddress = true

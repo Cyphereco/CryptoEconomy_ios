@@ -43,13 +43,16 @@ struct ViewOpenTurnKeyInfo: View {
                     }
                 }.padding()
                 Spacer()
-                HStack {
+                HStack(alignment: .top) {
                     Text("\(AppStrings.note):")
-                    TextFieldWithBottomLine(textContent: .constant(self.otkNpi.otkInfo.note), textAlign: .leading, readOnly: true)
+                    Text(self.otkNpi.otkInfo.note)
+                        .frame(minWidth: 200)
+                        .lineLimit(5)
+                        .multilineTextAlignment(.leading)
                     Image("info").foregroundColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
                         .onTapGesture {
                             self.showOtkInfo = true
-                    }
+                    }.padding(.top, -5)
                     .alert(
                         isPresented: self.$showOtkInfo,
                         content: {
@@ -59,6 +62,7 @@ struct ViewOpenTurnKeyInfo: View {
                         }
                     )
                 }.padding(20)
+                Divider().frame(height: 1).padding(.bottom, 10)
             }
             .padding(.horizontal, 20.0)
             .accentColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
