@@ -39,6 +39,7 @@
 		BA40150E2431E2B70094F6CF /* TextFieldPayAmount.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA40150D2431E2B70094F6CF /* TextFieldPayAmount.swift */; };
 		BA486939244E819100BD0860 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA486938244E819000BD0860 /* WebService.swift */; };
 		BA48693B244F0D0E00BD0860 /* ViewPublicKeyInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48693A244F0D0E00BD0860 /* ViewPublicKeyInformation.swift */; };
+		BA48693D244FE39900BD0860 /* ViewExportWifKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48693C244FE39900BD0860 /* ViewExportWifKey.swift */; };
 		BA7DDBA0243665E50072412F /* AppTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7DDB9F243665E50072412F /* AppTools.swift */; };
 		BA9595E7242EFD8800C48B37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9595E6242EFD8800C48B37 /* AppDelegate.swift */; };
 		BA9595E9242EFD8900C48B37 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9595E8242EFD8900C48B37 /* SceneDelegate.swift */; };
@@ -53,7 +54,6 @@
 		BAADC8172439B02B00799FD0 /* OtkNPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAADC8162439B02A00799FD0 /* OtkNPI.swift */; };
 		BAC387552449F11A0061C1EF /* AppUIComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC387542449F11A0061C1EF /* AppUIComponents.swift */; };
 		BF4ADD4C2445870200BB7A98 /* TransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4ADD4B2445870200BB7A98 /* TransactionViewModel.swift */; };
-		BF524281243E1C2B0063ABAC /* QRCodeGenerateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF524280243E1C2B0063ABAC /* QRCodeGenerateView.swift */; };
 		BF63FEC62444B4B20094F7EC /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BF63FEC42444B4B20094F7EC /* CoreDataModel.xcdatamodeld */; };
 		BF63FECB2444BAE70094F7EC /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF63FECA2444BAE70094F7EC /* CoreDataManager.swift */; };
 		BF63FECE2444BB330094F7EC /* NSManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF63FECD2444BB330094F7EC /* NSManagedObjectContext.swift */; };
@@ -114,6 +114,7 @@
 		BA40150D2431E2B70094F6CF /* TextFieldPayAmount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldPayAmount.swift; sourceTree = "<group>"; };
 		BA486938244E819000BD0860 /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		BA48693A244F0D0E00BD0860 /* ViewPublicKeyInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPublicKeyInformation.swift; sourceTree = "<group>"; };
+		BA48693C244FE39900BD0860 /* ViewExportWifKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExportWifKey.swift; sourceTree = "<group>"; };
 		BA7DDB9F243665E50072412F /* AppTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTools.swift; sourceTree = "<group>"; };
 		BA9595E3242EFD8800C48B37 /* Crypto Economy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Crypto Economy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA9595E6242EFD8800C48B37 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -140,7 +141,6 @@
 		BBA23AD2292FE79FA11FDFAB /* Pods-cryptoeconomy-cryptoeconomyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cryptoeconomy-cryptoeconomyUITests.debug.xcconfig"; path = "Target Support Files/Pods-cryptoeconomy-cryptoeconomyUITests/Pods-cryptoeconomy-cryptoeconomyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		BF02E839243A116200B22FA4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		BF4ADD4B2445870200BB7A98 /* TransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
-		BF524280243E1C2B0063ABAC /* QRCodeGenerateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerateView.swift; sourceTree = "<group>"; };
 		BF63FEC52444B4B20094F7EC /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		BF63FECA2444BAE70094F7EC /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		BF63FECD2444BB330094F7EC /* NSManagedObjectContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContext.swift; sourceTree = "<group>"; };
@@ -256,7 +256,6 @@
 				BA3FC53F2431006000F41471 /* PageHistory.swift */,
 				BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */,
 				BA3FC53D2431004D00F41471 /* PagePay.swift */,
-				BF524280243E1C2B0063ABAC /* QRCodeGenerateView.swift */,
 				BA3FC5392430576100F41471 /* SearchBar.swift */,
 				BA9595E8242EFD8900C48B37 /* SceneDelegate.swift */,
 				BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */,
@@ -267,6 +266,7 @@
 				BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */,
 				BA1F873B24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift */,
 				BA48693A244F0D0E00BD0860 /* ViewPublicKeyInformation.swift */,
+				BA48693C244FE39900BD0860 /* ViewExportWifKey.swift */,
 				BA1F874124443168003DB110 /* ViewToastMessage.swift */,
 				BA1F873F2440DCFA003DB110 /* ViewTransactionInformation.swift */,
 				BA486938244E819000BD0860 /* WebService.swift */,
@@ -619,7 +619,6 @@
 				BA7DDBA0243665E50072412F /* AppTools.swift in Sources */,
 				BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */,
 				BA40150A2431CA930094F6CF /* TextFieldBtcAddress.swift in Sources */,
-				BF524281243E1C2B0063ABAC /* QRCodeGenerateView.swift in Sources */,
 				BA1F87402440DCFA003DB110 /* ViewTransactionInformation.swift in Sources */,
 				BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */,
 				BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */,
@@ -638,6 +637,7 @@
 				BA48693B244F0D0E00BD0860 /* ViewPublicKeyInformation.swift in Sources */,
 				B23FB94B243741BC00A2B80F /* BaseWebService.swift in Sources */,
 				B23FB94C243741BC00A2B80F /* BlockChainInfoService.swift in Sources */,
+				BA48693D244FE39900BD0860 /* ViewExportWifKey.swift in Sources */,
 				BA3FC53A2430576100F41471 /* SearchBar.swift in Sources */,
 				BA1F873C24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift in Sources */,
 				BA9595E9242EFD8900C48B37 /* SceneDelegate.swift in Sources */,

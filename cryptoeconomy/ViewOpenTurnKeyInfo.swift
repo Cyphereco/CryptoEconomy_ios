@@ -35,7 +35,8 @@ struct ViewOpenTurnKeyInfo: View {
                     Text("(~ \(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btcBalance, currencySelection: self.appController.getLocalCurrency().ordinal))) \(appController.getLocalCurrency().label))").font(.headline)
                 }.padding()
                 VStack {
-                    Image(uiImage: UIImage(data: getQrCodeData(str: self.otkNpi.otkData.btcAddress))!).resizable().frame(width: 100, height: 100)
+                    ImageQRCode(text: self.otkNpi.otkData.btcAddress).frame(width: 100, height: 100)
+//                    Image(uiImage: UIImage(data: getQrCodeData(str: self.otkNpi.otkData.btcAddress))!).resizable().frame(width: 100, height: 100)
                     Text(self.otkNpi.otkData.btcAddress).multilineTextAlignment(.center).padding()
                     CopyButton(copyString: self.otkNpi.otkData.btcAddress){
                         self.toastMessage = AppStrings.btcAddress + AppStrings.copied
@@ -77,14 +78,14 @@ struct ViewOpenTurnKeyInfo: View {
         }
     }
     
-    func getQrCodeData(str: String) -> Data {
-        let filter = CIFilter(name: "CIQRCodeGenerator")
-        let data = str.data(using: .ascii, allowLossyConversion: false)
-        filter?.setValue(data, forKey: "inputMessage")
-        let image = filter?.outputImage
-        let uiimage = UIImage(ciImage: image!)
-        return uiimage.pngData()!
-    }
+//    func getQrCodeData(str: String) -> Data {
+//        let filter = CIFilter(name: "CIQRCodeGenerator")
+//        let data = str.data(using: .ascii, allowLossyConversion: false)
+//        filter?.setValue(data, forKey: "inputMessage")
+//        let image = filter?.outputImage
+//        let uiimage = UIImage(ciImage: image!)
+//        return uiimage.pngData()!
+//    }
     
     func showLockState(state: Bool) -> Image{
         return state ? Image("lock") : Image("unlock")

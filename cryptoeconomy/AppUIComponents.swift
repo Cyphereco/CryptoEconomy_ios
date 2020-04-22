@@ -50,6 +50,23 @@ struct RowButton: View {
     }
 }
 
+struct ImageQRCode: View {
+    var text: String
+    
+    var body: some View {
+        Image(uiImage: UIImage(data: getQrCodeData(str: self.text))!).resizable()
+    }
+    
+    func getQrCodeData(str: String) -> Data {
+        let filter = CIFilter(name: "CIQRCodeGenerator")
+        let data = str.data(using: .ascii, allowLossyConversion: false)
+        filter?.setValue(data, forKey: "inputMessage")
+        let image = filter?.outputImage
+        let uiimage = UIImage(ciImage: image!)
+        return uiimage.pngData()!
+    }
+}
+
 struct ToastMessage: ViewModifier {
     @Binding var message: String
     @Binding var showToastMessage: Bool
@@ -59,7 +76,7 @@ struct ToastMessage: ViewModifier {
             content
             
             if (self.showToastMessage) {
-                ViewToastMessage(message: self.message, delay: 2, show: self.$showToastMessage)
+                ViewToastMessage(message: self.message, delay: 3.5, show: self.$showToastMessage)
             }
         }
     }
@@ -104,6 +121,7 @@ struct AddUnderline: ViewModifier {
         }
     }
 }
+
 extension View {
     func addUnderline() -> some View {
         self.modifier(AddUnderline())

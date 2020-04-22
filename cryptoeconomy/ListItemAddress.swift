@@ -32,8 +32,12 @@ struct AddressQRCodeView: View {
                         }
                     }
                 }.padding([.horizontal, .top])
-                Text("\(self.address)").padding([.horizontal, .bottom])
-                QRCodeGenerateView(inputString: "bitcoin:\(self.address)", width: 120, height: 120).padding()
+                Text(self.address).padding([.horizontal, .bottom])
+                HStack {
+                    Spacer()
+                    ImageQRCode(text: self.address).frame(width: 150, height: 150)
+                    Spacer()
+                }.padding()
                 Spacer()
             }
             .navigationBarTitle(Text(AppStrings.btcQrCode), displayMode: .inline)
