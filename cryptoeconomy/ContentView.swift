@@ -103,7 +103,6 @@ struct ContentView: View {
                     self.closeMenu()
                 }
             })
-            .id(UUID())
             .offset(y: dragOffset.height > 0 ? dragOffset.height : 0)
             .animation(.easeInOut)
 
@@ -112,7 +111,6 @@ struct ContentView: View {
                     self.closeMenu()
                 }
             })
-            .id(UUID())
             .offset(y: dragOffset.height > 0 ? dragOffset.height : 0)
             .animation(.easeInOut)
         }
