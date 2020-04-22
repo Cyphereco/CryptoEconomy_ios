@@ -26,7 +26,7 @@ struct PageHistory: View {
                             ListItemTransaction(transactionListVM: self.transactionListVM,
                                                 recordTransaction: item)
                         }
-                    }
+                    }.id(UUID())
                 }
             }
             .onTapBackground({

@@ -32,7 +32,7 @@ struct PageAddresses: View {
                                 ListItemAddress(addressListVM: self.addressListVM, recordAddress: item)
                             }
                         }
-                    }
+                    }.id(UUID())
                 }
             }
             .onTapBackground({
