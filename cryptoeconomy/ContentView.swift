@@ -90,13 +90,11 @@ struct ContentView: View {
                 self.closeMenu()
             })
             .offset(x: dragOffset.width > 0 ? dragOffset.width : 0)
-            .animation(.easeInOut)
 
             SideMenuOpenTurnKey(isOpened: self.appController.interacts == .menuOpenTurnKey, closeMenu: {
                 self.closeMenu()
             })
             .offset(x: dragOffset.width > 0 ? dragOffset.width : 0)
-            .animation(.easeInOut)
 
             ConfigLocalCurrency(isOpened: self.appController.interacts == .configLocalCurrency, closeMenu: {
                 withAnimation {
@@ -104,7 +102,6 @@ struct ContentView: View {
                 }
             })
             .offset(y: dragOffset.height > 0 ? dragOffset.height : 0)
-            .animation(.easeInOut)
 
             ConfigFees(isOpened: self.appController.interacts == .configFees, closeMenu: {
                 withAnimation {
@@ -112,7 +109,6 @@ struct ContentView: View {
                 }
             })
             .offset(y: dragOffset.height > 0 ? dragOffset.height : 0)
-            .animation(.easeInOut)
         }
     }
     

@@ -36,7 +36,6 @@ struct ViewOpenTurnKeyInfo: View {
                 }.padding()
                 VStack {
                     ImageQRCode(text: self.otkNpi.otkData.btcAddress).frame(width: 100, height: 100)
-//                    Image(uiImage: UIImage(data: getQrCodeData(str: self.otkNpi.otkData.btcAddress))!).resizable().frame(width: 100, height: 100)
                     Text(self.otkNpi.otkData.btcAddress).multilineTextAlignment(.center).padding()
                     CopyButton(copyString: self.otkNpi.otkData.btcAddress){
                         self.toastMessage = AppStrings.btcAddress + AppStrings.copied
