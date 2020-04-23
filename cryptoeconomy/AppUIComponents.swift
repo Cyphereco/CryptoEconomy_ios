@@ -54,7 +54,12 @@ struct ImageQRCode: View {
     var text: String
     
     var body: some View {
-        Image(uiImage: UIImage(data: getQrCodeData(str: self.text))!).resizable()
+        Image(uiImage: UIImage(data: getQrCodeData(str: self.text))!).resizable().frame(width: self.getSize(), height: self.getSize())
+    }
+    
+    func getSize() -> CGFloat {
+        let size = self.text.count > 32 ? self.text.count > 128 ? 200 : 150 : 100
+        return CGFloat(size)
     }
     
     func getQrCodeData(str: String) -> Data {

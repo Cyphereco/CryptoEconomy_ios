@@ -101,6 +101,7 @@ struct ContentView: View {
                     self.closeMenu()
                 }
             })
+            .disabled(self.appController.interacts != .configLocalCurrency)
             .offset(y: dragOffset.height > 0 ? dragOffset.height : 0)
 
             ConfigFees(isOpened: self.appController.interacts == .configFees, closeMenu: {
@@ -108,6 +109,7 @@ struct ContentView: View {
                     self.closeMenu()
                 }
             })
+            .disabled(self.appController.interacts != .configFees)
             .offset(y: dragOffset.height > 0 ? dragOffset.height : 0)
         }
     }

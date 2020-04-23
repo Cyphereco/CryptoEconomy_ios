@@ -33,7 +33,7 @@ struct ViewExportWifKey: View {
                     .lineLimit(5)
                     .multilineTextAlignment(.leading)
                     .padding()
-                ImageQRCode(text: self.otkNpi.otkData.wifKey).frame(width: 150, height: 150)
+                ImageQRCode(text: self.otkNpi.otkData.wifKey)
                 Spacer()
             }
             .padding(.horizontal, 20.0)

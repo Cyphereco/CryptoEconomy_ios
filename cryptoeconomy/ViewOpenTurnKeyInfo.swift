@@ -31,11 +31,16 @@ struct ViewOpenTurnKeyInfo: View {
                     Text(self.otkNpi.otkInfo.batteryPercentage)
                 }.padding()
                 VStack {
-                    Text("\(AppTools.btcToFormattedString(self.btcBalance)) BTC").font(.title)
-                    Text("(~ \(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btcBalance, currencySelection: self.appController.getLocalCurrency().ordinal))) \(appController.getLocalCurrency().label))").font(.headline)
+                    if self.btcBalance < 0 {
+                        Text("Cannot update balance due to newwork connection problems, please try later!").font(.headline)
+                    }
+                    else {
+                        Text("\(AppTools.btcToFormattedString(self.btcBalance)) BTC").font(.title)
+                        Text("(~ \(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btcBalance, currencySelection: self.appController.getLocalCurrency().ordinal))) \(appController.getLocalCurrency().label))").font(.headline)
+                    }
                 }.padding()
                 VStack {
-                    ImageQRCode(text: self.otkNpi.otkData.btcAddress).frame(width: 100, height: 100)
+                    ImageQRCode(text: self.otkNpi.otkData.btcAddress)
                     Text(self.otkNpi.otkData.btcAddress).multilineTextAlignment(.center).padding()
                     CopyButton(copyString: self.otkNpi.otkData.btcAddress){
                         self.toastMessage = AppStrings.btcAddress + AppStrings.copied

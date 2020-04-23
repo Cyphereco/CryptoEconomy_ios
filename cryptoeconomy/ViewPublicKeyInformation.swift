@@ -132,11 +132,12 @@ struct ViewPublicKeyInformation: View {
                 VStack(alignment: .center) {
                     Text(self.QRCodeTitle).font(.headline).padding()
                     Text(self.QRCodeData).lineLimit(10).multilineTextAlignment(.leading).frame(maxWidth: 260, maxHeight: 150)
-                    ImageQRCode(text: self.QRCodeData).frame(width: self.QRCodeData.count > 32 ? 150 : 100, height: self.QRCodeData.count > 32 ? 150 : 100).padding()
+                    ImageQRCode(text: self.QRCodeData).padding()
                 }.frame(minWidth: 300, minHeight: 480)
                 .background(self.colorScheme == .dark ? Color.black : Color.white)
                 .foregroundColor(self.colorScheme == .dark ? .white : .black)
-                .animation(.easeInOut)
+                    .animation(Animation.easeInOut(duration: 1).delay(1))
+                .clipShape(RoundedRectangle(cornerRadius: 10.0))
             }
         }
     }
