@@ -22,21 +22,23 @@ struct TextFieldPayAmount: View {
                 }){Image("clear")}
                     .padding(.top, -36.0)
                 VStack(alignment: .trailing) {
-                    TextFieldWithBottomLine(hint: "0.0", textContent: self.$appController.amountSend, textAlign: .trailing, readOnly: false, onEditingChanged: {_ in
-                    })
-                    .font(.custom("", size: 24))
-                    .introspectTextField { textField in
-                        textField.addTarget(
-                            self.textFieldObserver,
-                            action: #selector(TextFieldObserver.textFieldDidBeginEditing),
-                            for: .editingDidBegin
-                        )}
+                    TextField("0.0", text: self.$appController.amountSend)
+                        .multilineTextAlignment(.trailing)
+                        .addUnderline()
+                        .font(.custom("", size: 24))
+                        .introspectTextField { textField in
+                            textField.addTarget(
+                                self.textFieldObserver,
+                                action: #selector(TextFieldObserver.textFieldDidBeginEditing),
+                                for: .editingDidBegin
+                            )}
                     Text("BTC")
                 }
                 Text(" = ").padding(.top, -30)
                 VStack(alignment: .trailing) {
-                    TextFieldWithBottomLine(hint: "0.0", textContent: self.$appController.amountSendFiat, textAlign: .trailing, readOnly: false, onEditingChanged: {_ in
-                    })
+                    TextField("0.0", text: self.$appController.amountSendFiat)
+                    .multilineTextAlignment(.trailing)
+                    .addUnderline()
                     .font(.custom("", size: 24))
                     .introspectTextField { textField in
                         textField.addTarget(

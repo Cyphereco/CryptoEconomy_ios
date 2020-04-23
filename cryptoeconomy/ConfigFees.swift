@@ -28,14 +28,13 @@ struct ConfigFees: View {
                     HStack {
                         Text("\(AppStrings.fees) = ")
                         if (self.appController.feesSelection == 0) {
-                            TextFieldWithBottomLine(hint: "",
-                                                    textContent: self.$appController.strFees,
-                                                    textAlign: .center,
-                                                    readOnly: false)
+                            TextField("0.0", text: self.$appController.strFees)
+                            .multilineTextAlignment(.center)
+                            .addUnderline()
                             .keyboardType(.decimalPad)
                             .foregroundColor(AppController.getAccentColor(colorScheme: self.colorScheme))
                             .frame(width: 100)
-                            .padding(.top, 10)
+                            .padding(-4).padding(.top, 5).padding(.bottom, -5)
                             .introspectTextField { textField in
                                 textField.addTarget(
                                     self.textFieldObserver,

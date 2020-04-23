@@ -14,40 +14,40 @@ struct AddressQRCodeView: View {
     @State var address: String = ""
     private let pasteboard = UIPasteboard.general
     @State var showToastMessage = false
+    @State var toastMessage = ""
 
     var body: some View {
-        ZStack {
-            NavigationView {
-                VStack(alignment: .leading) {
-                    Text(AppStrings.alias)
-                        .font(.headline).padding([.horizontal, .top])
-                    Text("\(self.alias)").padding([.horizontal, .bottom])
-                    HStack {
-                        Text(AppStrings.btcAddress)
-                            .font(.headline)
-                        Button(action: {
-                            withAnimation {
-                                self.pasteboard.string = self.address
-                                self.showToastMessage = true
-                            }
-                        }) {Image("copy")}
-                    }.padding([.horizontal, .top])
-                    Text("\(self.address)").padding([.horizontal, .bottom])
-                    QRCodeGenerateView(inputString: "bitcoin:\(self.address)", width: 120, height: 120).padding()
+        NavigationView {
+            VStack(alignment: .leading) {
+                Text(AppStrings.alias)
+                    .font(.headline).padding([.horizontal, .top])
+                Text("\(self.alias)").padding([.horizontal, .bottom])
+                HStack {
+                    Text(AppStrings.btcAddress)
+                        .font(.headline)
+                    CopyButton(copyString: self.address) {
+                        withAnimation {
+                            self.toastMessage = AppStrings.btcAddress + AppStrings.copied
+                            self.showToastMessage = true
+                        }
+                    }
+                }.padding([.horizontal, .top])
+                Text(self.address).padding([.horizontal, .bottom])
+                HStack {
                     Spacer()
-                }
-                .navigationBarTitle(Text(AppStrings.btcQrCode), displayMode: .inline)
-                .navigationBarItems(trailing: Button(action: {
-                    print("Dismissing sheet view...")
-                    self.showSheetView = false
-                }) {
-                    Image("clear")
-                })
+                    ImageQRCode(text: self.address).frame(width: 150, height: 150)
+                    Spacer()
+                }.padding()
+                Spacer()
             }
-
-            if (self.showToastMessage) {
-                ViewToastMessage(message: AppStrings.copied, delay: 2, show: self.$showToastMessage)
-            }
+            .navigationBarTitle(Text(AppStrings.btcQrCode), displayMode: .inline)
+            .navigationBarItems(trailing: Button(action: {
+                print("Dismissing sheet view...")
+                self.showSheetView = false
+            }) {
+                Image("clear")
+            })
+                .toastMessage(message: self.$toastMessage, show: self.$showToastMessage)
         }
     }
 }
@@ -62,6 +62,7 @@ struct ListItemAddress: View {
     @State var showAddressEditor = false
 
     var recordAddress: AddressViewModel
+    @State var alertUseFixedAddress = false
 
     var body: some View {
         HStack {
@@ -101,9 +102,17 @@ struct ListItemAddress: View {
             }
 
             Button(action: {
-                self.appController.payeeAddr = self.recordAddress.address
-                self.appController.pageSelected = 0
+                if !self.appController.useFixedAddress {
+                    self.appController.pageSelected = 0
+                    self.appController.payeeAddr = self.recordAddress.address
+                }
+                else {
+                    self.alertUseFixedAddress = true
+                }
             }){Image("send")}.buttonStyle(BorderlessButtonStyle())
+            .alert(isPresented: self.$alertUseFixedAddress){
+                Alert(title: Text("use_fixed_address"))
+            }
         }.padding(.horizontal, 5)
     }
 }

@@ -20,6 +20,7 @@ struct ViewToastMessage: View {
             Spacer()
             if (self.show) {
                 Text(message)
+                    .font(.title)
                     .lineLimit(3)
                     .multilineTextAlignment(.center)
                     .onAppear(perform: {

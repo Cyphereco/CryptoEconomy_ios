@@ -9,6 +9,59 @@
 import Combine
 import CoreNFC
 
+enum OtkExecState {
+    case invalid
+    case success
+    case fail
+    
+    init(_ val: Int) {
+        switch val {
+        case 1:
+            self = .success
+            break
+        case 2:
+            self = .fail
+            break
+        default:
+            self = .invalid
+        }
+    }
+    
+    init(_ str: String) {
+        switch str {
+        case "1":
+            self = .success
+            break
+        case "2":
+            self = .fail
+            break
+        default:
+            self = .invalid
+        }
+    }
+    
+    var val: Int {
+        switch self {
+        case .success:
+            return 1
+        case .fail:
+            return 2
+        default:
+            return 0
+        }
+    }
+    
+    var string: String {
+        switch self {
+        case .success:
+            return "1"
+        case .fail:
+            return "2"
+        default:
+            return "0"
+        }
+    }
+}
 enum OtkCommand: CaseIterable{
     case invalid
     case unlock
@@ -21,6 +74,76 @@ enum OtkCommand: CaseIterable{
     case reset
     case exportKey
     
+    init(_ val: Int) {
+        switch val {
+        case 161:
+            self = .unlock
+            break
+        case 162:
+            self = .showKey
+            break
+        case 163:
+            self = .sign
+            break
+        case 164:
+            self = .setKey
+            break
+        case 165:
+            self = .setPin
+            break
+        case 166:
+            self = .setNote
+            break
+        case 167:
+            self = .cancel
+            break
+        case 168:
+            self = .reset
+            break
+        case 169:
+            self = .exportKey
+            break
+        default:
+            self = .invalid
+        }
+
+    }
+    
+    init(_ str: String) {
+        switch str {
+        case "161":
+            self = .unlock
+            break
+        case "162":
+            self = .showKey
+            break
+        case "163":
+            self = .sign
+            break
+        case "164":
+            self = .setKey
+            break
+        case "165":
+            self = .setPin
+            break
+        case "166":
+            self = .setNote
+            break
+        case "167":
+            self = .cancel
+            break
+        case "168":
+            self = .reset
+            break
+        case "169":
+            self = .exportKey
+            break
+        default:
+            self = .invalid
+        }
+
+    }
+
     var code: Int {
         switch self {
         case .unlock:
@@ -94,8 +217,8 @@ struct OtkInfo {
 struct OtkState {
     var isLocked = false
     var isAuthenticated = false
-    var executionResult = 0
-    var executionCommand = 0
+    var execState = OtkExecState.invalid
+    var command = OtkCommand.invalid
     var failureReason = 0
 }
 
@@ -123,20 +246,22 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
     var didChange = PassthroughSubject<Void,Never>()
 
     // MARK: - Observable Properties
+    @Published var readStarted = false { didSet { didChange.send() } }
     @Published var readTag = OtkNDEFTag() { didSet { didChange.send() } }
     @Published var otkInfo = OtkInfo() { didSet { didChange.send() } }
     @Published var otkState = OtkState() { didSet { didChange.send() } }
     @Published var otkData = OtkData() { didSet { didChange.send() } }
     @Published var request = OtkRequest() { didSet { didChange.send() } }
-    @Published var otkDetected = false { didSet { didChange.send() } }
+    @Published var readCompleted = false { didSet { didChange.send() } }
 
     // Private variables
     private var session: NFCNDEFReaderSession?
     private var detectedMessages = [NFCNDEFMessage]()
     private var sessionId = ""
     private var dispatchQ: DispatchQueue?
-    private var completion: ()->Void = {}
-    
+    private var onCompleted: ()->Void = {}
+    private var onCanceled: ()->Void = {}
+
     // MARK: - Actions
     
     func reset() {
@@ -145,11 +270,12 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         self.otkState = OtkState()
         self.otkData = OtkData()
         self.request = OtkRequest()
-        self.otkDetected = false
+        self.readStarted = false
+        self.readCompleted = false
     }
 
     /// - Tag: beginScanning
-    func beginScanning(completion: @escaping ()->Void) {
+    func beginScanning(onCompleted: @escaping ()->Void, onCanceled: @escaping ()->Void) {
         guard NFCNDEFReaderSession.readingAvailable else {
 //            let alertController = UIAlertController(
 //                title: "NFC Scanning Not Supported",
@@ -160,11 +286,19 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
             return
         }
         
-        self.completion = completion
+        self.onCompleted = onCompleted
+        self.onCanceled = onCanceled
+        self.readCompleted = false
+        self.readStarted = true
 
         session = NFCNDEFReaderSession(delegate: self, queue: dispatchQ, invalidateAfterFirstRead: false)
         session?.alertMessage = AppStrings.strApproachOtk
         session?.begin()
+        print("Start NFC scanning")
+    }
+    
+    func cancelSession() {
+        session?.invalidate(errorMessage: "Operation canceled!")
     }
 
     // MARK: - NFCNDEFReaderSessionDelegate
@@ -250,13 +384,12 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                                         let otkState = OtkNfcProtocolInterface.parseOtkState(strState: self.readTag.state)
                                         
                                         if self.request.command == .invalid ||
-                                            otkState.executionResult > 0 {
+                                            otkState.execState != .invalid {
                                             session.alertMessage = AppStrings.strRequestProcessed
                                             session.invalidate()
-                                            self.otkDetected = true
+                                            self.readCompleted = true
                                         }
                                         else {
-//                                            session.alertMessage = AppStrings.strSendingRequest + " (\(self.request.command.string))..."
                                             print("Session ID: \(self.sessionId)")
                                             let sessId = self.payloadConstruct(str: self.sessionId)
                                             let reqId = self.payloadConstruct(str: self.sessionId)
@@ -308,7 +441,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
     
     /// - Tag: endScanning
     func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
-        print("endScanning")
+        var canceled = false
         // Check the invalidation reason from the returned error.
         if let readerError = error as? NFCReaderError {
             // Show an alert when the invalidation reason is not because of a
@@ -324,11 +457,28 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
 //                )
 //                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             }
+            
+            if (!self.readCompleted && readerError.code == .readerSessionInvalidationErrorUserCanceled) ||  (readerError.code == .readerSessionInvalidationErrorSessionTimeout) {
+                print("NFC scan canceled")
+
+                DispatchQueue.main.async {
+                    print("Execute canceled callback")
+                    self.onCanceled()
+                }
+                canceled = true
+            }
         }
 
-        // To read new tags, a new session instance is required.
+        print("End NFC session")
         self.session = nil
-        self.completion()
+        self.readStarted = false
+
+        if !canceled {
+            DispatchQueue.main.async {
+                print("Execute completed callback")
+                self.onCompleted()
+            }
+        }
     }
     
     private func payloadConstruct(str: String) -> NFCNDEFPayload {
@@ -422,8 +572,8 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         
         otkState.isLocked = lockState > 0
         otkState.isAuthenticated = lockState > 1
-        otkState.executionResult = execState
-        otkState.executionCommand = requestCmd
+        otkState.execState = OtkExecState(execState)
+        otkState.command = OtkCommand(requestCmd)
         otkState.failureReason = failureReason
         
         return otkState
