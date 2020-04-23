@@ -16,6 +16,7 @@
 		B23FB95C2439D35000A2B80F /* UnsignedTx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23FB95B2439D35000A2B80F /* UnsignedTx.swift */; };
 		B23FB95E2439D37C00A2B80F /* BlockCypherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23FB95D2439D37C00A2B80F /* BlockCypherService.swift */; };
 		B23FB960243ADDC800A2B80F /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23FB95F243ADDC800A2B80F /* Transaction.swift */; };
+		B2E65706244DF05B001D2395 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E65705244DF05B001D2395 /* WebService.swift */; };
 		B93D4DAD754E2583B041D479 /* Pods_cryptoeconomy_cryptoeconomyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31BE2B99C51B681B9DEFA6F7 /* Pods_cryptoeconomy_cryptoeconomyUITests.framework */; };
 		BA1F873C24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F873B24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift */; };
 		BA1F87402440DCFA003DB110 /* ViewTransactionInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F873F2440DCFA003DB110 /* ViewTransactionInformation.swift */; };
@@ -89,6 +90,7 @@
 		B23FB95B2439D35000A2B80F /* UnsignedTx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedTx.swift; sourceTree = "<group>"; };
 		B23FB95D2439D37C00A2B80F /* BlockCypherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCypherService.swift; sourceTree = "<group>"; };
 		B23FB95F243ADDC800A2B80F /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		B2E65705244DF05B001D2395 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		BA1F873B24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewOpenTurnKeyInfo.swift; sourceTree = "<group>"; };
 		BA1F873F2440DCFA003DB110 /* ViewTransactionInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTransactionInformation.swift; sourceTree = "<group>"; };
 		BA1F874124443168003DB110 /* ViewToastMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewToastMessage.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				BA2EEAEF2435BEDE00522A63 /* BlockChainInfoService.swift */,
 				BA2EEAF02435BEDE00522A63 /* BaseWebService.swift */,
 				B23FB95D2439D37C00A2B80F /* BlockCypherService.swift */,
+				B2E65705244DF05B001D2395 /* WebService.swift */,
 			);
 			name = WebService;
 			sourceTree = "<group>";
@@ -629,6 +632,7 @@
 				B23FB95C2439D35000A2B80F /* UnsignedTx.swift in Sources */,
 				BA1F874224443169003DB110 /* ViewToastMessage.swift in Sources */,
 				BA2EEAD724330E8A00522A63 /* SideMenuPay.swift in Sources */,
+				B2E65706244DF05B001D2395 /* WebService.swift in Sources */,
 				BA40150E2431E2B70094F6CF /* TextFieldPayAmount.swift in Sources */,
 				B23FB949243741A400A2B80F /* Logger.swift in Sources */,
 				BF63FED02444BDC90094F7EC /* AddressViewModel.swift in Sources */,
