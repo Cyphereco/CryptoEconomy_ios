@@ -14,7 +14,6 @@ struct ConfigFees: View {
 
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appController: AppController
-    private let textFieldObserver = TextFieldObserver()
 
     var body: some View {
         GeometryReader { geometry in
@@ -36,11 +35,8 @@ struct ConfigFees: View {
                             .frame(width: 100)
                             .padding(-4).padding(.top, 5).padding(.bottom, -5)
                             .introspectTextField { textField in
-                                textField.addTarget(
-                                    self.textFieldObserver,
-                                    action: #selector(TextFieldObserver.textFieldDidBeginEditing),
-                                    for: .editingDidBegin
-                                )}
+                                textField.becomeFirstResponder()
+                            }
                         }
                         else {
                             Text(AppTools.btcToFormattedString(self.appController.fees))
@@ -56,7 +52,7 @@ struct ConfigFees: View {
                     }.padding()
                 }
                 .background(self.colorScheme == .dark ? Color.black : Color.white)
-                .offset(y: self.isOpened ? 0 : geometry.size.height)
+                .offset(y: self.isOpened ? 0 : geometry.size.height * 2)
                 .animation(.easeInOut)
                 .onTapGesture {
                     UIApplication.shared.endEditing()

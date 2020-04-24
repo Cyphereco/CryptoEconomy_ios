@@ -41,6 +41,8 @@
 		BA486939244E819100BD0860 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA486938244E819000BD0860 /* WebService.swift */; };
 		BA48693B244F0D0E00BD0860 /* ViewPublicKeyInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48693A244F0D0E00BD0860 /* ViewPublicKeyInformation.swift */; };
 		BA48693D244FE39900BD0860 /* ViewExportWifKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48693C244FE39900BD0860 /* ViewExportWifKey.swift */; };
+		BA48693F2451240800BD0860 /* PasscodeField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48693E2451240800BD0860 /* PasscodeField.swift */; };
+		BA4869412451771600BD0860 /* DialogEnterPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4869402451771600BD0860 /* DialogEnterPin.swift */; };
 		BA7DDBA0243665E50072412F /* AppTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7DDB9F243665E50072412F /* AppTools.swift */; };
 		BA9595E7242EFD8800C48B37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9595E6242EFD8800C48B37 /* AppDelegate.swift */; };
 		BA9595E9242EFD8900C48B37 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9595E8242EFD8900C48B37 /* SceneDelegate.swift */; };
@@ -117,6 +119,8 @@
 		BA486938244E819000BD0860 /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		BA48693A244F0D0E00BD0860 /* ViewPublicKeyInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPublicKeyInformation.swift; sourceTree = "<group>"; };
 		BA48693C244FE39900BD0860 /* ViewExportWifKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExportWifKey.swift; sourceTree = "<group>"; };
+		BA48693E2451240800BD0860 /* PasscodeField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeField.swift; sourceTree = "<group>"; };
+		BA4869402451771600BD0860 /* DialogEnterPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogEnterPin.swift; sourceTree = "<group>"; };
 		BA7DDB9F243665E50072412F /* AppTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTools.swift; sourceTree = "<group>"; };
 		BA9595E3242EFD8800C48B37 /* Crypto Economy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Crypto Economy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA9595E6242EFD8800C48B37 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -249,6 +253,7 @@
 				BA9595EA242EFD8900C48B37 /* ContentView.swift */,
 				BA2EEAE224346C6C00522A63 /* ConfigFees.swift */,
 				BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */,
+				BA4869402451771600BD0860 /* DialogEnterPin.swift */,
 				BA9595F4242EFE4100C48B37 /* Info.plist */,
 				BA9595F1242EFE4100C48B37 /* LaunchScreen.storyboard */,
 				BA2EEAE62435839E00522A63 /* ListItemAddress.swift */,
@@ -259,6 +264,7 @@
 				BA3FC53F2431006000F41471 /* PageHistory.swift */,
 				BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */,
 				BA3FC53D2431004D00F41471 /* PagePay.swift */,
+				BA48693E2451240800BD0860 /* PasscodeField.swift */,
 				BA3FC5392430576100F41471 /* SearchBar.swift */,
 				BA9595E8242EFD8900C48B37 /* SceneDelegate.swift */,
 				BA2EEAD624330E8A00522A63 /* SideMenuPay.swift */,
@@ -625,6 +631,7 @@
 				BA1F87402440DCFA003DB110 /* ViewTransactionInformation.swift in Sources */,
 				BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */,
 				BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */,
+				BA4869412451771600BD0860 /* DialogEnterPin.swift in Sources */,
 				BF63FECB2444BAE70094F7EC /* CoreDataManager.swift in Sources */,
 				B23FB960243ADDC800A2B80F /* Transaction.swift in Sources */,
 				BA2EEADF243450F200522A63 /* ConfigLocalCurrency.swift in Sources */,
@@ -644,6 +651,7 @@
 				BA3FC53A2430576100F41471 /* SearchBar.swift in Sources */,
 				BA1F873C24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift in Sources */,
 				BA9595E9242EFD8900C48B37 /* SceneDelegate.swift in Sources */,
+				BA48693F2451240800BD0860 /* PasscodeField.swift in Sources */,
 				BAADC8172439B02B00799FD0 /* OtkNPI.swift in Sources */,
 				BA9595EB242EFD8900C48B37 /* ContentView.swift in Sources */,
 				BF4ADD4C2445870200BB7A98 /* TransactionViewModel.swift in Sources */,

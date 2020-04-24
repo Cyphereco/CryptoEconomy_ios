@@ -161,8 +161,9 @@ enum Interacts: CaseIterable{
 }
 
 class AppController: ObservableObject {
-    static let version = "1.0"
-    static let estBlockSize = 200
+    static let VERSION = "1.0"
+    static let REQUEST_TIMEOUT = 30.0         // seconds
+    static let ESTIMATED_BLOCK_SIZE = 200   // bytes
     
     private var editLock = false
 
@@ -244,7 +245,14 @@ class AppController: ObservableObject {
     @Published var interacts: Interacts = .none
     @Published var payeeAddr: String = UserDefaults.standard.string(forKey: "FixedAddress") ?? ""
     @Published var requestHint: String = AppStrings.readGeneralInformation
-    
+    @Published var requestId: UUID = UUID() { didSet {
+            if AppController.otkNpi.request.command == .invalid {
+                self.requestHint = AppStrings.readGeneralInformation
+                self.authByPin = false
+            }
+        }
+    }
+
     init() {
         UserDefaults.standard.register(defaults: ["LocalCurrency": 5])
         UserDefaults.standard.register(defaults: ["FeesPriority": 1.0])
@@ -314,11 +322,11 @@ class AppController: ObservableObject {
         UserDefaults.standard.set(selection, forKey: "FeesPriority")
         switch selection {
             case 1.0:
-                self.fees = Double(AppController.bestFees.low * AppController.estBlockSize) / 100000000
+                self.fees = Double(AppController.bestFees.low * AppController.ESTIMATED_BLOCK_SIZE) / 100000000
             case 2.0:
-                self.fees = Double(AppController.bestFees.mid * AppController.estBlockSize) / 100000000
+                self.fees = Double(AppController.bestFees.mid * AppController.ESTIMATED_BLOCK_SIZE) / 100000000
             case 3.0:
-                self.fees = Double(AppController.bestFees.high * AppController.estBlockSize) / 100000000
+                self.fees = Double(AppController.bestFees.high * AppController.ESTIMATED_BLOCK_SIZE) / 100000000
             default:
                 fees = UserDefaults.standard.double(forKey: "Fees")
         }
