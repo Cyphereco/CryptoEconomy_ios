@@ -27,7 +27,7 @@ struct ViewAddressEditor: View {
                     self.presentationMode.wrappedValue.dismiss()
                 }) {
                     HStack(alignment: .center){
-                        Text("cancel")
+                        Text(AppStrings.cancel)
                             .font(.system(size: 20))
                             .fontWeight(.bold)
                     }

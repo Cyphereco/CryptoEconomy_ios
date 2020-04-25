@@ -20,7 +20,7 @@ struct ContentView: View {
                     .tabItem {
                         VStack {
                             Image("pay")
-                            Text("pay")
+                            Text(AppStrings.pay)
                         }
                     }
                     .tag(0)
@@ -28,7 +28,7 @@ struct ContentView: View {
                     .tabItem {
                         VStack {
                             Image("cyphereco_icon")
-                            Text("OpenTurnKey")
+                            Text(AppStrings.openturnkey)
                         }
                     }
                     .tag(1)
@@ -36,7 +36,7 @@ struct ContentView: View {
                     .tabItem {
                         VStack {
                             Image("history")
-                            Text("history")
+                            Text(AppStrings.history)
                         }
                     }
                     .tag(2)
@@ -44,7 +44,7 @@ struct ContentView: View {
                     .tabItem {
                         VStack {
                             Image("addressbook")
-                            Text("addresses")
+                            Text(AppStrings.addresses)
                         }
                     }
                     .tag(3)

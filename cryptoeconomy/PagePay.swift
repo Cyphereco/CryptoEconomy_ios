@@ -76,7 +76,7 @@ struct PagePay: View {
             .onTapBackground({
                 UIApplication.shared.endEditing()
             })
-            .navigationBarTitle(Text("pay"), displayMode: .inline)
+            .navigationBarTitle(Text(AppStrings.pay), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
                 withAnimation {
                     self.appController.interacts = .menuPay

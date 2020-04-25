@@ -22,14 +22,14 @@ struct ViewPublicKeyInformation: View {
         ZStack {
             VStack(alignment: .leading) {
                 HStack {
-                    Text("Master Public Key").font(.headline)
+                    Text(AppStrings.master_public_key).font(.headline)
                     Spacer()
                     CopyButton(copyString: self.otkNpi.otkData.masterKey){
-                        self.message = "Master Public Key" + AppStrings.copied
+                        self.message = AppStrings.master_public_key + AppStrings.copied
                         self.showToast = true
                     }
                     Button(action: {
-                        self.QRCodeTitle = "Master Public Key"
+                        self.QRCodeTitle = AppStrings.master_public_key
                         self.QRCodeData = self.otkNpi.otkData.masterKey
                     }){
                         Image("qrcode")
@@ -41,14 +41,14 @@ struct ViewPublicKeyInformation: View {
                     .addUnderline()
                     .padding(.horizontal)
                 HStack {
-                    Text("Derivative Public Key").font(.headline)
+                    Text(AppStrings.derivative_public_key).font(.headline)
                     Spacer()
                     CopyButton(copyString: self.otkNpi.otkData.derivativeKey){
-                        self.message = "Derivative Public Key" + AppStrings.copied
+                        self.message = AppStrings.derivative_public_key + AppStrings.copied
                         self.showToast = true
                     }
                     Button(action: {
-                        self.QRCodeTitle = "Derivative Public Key"
+                        self.QRCodeTitle = AppStrings.derivative_public_key
                         self.QRCodeData = self.otkNpi.otkData.derivativeKey
                     }){
                         Image("qrcode")
@@ -60,14 +60,14 @@ struct ViewPublicKeyInformation: View {
                     .addUnderline()
                     .padding(.horizontal)
                 HStack {
-                    Text("Derivative Path:").font(.headline)
+                    Text(AppStrings.derivative_key_paths).font(.headline)
                     Spacer()
                     CopyButton(copyString: self.otkNpi.otkData.derivativePath){
-                        self.message = "Derivative Path" + AppStrings.copied
+                        self.message = AppStrings.derivative_key_paths + AppStrings.copied
                         self.showToast = true
                     }
                     Button(action: {
-                        self.QRCodeTitle = "Derivative Path"
+                        self.QRCodeTitle = AppStrings.derivative_key_paths
                         self.QRCodeData = self.otkNpi.otkData.derivativePath
                     }){
                         Image("qrcode")

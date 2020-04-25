@@ -19,10 +19,10 @@ struct ViewExportWifKey: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Wallet Import Format Key").font(.headline)
+                Text(AppStrings.wallet_import_format_key).font(.headline)
                 Spacer()
                 CopyButton(copyString: self.otkNpi.otkData.wifKey){
-                    self.message = "Wallet Import Format Key" + AppStrings.copied
+                    self.message = AppStrings.wallet_import_format_key + AppStrings.copied
                     self.showToast = true
                 }
             }.padding()

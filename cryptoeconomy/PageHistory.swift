@@ -31,7 +31,7 @@ struct PageHistory: View {
             .onTapBackground({
                 UIApplication.shared.endEditing()
             })
-            .navigationBarTitle(Text("history"), displayMode: .inline)
+            .navigationBarTitle(Text(AppStrings.history), displayMode: .inline)
             .navigationBarItems(
                 trailing: Button(action: {self.showsAlert.toggle()}) {
                     Image("delete_all")
@@ -51,7 +51,7 @@ struct PageHistory: View {
                                 }
                             ),
                               secondaryButton: .default(
-                                Text("cancel"),
+                                Text(AppStrings.cancel),
                                 action: {print("Cancel Clear")}
                             )
                         )

@@ -40,7 +40,7 @@ struct PageAddresses: View {
             .sheet(isPresented: self.$showAddressEditor) {
                 ViewAddressEditor(addressListVM: self.addressListVM, alias: "", address: "")
             }
-            .navigationBarTitle(Text("addresses"), displayMode: .inline)
+            .navigationBarTitle(Text(AppStrings.addresses), displayMode: .inline)
             .navigationBarItems(trailing:
                 Image("plus")
                     .setCustomDecoration(.foregroundAccent)

@@ -19,7 +19,7 @@ struct DialogEnterPin: View {
         GeometryReader { geometry in
             VStack {
                 Spacer()
-                PasscodeField(maxDigits: 8, label: "Authorization with PIN Code", pin: "", showPin: false, isDisabled: false, handler: { pin, _  in
+                PasscodeField(maxDigits: 8, label: AppStrings.authByPin, pin: "", showPin: false, isDisabled: false, handler: { pin, _  in
                     self.handler(pin)
                     self.closeDialog()
                 })

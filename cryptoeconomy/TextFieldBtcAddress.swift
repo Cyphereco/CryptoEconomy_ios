@@ -19,12 +19,22 @@ struct TextFieldBtcAddress: View {
     var body: some View {
         VStack {
             HStack(alignment: .bottom) {
-                Text(self.address)
+                if self.address.count == 0 {
+                    TextField(AppStrings.btcAddress, text: .constant(""))
                     .frame(minHeight: 44)
                     .lineLimit(5)
                     .multilineTextAlignment(.leading)
                     .addUnderline()
                     .padding(.bottom, -10)
+                }
+                else {
+                    Text(self.address)
+                    .frame(minHeight: 44)
+                    .lineLimit(5)
+                    .multilineTextAlignment(.leading)
+                    .addUnderline()
+                    .padding(.bottom, -10)
+                }
                 Button(action: {
                     self.address = ""
                 }){Image("clear")}

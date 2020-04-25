@@ -88,7 +88,7 @@ struct ListItemAddress: View {
                             self.addressListVM.fetchAllAddresses()
                         }
                     }),
-                    secondaryButton: .default(Text("cancel")))
+                    secondaryButton: .default(Text(AppStrings.cancel)))
             }
 
             Button(action: {
