@@ -77,15 +77,16 @@ struct PageOpenTurnKey: View {
                                 }) {
                                     HStack(alignment: .center){
                                         Image("nfc_request")
-                                        
-                                        Text(AppStrings.makeRequest)
-                                            .font(.system(size: 20))
-                                            .fontWeight(.bold)
-                                            .padding(.trailing, 10)
+                                        .frame(minWidth: 70, minHeight: 70)
+                                        .setCustomDecoration(.roundedButton)
+
+//                                        Text(AppStrings.makeRequest)
+//                                            .font(.system(size: 20))
+//                                            .fontWeight(.bold)
+//                                            .padding(.trailing, 10)
                                     }
-                                    .frame(minWidth: 200)
-                                    .padding(12)
-                                    .setCustomDecoration(.roundedButton)
+                                    .clipShape(Circle())
+//                                    .padding(12)
                                 }
                                 .sheet(isPresented: self.$showResult, onDismiss: {
                                     self.otkNpi.reset()
