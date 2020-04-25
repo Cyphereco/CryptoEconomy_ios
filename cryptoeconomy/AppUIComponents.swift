@@ -72,6 +72,94 @@ struct ImageQRCode: View {
     }
 }
 
+enum CustomDecoration {
+    case accentColor
+    case backgroundNormal
+    case backgroundReversed
+    case foregroundNormal
+    case foregroundAccent
+    case foregourndWhite
+    case roundedButton
+    case toast
+}
+
+extension View {
+   func `if`<Content: View>(_ conditional: Bool, content: (Self) -> Content) -> some View {
+        if conditional {
+            return AnyView(content(self))
+        } else {
+            return AnyView(self)
+        }
+    }
+}
+
+struct SetCustomDecoration: ViewModifier {
+    let decoration: CustomDecoration
+    @Environment(\.colorScheme) var colorScheme
+
+    func body(content: Content) -> some View {
+        content
+            .if(self.decoration == .accentColor) { cnt in
+                cnt.accentColor(AppController.shared.getAccentColor(self.colorScheme))
+            }
+            .if(self.decoration == .backgroundNormal) { cnt in
+                cnt.background(self.colorScheme == .light ? Color.white : Color.black)
+            }
+            .if(self.decoration == .backgroundReversed) { cnt in
+                cnt.background(self.colorScheme == .dark ? Color.white : Color.black)
+            }
+            .if(self.decoration == .foregroundNormal) { cnt in
+                cnt.foregroundColor(.primary)
+            }
+            .if(self.decoration == .foregroundAccent) { cnt in
+                cnt.foregroundColor(AppController.shared.getAccentColor(self.colorScheme))
+            }
+            .if(self.decoration == .foregourndWhite) { cnt in
+                cnt.foregroundColor(.white)
+            }
+            .if(self.decoration == .roundedButton) { cnt in
+                cnt.background(AppController.shared.getAccentColor(self.colorScheme))
+                .cornerRadius(24)
+                .foregroundColor(.white)
+            }
+            .if(self.decoration == .toast) { cnt in
+                cnt.background(Color.gray)
+                .cornerRadius(8)
+                .foregroundColor(.white)
+            }
+    }
+}
+
+extension View {
+    func setCustomDecoration(_ decoration: CustomDecoration) -> some View {
+        self.modifier(SetCustomDecoration(decoration: decoration))
+    }
+}
+
+struct AddSheetTitle: ViewModifier {
+    let title: String
+    @Environment(\.presentationMode) var presentationMode
+
+    func body(content: Content) -> some View {
+        NavigationView {
+            content
+            .navigationBarTitle(Text(self.title), displayMode: .inline)
+           .navigationBarItems(trailing:
+               Image("clear")
+                   .setCustomDecoration(.foregroundAccent)
+                   .onTapGesture {
+                   self.presentationMode.wrappedValue.dismiss()
+               })
+        }
+    }
+}
+
+extension View {
+    func addSheetTitle(_ title: String) -> some View {
+        self.modifier(AddSheetTitle(title: title))
+    }
+}
+
 struct ToastMessage: ViewModifier {
     @Binding var message: String
     @Binding var showToastMessage: Bool
@@ -95,7 +183,6 @@ extension View {
 
 struct TappableBackground: ViewModifier {
     let completion: ()->Void
-    @Environment(\.colorScheme) var colorScheme
 
     func body(content: Content) -> some View {
          ZStack {
@@ -135,7 +222,6 @@ extension View {
 
 struct SideMenu: ViewModifier {
     let isOpened: Bool
-    @Environment(\.colorScheme) var colorScheme
 
     func body(content: Content) -> some View {
         GeometryReader { geometry in
@@ -144,7 +230,7 @@ struct SideMenu: ViewModifier {
 
                 content
                 .frame(maxWidth: geometry.size.width / 3 * 2)
-                .background(self.colorScheme == .dark ? Color.black : Color.white)
+                .setCustomDecoration(.backgroundNormal)
                 .offset(x: self.isOpened ? 0 : geometry.size.width * 2)
                 .animation(.easeInOut)
             }

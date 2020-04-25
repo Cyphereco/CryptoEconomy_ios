@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct PageHistory: View {
-    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var transactionListVM = TransactionListViewModel()
 
     @State var showsAlert = false

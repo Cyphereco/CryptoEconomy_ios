@@ -53,7 +53,6 @@ struct AddressQRCodeView: View {
 }
 
 struct ListItemAddress: View {
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appController: AppController
     @ObservedObject var addressListVM: AddressListViewModel
 
@@ -74,7 +73,8 @@ struct ListItemAddress: View {
                 self.showAddressEditor = true
             }
             .sheet(isPresented: $showAddressEditor) {
-                ViewAddressEditor(addressListVM: self.addressListVM, alias: self.recordAddress.alias, address: self.recordAddress.address)}
+                ViewAddressEditor(addressListVM: self.addressListVM, alias: self.recordAddress.alias, address: self.recordAddress.address)
+            }
             Spacer()
             Button(action: {
                 self.showDelAlert = true
@@ -93,12 +93,14 @@ struct ListItemAddress: View {
 
             Button(action: {
                 self.showQRCodeSheet = true
-            }) {Image("qrcode")}.buttonStyle(BorderlessButtonStyle()).padding(.horizontal, 10).padding(.trailing, 5)
+            })
+            {Image("qrcode")}
+                .buttonStyle(BorderlessButtonStyle()).padding(.horizontal, 10).padding(.trailing, 5)
             .sheet(isPresented: self.$showQRCodeSheet) {
                 AddressQRCodeView(showSheetView: self.$showQRCodeSheet,
                                   alias: self.recordAddress.alias,
                                   address: self.recordAddress.address)
-                    .accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
+                    .setCustomDecoration(.accentColor)
             }
 
             Button(action: {

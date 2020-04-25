@@ -10,8 +10,6 @@ import SwiftUI
 
 struct ViewExportWifKey: View {
     @EnvironmentObject var appController: AppController
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.presentationMode) var presentationMode
     @State var showOtkInfo = false
     @State var message = ""
     @State var showToast = false
@@ -19,34 +17,25 @@ struct ViewExportWifKey: View {
     let otkNpi = AppController.otkNpi
 
     var body: some View {
-        NavigationView {
-            VStack {
-                HStack {
-                    Text("Wallet Import Format Key").font(.headline)
-                    Spacer()
-                    CopyButton(copyString: self.otkNpi.otkData.wifKey){
-                        self.message = "Wallet Import Format Key" + AppStrings.copied
-                        self.showToast = true
-                    }
-                }.padding()
-                Text(self.otkNpi.otkData.wifKey)
-                    .lineLimit(5)
-                    .multilineTextAlignment(.leading)
-                    .padding()
-                ImageQRCode(text: self.otkNpi.otkData.wifKey)
+        VStack {
+            HStack {
+                Text("Wallet Import Format Key").font(.headline)
                 Spacer()
-            }
-            .padding(.horizontal, 20.0)
-            .accentColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
-            .navigationBarTitle("Export Key", displayMode: .inline)
-            .navigationBarItems(trailing:
-                Image("clear")
-                    .foregroundColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
-                    .onTapGesture {
-                    self.presentationMode.wrappedValue.dismiss()
-                })
-                .toastMessage(message: self.$message, show: self.$showToast)
+                CopyButton(copyString: self.otkNpi.otkData.wifKey){
+                    self.message = "Wallet Import Format Key" + AppStrings.copied
+                    self.showToast = true
+                }
+            }.padding()
+            Text(self.otkNpi.otkData.wifKey)
+                .lineLimit(5)
+                .multilineTextAlignment(.leading)
+                .padding()
+            ImageQRCode(text: self.otkNpi.otkData.wifKey)
+            Spacer()
         }
+        .padding(.horizontal, 20.0)
+        .setCustomDecoration(.accentColor)
+        .toastMessage(message: self.$message, show: self.$showToast)
     }
 }
 

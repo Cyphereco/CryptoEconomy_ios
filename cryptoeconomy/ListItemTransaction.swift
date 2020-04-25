@@ -60,6 +60,7 @@ struct ListItemTransaction: View {
         }
         .sheet(isPresented: $showTransactionInfo){
             ViewTransactionInformation()
+                .addSheetTitle(AppStrings.transactionInfo)
         }
     }
 }

@@ -15,7 +15,6 @@ struct TextFieldBtcAddress: View {
     @State private var isShowingScanner = false
 
     private let pasteboard = UIPasteboard.general
-    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         VStack {
@@ -89,7 +88,7 @@ struct TextFieldBtcAddress: View {
                             }
                         }
                     }
-                    .accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
+                    .setCustomDecoration(.accentColor)
                 }
                 Spacer().fixedSize().frame(width: 40, height: 0, alignment: .leading)
             }

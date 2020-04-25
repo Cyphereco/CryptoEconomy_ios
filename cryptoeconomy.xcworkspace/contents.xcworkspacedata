@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:ViewMessageSignValidate.swift">
+   </FileRef>
+   <FileRef
       location = "group:cryptoeconomy.xcodeproj">
    </FileRef>
    <FileRef

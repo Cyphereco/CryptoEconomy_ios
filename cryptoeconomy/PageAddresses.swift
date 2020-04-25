@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct PageAddresses: View {
-    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var addressListVM = AddressListViewModel()
     @State var searchText: String = ""
     @State var showAddressEditor = false
@@ -38,17 +37,17 @@ struct PageAddresses: View {
             .onTapBackground({
                 UIApplication.shared.endEditing()
             })
+            .sheet(isPresented: self.$showAddressEditor) {
+                ViewAddressEditor(addressListVM: self.addressListVM, alias: "", address: "")
+            }
             .navigationBarTitle(Text("addresses"), displayMode: .inline)
             .navigationBarItems(trailing:
                 Image("plus")
-                    .foregroundColor(AppController.getAccentColor(colorScheme:  self.colorScheme))
+                    .setCustomDecoration(.foregroundAccent)
                 .onTapGesture {
                     UIApplication.shared.endEditing()
                     self.showAddressEditor = true
-                }
-                .sheet(isPresented: self.$showAddressEditor) {
-                    ViewAddressEditor(addressListVM: self.addressListVM, alias: "", address: "")
-            })
+                })
         }
     }
 }

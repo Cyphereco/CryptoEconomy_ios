@@ -70,6 +70,7 @@ struct AppStrings {
     static let copied = localize("copied")
     static let btcQrCode = localize("btc_qr_code")
     static let btcAddress = localize("btc_address")
+    static let editAddress = localize("edit_address")
 
     private static func localize(_ str: String) -> String {
         return NSLocalizedString(str, comment: "")

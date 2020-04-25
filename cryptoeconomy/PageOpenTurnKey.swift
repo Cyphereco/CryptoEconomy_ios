@@ -10,7 +10,6 @@ import SwiftUI
 
 struct PageOpenTurnKey: View {
     @State var requestHint: String = AppStrings.readGeneralInformation
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appController: AppController
 
     @State var executingRequest = false
@@ -51,7 +50,7 @@ struct PageOpenTurnKey: View {
                                         Image("fingerprint")
                                     }
 
-                                    if (self.otkNpi.request.command != .exportKey && self.otkNpi.request.command != .unlock) {
+                                    if (self.otkNpi.request.command != .exportKey && self.otkNpi.request.command != .setPin && self.otkNpi.request.command != .unlock) {
                                         HStack {
                                             Text(AppStrings.authByPin).font(.footnote)
                                             Toggle("", isOn: self.$appController.authByPin)
@@ -86,21 +85,22 @@ struct PageOpenTurnKey: View {
                                     }
                                     .frame(minWidth: 200)
                                     .padding(12)
-                                    .background(AppController.getAccentColor(colorScheme: self.colorScheme))
-                                    .cornerRadius(24)
-                                    .foregroundColor(.white)
+                                    .setCustomDecoration(.roundedButton)
                                 }
                                 .sheet(isPresented: self.$showResult, onDismiss: {
                                     self.otkNpi.reset()
                                 }) {
                                     if self.otkNpi.otkState.command == .exportKey {
                                         ViewExportWifKey().environmentObject(self.appController)
+                                            .addSheetTitle(AppStrings.exportKey)
                                     }
                                     else if self.otkNpi.otkState.command == .showKey {
                                         ViewPublicKeyInformation().environmentObject(self.appController)
+                                            .addSheetTitle(AppStrings.showKey)
                                     }
                                     else {
                                         ViewOpenTurnKeyInfo(btcBalance: self.$otkBtcBalance).environmentObject(self.appController)
+                                            .addSheetTitle(AppStrings.openturnkeyInfo)
                                     }
                                 }
 

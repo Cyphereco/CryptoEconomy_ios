@@ -9,11 +9,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appController: AppController
-    
     let totalTabs = 4
     @GestureState  var dragOffset = CGSize.zero
+    @EnvironmentObject var appController: AppController
 
     var body: some View {
         ZStack {
@@ -53,7 +51,7 @@ struct ContentView: View {
             }
             .blur(radius: self.appController.interacts != .none ? 0.8 : 0)
             .animation(.easeInOut)
-            .accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
+            .setCustomDecoration(.accentColor)
             .swipableTabs(currentTab: self.$appController.pageSelected, totalTabs: self.totalTabs)
             
             GeometryReader { _ in
@@ -115,7 +113,7 @@ struct ContentView: View {
     }
     
     init() {
-
+        
     }
         
     func closeMenu() {
