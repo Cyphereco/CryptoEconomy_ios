@@ -290,7 +290,7 @@ class AppController: ObservableObject {
     @objc func updateExchangeRates() {
         var nextUpdate = 10.0  // seconds
 
-        _ = BlockChainInfoService.updateBtcExchangeRates().done({ exchangeRates in
+        _ = WebServices.updateBtcExchangeRates().done({ exchangeRates in
             AppController.exchangeRates.copy(exchangeRates: exchangeRates)
             print(AppController.exchangeRates.toString())
 

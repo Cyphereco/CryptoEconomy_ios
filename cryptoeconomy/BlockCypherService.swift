@@ -59,7 +59,12 @@ class BlockCypherService: WebService {
      */
     static func getBalance(address: String) -> Promise<Int64> {
         return Promise<Int64>.init(resolver: { (resolver) in
-            Logger.shared.debug("")
+            resolver.reject(WebServiceError.serviceUnavailable)
+        })
+    }
+    
+    static func updateBtcExchangeRates() -> Promise<ExchangeRates> {
+        return Promise<ExchangeRates>.init(resolver: { (resolver) in
             resolver.reject(WebServiceError.serviceUnavailable)
         })
     }
@@ -298,6 +303,42 @@ class BlockCypherService: WebService {
             }.done { (tx) in
                 // Complete
                 resolver.fulfill(tx)
+            }.catch(policy: .allErrors) { (error) in
+                // error handling
+                Logger.shared.debug(error)
+                // XXX parse error
+                resolver.reject(WebServiceError.otherErrors)
+            }
+        })
+    }
+    
+    static func getConfirmations(hash: String, isMainNet: Bool = true) -> Promise<Int64> {
+        // return Promise
+        return Promise<Int64>.init(resolver: { (resolver) in
+            getTransaction(hash: hash, isMainNet: isMainNet).then { (tx) -> Promise<Int64> in
+                return Promise<Int64>.init(resolver: { (resolver) in
+                    resolver.fulfill(tx.confirmations)
+                })
+            }.done { (c) in
+                resolver.fulfill(c)
+            }.catch(policy: .allErrors) { (error) in
+                // error handling
+                Logger.shared.debug(error)
+                // XXX parse error
+                resolver.reject(WebServiceError.otherErrors)
+            }
+        })
+    }
+    
+    static func getRawTranaction(hash: String, isMainNet: Bool = true) -> Promise<String> {
+        // return Promise
+        return Promise<String>.init(resolver: { (resolver) in
+            getTransaction(hash: hash, isMainNet: isMainNet).then { (tx) -> Promise<String> in
+                return Promise<String>.init(resolver: { (resolver) in
+                    resolver.fulfill(tx.rawData)
+                })
+            }.done { (raw) in
+                resolver.fulfill(raw)
             }.catch(policy: .allErrors) { (error) in
                 // error handling
                 Logger.shared.debug(error)

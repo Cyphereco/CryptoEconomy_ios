@@ -239,11 +239,11 @@ class BlockChainInfoService: WebService {
             }
         })
     }
-    static func updateBtcExchangeRates(isMainNet: Bool = true) -> Promise<ExchangeRates> {
+    static func updateBtcExchangeRates() -> Promise<ExchangeRates> {
         // return Promise
         return Promise<ExchangeRates>.init(resolver: { (resolver) in
             // generate Request
-            let req = webService.requestGenerator(baseUrl: _getBaseUrl(isMainNet: isMainNet), route: pathTicker, parameters: nil, method: .get)
+            let req = webService.requestGenerator(baseUrl: _getBaseUrl(isMainNet: true), route: pathTicker, parameters: nil, method: .get)
             
             firstly {
                 // send request and get json response
@@ -302,6 +302,18 @@ class BlockChainInfoService: WebService {
                 // XXX parse error
                 resolver.reject(WebServiceError.otherErrors)
             }
+        })
+    }
+    
+    static func newTransaction(from: String, to: String, amountInSatoshi: Int64, fees: Int64) -> Promise<UnsignedTx> {
+        return Promise<UnsignedTx>.init(resolver: { (resolver) in
+            resolver.reject(WebServiceError.serviceUnavailable)
+        })
+    }
+    
+    static func sendTransaction(unsignedTx: UnsignedTx, signatures: Array<String>, publicKey: String) -> Promise<Transaction> {
+        return Promise<Transaction>.init(resolver: { (resolver) in
+            resolver.reject(WebServiceError.serviceUnavailable)
         })
     }
 }
