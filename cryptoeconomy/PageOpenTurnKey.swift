@@ -10,7 +10,6 @@ import SwiftUI
 
 struct PageOpenTurnKey: View {
     @State var requestHint: String = AppStrings.readGeneralInformation
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appController: AppController
 
     @State var executingRequest = false
@@ -35,7 +34,7 @@ struct PageOpenTurnKey: View {
                             
                             Image("cyphereco_label").resizable().scaledToFit().frame(width: 100, height: 100)
                             
-                            Text("OpenTurnKey")
+                            Text(AppStrings.openturnkey)
                                 .fontWeight(.bold)
                             
                             Text("(" + self.appController.requestHint + ")").padding()
@@ -51,7 +50,7 @@ struct PageOpenTurnKey: View {
                                         Image("fingerprint")
                                     }
 
-                                    if (self.otkNpi.request.command != .exportKey && self.otkNpi.request.command != .unlock) {
+                                    if (self.otkNpi.request.command != .exportKey && self.otkNpi.request.command != .setPin && self.otkNpi.request.command != .unlock) {
                                         HStack {
                                             Text(AppStrings.authByPin).font(.footnote)
                                             Toggle("", isOn: self.$appController.authByPin)
@@ -78,29 +77,31 @@ struct PageOpenTurnKey: View {
                                 }) {
                                     HStack(alignment: .center){
                                         Image("nfc_request")
-                                        
-                                        Text(AppStrings.makeRequest)
-                                            .font(.system(size: 20))
-                                            .fontWeight(.bold)
-                                            .padding(.trailing, 10)
+                                        .frame(minWidth: 70, minHeight: 70)
+                                        .setCustomDecoration(.roundedButton)
+
+//                                        Text(AppStrings.makeRequest)
+//                                            .font(.system(size: 20))
+//                                            .fontWeight(.bold)
+//                                            .padding(.trailing, 10)
                                     }
-                                    .frame(minWidth: 200)
-                                    .padding(12)
-                                    .background(AppController.getAccentColor(colorScheme: self.colorScheme))
-                                    .cornerRadius(24)
-                                    .foregroundColor(.white)
+                                    .clipShape(Circle())
+//                                    .padding(12)
                                 }
                                 .sheet(isPresented: self.$showResult, onDismiss: {
                                     self.otkNpi.reset()
                                 }) {
                                     if self.otkNpi.otkState.command == .exportKey {
                                         ViewExportWifKey().environmentObject(self.appController)
+                                            .addSheetTitle(AppStrings.exportKey)
                                     }
                                     else if self.otkNpi.otkState.command == .showKey {
                                         ViewPublicKeyInformation().environmentObject(self.appController)
+                                            .addSheetTitle(AppStrings.showKey)
                                     }
                                     else {
                                         ViewOpenTurnKeyInfo(btcBalance: self.$otkBtcBalance).environmentObject(self.appController)
+                                            .addSheetTitle(AppStrings.openturnkeyInfo)
                                     }
                                 }
 
@@ -113,9 +114,10 @@ struct PageOpenTurnKey: View {
                 .onTapBackground({
                     UIApplication.shared.endEditing()
                 })
-                .navigationBarTitle(Text("OpenTurnKey"), displayMode: .inline)
+                .navigationBarTitle(Text(AppStrings.openturnkey), displayMode: .inline)
                 .navigationBarItems(trailing: Button(action: {
                     withAnimation {
+                        self.appController.cancelOtkRequest(continueAfterStarted: false)
                         self.appController.interacts = .menuOpenTurnKey
                     }
                 }) {
@@ -158,7 +160,7 @@ struct PageOpenTurnKey: View {
                 
                 if execState == .success {
                     if command == .reset || command == .unlock || command == .setKey || command == .setNote || command == .setPin {
-                        self.showToast(hint + "executed success.")
+                        self.showToast(hint + "\n" + AppStrings.request_success)
                     }
                     else if command == .exportKey || command == .showKey {
                         self.showResult = true
@@ -166,7 +168,7 @@ struct PageOpenTurnKey: View {
                     }
                 }
                 if execState == .fail {
-                    self.showToast(hint + "executed fail.")
+                    self.showToast(hint + "\n" + AppStrings.request_fail)
                 }
                 else {
                     if command == .invalid {

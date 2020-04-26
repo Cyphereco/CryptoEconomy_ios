@@ -161,16 +161,20 @@ enum Interacts: CaseIterable{
 }
 
 class AppController: ObservableObject {
+    static var shared = AppController()
+    
     static let VERSION = "1.0"
     static let REQUEST_TIMEOUT = 30.0         // seconds
     static let ESTIMATED_BLOCK_SIZE = 200   // bytes
-    
-    private var editLock = false
+    static let accentColorLight: Color = .blue
+    static let accentColorDark: Color = .orange
 
     static var otkNpi = OtkNfcProtocolInterface()
     
     @State static var exchangeRates = ExchangeRates()
     @State static var bestFees = BestFees()
+
+    private var editLock = false
 
     // default values
     @Published var currencySelection: Int = UserDefaults.standard.integer(forKey: "LocalCurrency") { didSet {
@@ -360,20 +364,8 @@ class AppController: ObservableObject {
     func setFixedAddress(addr: String) {
         UserDefaults.standard.set(addr, forKey: "FixedAddress")
     }
-    
-    static let accentColorLight: Color = .blue
-    static let accentColorDark: Color = .orange
-    static let colorScaleLight: Double = 224/255
-    static let colorScaleDark: Double = 32/255
-    
-    static func getAccentColor(colorScheme: ColorScheme) -> Color {
-        return colorScheme == .dark ? accentColorDark : accentColorLight
-    }
-    
-    static func getMenuBackgroundColor(colorScheme: ColorScheme) -> Color {
-        if (colorScheme == .dark) {
-            return Color(red: colorScaleDark, green: colorScaleDark, blue: colorScaleDark)
-        }
-        return Color(red: colorScaleLight, green: colorScaleLight, blue: colorScaleLight)
+
+    func getAccentColor(_ colorScheme: ColorScheme) -> Color {
+        return colorScheme == .dark ? AppController.accentColorDark : AppController.accentColorLight
     }
 }

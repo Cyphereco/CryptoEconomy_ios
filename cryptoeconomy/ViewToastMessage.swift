@@ -13,7 +13,6 @@ struct ViewToastMessage: View {
     @State var message: String
     @State var delay: Double
     @Binding var show: Bool
-    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack {
@@ -30,9 +29,7 @@ struct ViewToastMessage: View {
                 })
                 .frame(minWidth: 80)
                 .padding(12)
-                .background(Color.gray)
-                .cornerRadius(8)
-                .foregroundColor(.white)
+                .setCustomDecoration(.toast)
                 .opacity(self.show ? 1 : 0)
             }
             Spacer().frame(maxHeight: 40)

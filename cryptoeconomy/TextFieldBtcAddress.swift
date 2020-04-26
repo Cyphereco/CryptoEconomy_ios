@@ -15,17 +15,26 @@ struct TextFieldBtcAddress: View {
     @State private var isShowingScanner = false
 
     private let pasteboard = UIPasteboard.general
-    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         VStack {
             HStack(alignment: .bottom) {
-                Text(self.address)
+                if self.address.count == 0 {
+                    TextField(AppStrings.btcAddress, text: .constant(""))
                     .frame(minHeight: 44)
                     .lineLimit(5)
                     .multilineTextAlignment(.leading)
                     .addUnderline()
                     .padding(.bottom, -10)
+                }
+                else {
+                    Text(self.address)
+                    .frame(minHeight: 44)
+                    .lineLimit(5)
+                    .multilineTextAlignment(.leading)
+                    .addUnderline()
+                    .padding(.bottom, -10)
+                }
                 Button(action: {
                     self.address = ""
                 }){Image("clear")}
@@ -89,7 +98,7 @@ struct TextFieldBtcAddress: View {
                             }
                         }
                     }
-                    .accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
+                    .setCustomDecoration(.accentColor)
                 }
                 Spacer().fixedSize().frame(width: 40, height: 0, alignment: .leading)
             }

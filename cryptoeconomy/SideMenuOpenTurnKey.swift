@@ -11,61 +11,134 @@ import SwiftUI
 struct SideMenuOpenTurnKey: View {
     let isOpened: Bool
     let closeMenu: ()->Void
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appController: AppController
     
+    @State var showSheet = false
+    @State var promptMessage = false
+    @State var messageTitle  = ""
+    @State var messageContent = ""
+    @State var otkRequest = OtkRequest()
+
     var body: some View {
-        var otkRequest = OtkRequest()
-        
-        return VStack {
+        VStack {
             RowButton(text: AppStrings.setPinCode){
-                otkRequest.command = .setPin
-                self.setOtkRequest(otkRequest, hint: AppStrings.setPinCode)
+                self.otkRequest.command = .setPin
+                self.otkRequest.data = "99999999"
+
+                self.messageTitle = AppStrings.warning
+                self.messageContent = AppStrings.pin_code_warning_message
+                self.promptMessage = true
                 self.closeMenu()
-            }.foregroundColor(.primary).padding()
+            }.setCustomDecoration(.foregroundNormal).padding()
             
             RowButton(text: AppStrings.showKey){
-                otkRequest.command = .showKey
-                self.setOtkRequest(otkRequest, hint: AppStrings.showKey)
+                self.otkRequest.command = .showKey
+
+                self.messageTitle = AppStrings.warning
+                self.messageContent = AppStrings.full_pubkey_info_warning
+                self.promptMessage = true
                 self.closeMenu()
-            }.foregroundColor(.primary).padding()
+            }.setCustomDecoration(.foregroundNormal).padding()
             
             RowButton(text: AppStrings.writeNote){
-                otkRequest.command = .setNote
-                self.setOtkRequest(otkRequest, hint: AppStrings.writeNote)
+                self.otkRequest.command = .setNote
+                self.otkRequest.data = "This is OpenTurnKey"
+                self.setOtkRequest(self.otkRequest, hint: AppStrings.writeNote)
                 self.closeMenu()
-            }.foregroundColor(.primary).padding()
+            }.setCustomDecoration(.foregroundNormal).padding()
             
             RowButton(text: AppStrings.msgSignVerify){
-                self.setOtkRequest(otkRequest, hint: AppStrings.msgSignVerify)
+                self.appController.cancelOtkRequest(continueAfterStarted: false)
+                self.showSheet = true
                 self.closeMenu()
-            }.foregroundColor(.primary).padding()
+            }.setCustomDecoration(.foregroundNormal).padding()
             
             RowButton(text: AppStrings.chooseKey){
-                otkRequest.command = .setKey
-                self.setOtkRequest(otkRequest, hint: AppStrings.chooseKey)
+                self.otkRequest.command = .setKey
+                self.otkRequest.data = "2,4,6,8,10"
+
+                self.messageTitle = AppStrings.warning
+                self.messageContent = AppStrings.choose_key_warning_message
+                self.promptMessage = true
                 self.closeMenu()
-            }.foregroundColor(.primary).padding()
+            }.setCustomDecoration(.foregroundNormal).padding()
             
             RowButton(text: AppStrings.unlock){
-                otkRequest.command = .unlock
-                self.setOtkRequest(otkRequest, hint: AppStrings.unlock)
+                self.otkRequest.command = .unlock
+
+                self.messageTitle = AppStrings.warning
+                self.messageContent = AppStrings.unlock_warning
+                self.promptMessage = true
                 self.closeMenu()
-            }.foregroundColor(.primary).padding()
+            }.setCustomDecoration(.foregroundNormal).padding()
             
             RowButton(text: AppStrings.reset){
-                otkRequest.command = .reset
-                self.setOtkRequest(otkRequest, hint: AppStrings.reset)
+                self.otkRequest.command = .reset
+
+                self.messageTitle = AppStrings.warning
+                self.messageContent = AppStrings.reset_warning_message
+                self.promptMessage = true
                 self.closeMenu()
-            }.foregroundColor(.primary).padding()
+            }.setCustomDecoration(.foregroundNormal).padding()
             
             RowButton(text: AppStrings.exportKey){
-                otkRequest.command = .exportKey
-                self.setOtkRequest(otkRequest, hint: AppStrings.exportKey)
+                self.otkRequest.command = .exportKey
+
+                self.messageTitle = AppStrings.warning
+                self.messageContent = AppStrings.export_wif_warning_message
+                self.promptMessage = true
                 self.closeMenu()
-            }.foregroundColor(.primary).padding()
+            }.setCustomDecoration(.foregroundNormal).padding()
             
         }.asSideMenu(isOpened: self.isOpened)
+        .sheet(isPresented: self.$showSheet){
+            ViewMessageSignValidate()
+                .addSheetTitle(AppStrings.msgSignVerify)
+        }
+        .alert(
+            isPresented: $promptMessage,
+            content: {
+                Alert(title: Text(self.messageTitle),
+                      message: Text(self.messageContent),
+                      primaryButton: .default(
+                        Text(AppStrings.cancel),
+                        action: {
+                        }
+                    ),
+                      secondaryButton: .default(
+                        Text(AppStrings.i_understood),
+                        action: {
+                            var hint = AppStrings.readGeneralInformation
+                            switch self.otkRequest.command {
+                                case .setPin:
+                                    hint = AppStrings.setPinCode
+                                    break
+                                case .showKey:
+                                    hint = AppStrings.showKey
+                                    break
+                                case .setKey:
+                                    hint = AppStrings.chooseKey
+                                    break
+                                case .unlock:
+                                    hint = AppStrings.unlock
+                                    break
+                                case .reset:
+                                    hint = AppStrings.reset
+                                    break
+                                case .exportKey:
+                                    hint = AppStrings.exportKey
+                                    break
+                                case .invalid: break
+                                case .sign: break
+                                case .setNote: break
+                                case .cancel: break
+                            }
+                            self.setOtkRequest(self.otkRequest, hint: hint)
+                      }
+                    )
+                )
+            }
+        )
     }
     
     func setOtkRequest(_ request: OtkRequest, hint: String) {

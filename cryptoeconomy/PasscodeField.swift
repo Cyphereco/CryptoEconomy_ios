@@ -11,7 +11,6 @@ public struct PasscodeField: View {
     @State var isDisabled = false
     
     var handler: (String, (Bool) -> Void) -> Void
-    @Environment(\.colorScheme) var colorScheme
 
     public var body: some View {
         VStack {
@@ -21,7 +20,7 @@ public struct PasscodeField: View {
                     pinDots.padding(.bottom)
                 }
                 .padding()
-                .background(self.colorScheme == .dark ? Color.black : Color.white)
+                .setCustomDecoration(.backgroundNormal)
                 .clipShape(RoundedRectangle(cornerRadius: 10.0))
                 backgroundField
             }

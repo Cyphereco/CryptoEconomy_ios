@@ -11,7 +11,6 @@ import SwiftUI
 struct SideMenuPay: View {
     let isOpened: Bool
     let closeMenu: () -> Void
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appController: AppController
     @State var alertEmptyAddress = false
     @State var alertAbout = false
@@ -24,14 +23,14 @@ struct SideMenuPay: View {
                    self.closeMenu()
                    self.appController.interacts = .configLocalCurrency
                }
-            }.foregroundColor(.primary).padding()
+            }.setCustomDecoration(.foregroundNormal).padding()
 
             RowButton(text: AppStrings.setFees){
                 withAnimation {
                     self.closeMenu()
                     self.appController.interacts = .configFees
                 }
-            }.foregroundColor(.primary).padding()
+            }.setCustomDecoration(.foregroundNormal).padding()
 
             Toggle(AppStrings.feesIncluded, isOn: self.$appController.feesIncluded)
                 .frame(alignment: .trailing)
@@ -65,14 +64,14 @@ struct SideMenuPay: View {
                         UIApplication.shared.open(url)
                     }
                 }
-            }.foregroundColor(.primary).padding()
+            }.setCustomDecoration(.foregroundNormal).padding()
 
             RowButton(text: AppStrings.about){
                 withAnimation {
                     self.closeMenu()
                     self.alertAbout = true
                 }
-            }.foregroundColor(.primary).padding()
+            }.setCustomDecoration(.foregroundNormal).padding()
             .alert(isPresented: self.$alertAbout){
                 Alert(title: Text("Version") + Text(": \(AppController.VERSION)"))
             }

@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct PagePay: View {
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appController: AppController
     
     @ObservedObject var otkNpi = OtkNfcProtocolInterface()
@@ -67,9 +66,7 @@ struct PagePay: View {
                                 .fontWeight(.bold)
                             }
                             .padding(12)
-                            .background(AppController.getAccentColor(colorScheme: self.colorScheme))
-                            .cornerRadius(24)
-                            .foregroundColor(.white)
+                            .setCustomDecoration(.roundedButton)
                         }
                         .padding(.trailing, 20.0)
                         .padding(.bottom, 40)
@@ -79,7 +76,7 @@ struct PagePay: View {
             .onTapBackground({
                 UIApplication.shared.endEditing()
             })
-            .navigationBarTitle(Text("pay"), displayMode: .inline)
+            .navigationBarTitle(Text(AppStrings.pay), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
                 withAnimation {
                     self.appController.interacts = .menuPay

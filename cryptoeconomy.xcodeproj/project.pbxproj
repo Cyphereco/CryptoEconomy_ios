@@ -43,6 +43,7 @@
 		BA48693D244FE39900BD0860 /* ViewExportWifKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48693C244FE39900BD0860 /* ViewExportWifKey.swift */; };
 		BA48693F2451240800BD0860 /* PasscodeField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48693E2451240800BD0860 /* PasscodeField.swift */; };
 		BA4869412451771600BD0860 /* DialogEnterPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4869402451771600BD0860 /* DialogEnterPin.swift */; };
+		BA486947245330BC00BD0860 /* ViewMessageSignValidate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA486946245330BC00BD0860 /* ViewMessageSignValidate.swift */; };
 		BA7DDBA0243665E50072412F /* AppTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7DDB9F243665E50072412F /* AppTools.swift */; };
 		BA9595E7242EFD8800C48B37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9595E6242EFD8800C48B37 /* AppDelegate.swift */; };
 		BA9595E9242EFD8900C48B37 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9595E8242EFD8900C48B37 /* SceneDelegate.swift */; };
@@ -121,6 +122,7 @@
 		BA48693C244FE39900BD0860 /* ViewExportWifKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExportWifKey.swift; sourceTree = "<group>"; };
 		BA48693E2451240800BD0860 /* PasscodeField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeField.swift; sourceTree = "<group>"; };
 		BA4869402451771600BD0860 /* DialogEnterPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogEnterPin.swift; sourceTree = "<group>"; };
+		BA486946245330BC00BD0860 /* ViewMessageSignValidate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewMessageSignValidate.swift; sourceTree = "<group>"; };
 		BA7DDB9F243665E50072412F /* AppTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTools.swift; sourceTree = "<group>"; };
 		BA9595E3242EFD8800C48B37 /* Crypto Economy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Crypto Economy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA9595E6242EFD8800C48B37 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -273,9 +275,10 @@
 				BA4015092431CA910094F6CF /* TextFieldBtcAddress.swift */,
 				BA40150D2431E2B70094F6CF /* TextFieldPayAmount.swift */,
 				BA2EEAD42432209400522A63 /* ViewAddressEditor.swift */,
+				BA48693C244FE39900BD0860 /* ViewExportWifKey.swift */,
 				BA1F873B24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift */,
 				BA48693A244F0D0E00BD0860 /* ViewPublicKeyInformation.swift */,
-				BA48693C244FE39900BD0860 /* ViewExportWifKey.swift */,
+				BA486946245330BC00BD0860 /* ViewMessageSignValidate.swift */,
 				BA1F874124443168003DB110 /* ViewToastMessage.swift */,
 				BA1F873F2440DCFA003DB110 /* ViewTransactionInformation.swift */,
 				BA486938244E819000BD0860 /* WebService.swift */,
@@ -617,6 +620,7 @@
 				BA9595E7242EFD8800C48B37 /* AppDelegate.swift in Sources */,
 				BA2EEAD52432209400522A63 /* ViewAddressEditor.swift in Sources */,
 				B23FB94F2437460C00A2B80F /* BtcUtils.swift in Sources */,
+				BA486947245330BC00BD0860 /* ViewMessageSignValidate.swift in Sources */,
 				BA22931D244816110042F80C /* KeyboardResponder.swift in Sources */,
 				BA3FC53C243072BF00F41471 /* PageOpenTurnKey.swift in Sources */,
 				BAC387552449F11A0061C1EF /* AppUIComponents.swift in Sources */,

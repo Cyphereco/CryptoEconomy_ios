@@ -12,7 +12,6 @@ struct ConfigLocalCurrency: View {
     let isOpened: Bool
     let closeMenu: ()->Void
 
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appController: AppController
 
     var body: some View {
@@ -36,11 +35,12 @@ struct ConfigLocalCurrency: View {
                     }.padding(.top, 40).padding(.bottom)
                 }
                 .frame(maxWidth: .infinity)
-                .background(self.colorScheme == .dark ? Color.black : Color.white)
+                .setCustomDecoration(.backgroundNormal)
                 .offset(y: self.isOpened ? 0 : geometry.size.height)
                 .animation(.easeInOut)
             }
-        }.accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
+        }
+        .setCustomDecoration(.accentColor)
     }
 }
 

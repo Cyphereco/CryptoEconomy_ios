@@ -12,7 +12,6 @@ struct ConfigFees: View {
     let isOpened: Bool
     let closeMenu: ()->Void
 
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var appController: AppController
 
     var body: some View {
@@ -31,7 +30,7 @@ struct ConfigFees: View {
                             .multilineTextAlignment(.center)
                             .addUnderline()
                             .keyboardType(.decimalPad)
-                            .foregroundColor(AppController.getAccentColor(colorScheme: self.colorScheme))
+                            .setCustomDecoration(.foregroundAccent)
                             .frame(width: 100)
                             .padding(-4).padding(.top, 5).padding(.bottom, -5)
                             .introspectTextField { textField in
@@ -51,14 +50,15 @@ struct ConfigFees: View {
                         Image("ok")
                     }.padding()
                 }
-                .background(self.colorScheme == .dark ? Color.black : Color.white)
+                .setCustomDecoration(.backgroundNormal)
                 .offset(y: self.isOpened ? 0 : geometry.size.height * 2)
                 .animation(.easeInOut)
                 .onTapGesture {
                     UIApplication.shared.endEditing()
                 }
             }
-       }.accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
+        }
+        .setCustomDecoration(.accentColor)
         .keyboardResponsive()
     }
     

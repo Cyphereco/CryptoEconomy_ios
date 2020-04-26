@@ -9,11 +9,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var appController: AppController
-    
     let totalTabs = 4
     @GestureState  var dragOffset = CGSize.zero
+    @EnvironmentObject var appController: AppController
 
     var body: some View {
         ZStack {
@@ -22,7 +20,7 @@ struct ContentView: View {
                     .tabItem {
                         VStack {
                             Image("pay")
-                            Text("pay")
+                            Text(AppStrings.pay)
                         }
                     }
                     .tag(0)
@@ -30,7 +28,7 @@ struct ContentView: View {
                     .tabItem {
                         VStack {
                             Image("cyphereco_icon")
-                            Text("OpenTurnKey")
+                            Text(AppStrings.openturnkey)
                         }
                     }
                     .tag(1)
@@ -38,7 +36,7 @@ struct ContentView: View {
                     .tabItem {
                         VStack {
                             Image("history")
-                            Text("history")
+                            Text(AppStrings.history)
                         }
                     }
                     .tag(2)
@@ -46,14 +44,14 @@ struct ContentView: View {
                     .tabItem {
                         VStack {
                             Image("addressbook")
-                            Text("addresses")
+                            Text(AppStrings.addresses)
                         }
                     }
                     .tag(3)
             }
             .blur(radius: self.appController.interacts != .none ? 0.8 : 0)
             .animation(.easeInOut)
-            .accentColor(AppController.getAccentColor(colorScheme: self.colorScheme))
+            .setCustomDecoration(.accentColor)
             .swipableTabs(currentTab: self.$appController.pageSelected, totalTabs: self.totalTabs)
             
             GeometryReader { _ in
@@ -115,7 +113,7 @@ struct ContentView: View {
     }
     
     init() {
-
+        
     }
         
     func closeMenu() {
