@@ -75,6 +75,8 @@ struct ViewChooseKey: View {
             HStack {
                 Spacer()
                 Button(action: {
+                    self.otkRequest.command = .invalid
+                    self.otkRequest.data = ""
                     self.closeSheet()
                 }) {
                     HStack(alignment: .center){

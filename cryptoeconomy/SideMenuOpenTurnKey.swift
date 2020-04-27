@@ -48,7 +48,7 @@ struct SideMenuOpenTurnKey: View {
             }.setCustomDecoration(.foregroundNormal).padding()
             
             RowButton(text: AppStrings.msgSignVerify){
-                self.appController.cancelOtkRequest(continueAfterStarted: false)
+                self.otkRequest.command = .invalid
                 self.showSheet = true
                 self.closeMenu()
             }.setCustomDecoration(.foregroundNormal).padding()
