@@ -52,6 +52,7 @@
 "no_transaction_record" = "无交易纪录";
 "Not OpenTurnKey!" = "不是OpenTurnKey!";
 "note" = "注记";
+"ok" = "确定";
 "openturnkey_information" = "OpenTurnKey信息";
 "pay" = "支付";
 "pin_code_warning_message" = "设置PIN码可以保障您的OpenTurnKey在指纹验证功能发生问题时，仍然保有一个存取密钥的备援手段。但多数情况下，如果指纹验证功能正常，建议您优先使用指纹认证，如要使用PIN码认证，请仅在信任的安全设备上使用。";
@@ -65,6 +66,8 @@
 "Request processed." = "请求已处理。";
 "request_success" = "请求成功";
 "reset" = "重置";
+"reset_command_sent" = "重置命令已发送";
+"reset_step_intro" = "要完成重置请持续按住OpenTurnKey上的指纹传感器8秒钟。";
 "reset_warning_message" = "重置OpenTurnKey将会擦除已登录的指纹，清除PIN码设置，并重新选择新的随机密钥。如果您没有当前密钥的备份，您将失去对当前资金的存取，请特别注意！";
 "result" = "结果";
 "save" = "储存";

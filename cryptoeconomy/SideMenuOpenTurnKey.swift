@@ -55,7 +55,6 @@ struct SideMenuOpenTurnKey: View {
             
             RowButton(text: AppStrings.chooseKey){
                 self.otkRequest.command = .setKey
-                self.otkRequest.data = "2,4,6,8,10"
 
                 self.messageTitle = AppStrings.warning
                 self.messageContent = AppStrings.choose_key_warning_message
@@ -91,20 +90,34 @@ struct SideMenuOpenTurnKey: View {
             }.setCustomDecoration(.foregroundNormal).padding()
             
         }.asSideMenu(isOpened: self.isOpened)
-        .sheet(isPresented: self.$showSheet){
-            ViewMessageSignValidate()
+            .sheet(isPresented: self.$showSheet, onDismiss: {
+                UIApplication.shared.endEditing()
+                if self.otkRequest.command == .setKey {
+                    
+                    if self.otkRequest.data.count == 0 {
+                        self.appController.cancelOtkRequest(continueAfterStarted: false)
+                    }
+                    else {
+                        self.setOtkRequest(self.otkRequest, hint: AppStrings.chooseKey)
+                    }
+                }
+            }){
+            if self.otkRequest.command == .setKey {
+                ViewChooseKey(otkRequest: self.$otkRequest, closeSheet: {
+                    self.showSheet = false
+                }).addSheetTitle(AppStrings.chooseKey)
+            }
+            else {
+                ViewMessageSignValidate()
                 .addSheetTitle(AppStrings.msgSignVerify)
+            }
         }
         .alert(
             isPresented: $promptMessage,
             content: {
                 Alert(title: Text(self.messageTitle),
                       message: Text(self.messageContent),
-                      primaryButton: .default(
-                        Text(AppStrings.cancel),
-                        action: {
-                        }
-                    ),
+                      primaryButton: .cancel(Text(AppStrings.cancel)),
                       secondaryButton: .default(
                         Text(AppStrings.i_understood),
                         action: {
@@ -117,7 +130,7 @@ struct SideMenuOpenTurnKey: View {
                                     hint = AppStrings.showKey
                                     break
                                 case .setKey:
-                                    hint = AppStrings.chooseKey
+                                    self.showSheet = true
                                     break
                                 case .unlock:
                                     hint = AppStrings.unlock

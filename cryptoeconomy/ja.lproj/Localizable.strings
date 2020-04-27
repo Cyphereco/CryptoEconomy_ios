@@ -52,6 +52,7 @@
 "no_transaction_record" = "支払い記録なし";
 "Not OpenTurnKey!" = "OpenTurnKeyではありません！";
 "note" = "ノート";
+"ok" = "はい";
 "openturnkey_information" = "OpenTurnKey情報";
 "pay" = "支払い";
 "pin_code_warning_message" = "PINコード設定は、OpenTurnKey指紋認証で問題が発生した場合に、キーへの代替バックアップアクセスを保証します。 ほとんどの場合、可能であれば指紋認証を使用することをお勧めします。 PINコード認証を使用する場合は、信頼できる安全なデバイスでのみ使用するようにしてください。";
@@ -65,6 +66,8 @@
 "Request processed." = "リクエストを処理しました。";
 "request_success" = "リクエスト実行成功";
 "reset" = "リセット";
+"reset_command_sent" = "リセットコマンドが送信された";
+"reset_step_intro" = "リセットプロセスを完了するには、OpenTurnKeyの指紋センサーを8秒間押し続けます。";
 "reset_warning_message" = "OpenTurnKeyをリセットすると、登録されている指紋が消去されます。 PINコードを設定解除し、新しいランダムキーを選択します。 現在のキーへのバックアップがない場合、現在の資金へのアクセスが失われます。 お気をつけください！";
 "result" = "結果";
 "save" = "保存";

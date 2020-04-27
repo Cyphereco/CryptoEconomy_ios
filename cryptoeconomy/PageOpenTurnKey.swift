@@ -19,6 +19,9 @@ struct PageOpenTurnKey: View {
     @State var showToast = false
     @State var showDialogEnterPin = false
     @State var pin  = ""
+    @State var promptMessage = false
+    @State var messageTitle = ""
+    @State var messageContent = ""
 
     let otkNpi = AppController.otkNpi
 
@@ -79,14 +82,8 @@ struct PageOpenTurnKey: View {
                                         Image("nfc_request")
                                         .frame(minWidth: 70, minHeight: 70)
                                         .setCustomDecoration(.roundedButton)
-
-//                                        Text(AppStrings.makeRequest)
-//                                            .font(.system(size: 20))
-//                                            .fontWeight(.bold)
-//                                            .padding(.trailing, 10)
                                     }
                                     .clipShape(Circle())
-//                                    .padding(12)
                                 }
                                 .sheet(isPresented: self.$showResult, onDismiss: {
                                     self.otkNpi.reset()
@@ -124,6 +121,15 @@ struct PageOpenTurnKey: View {
                     Image("menu")
                 })
                 .toastMessage(message: self.$message, show: self.$showToast)
+                .alert(
+                    isPresented: $promptMessage,
+                    content: {
+                        Alert(title: Text(self.messageTitle),
+                              message: Text(self.messageContent),
+                              dismissButton: .default(Text(AppStrings.i_understood))
+                        )
+                    }
+                )
             }
             
             GeometryReader { _ in
@@ -159,7 +165,12 @@ struct PageOpenTurnKey: View {
                 let hint = self.appController.requestHint
                 
                 if execState == .success {
-                    if command == .reset || command == .unlock || command == .setKey || command == .setNote || command == .setPin {
+                    if command == .reset {
+                        self.messageTitle = AppStrings.reset_command_sent
+                        self.messageContent = AppStrings.reset_step_intro
+                        self.promptMessage = true
+                    }
+                    else if command == .unlock || command == .setKey || command == .setNote || command == .setPin {
                         self.showToast(hint + "\n" + AppStrings.request_success)
                     }
                     else if command == .exportKey || command == .showKey {
@@ -175,7 +186,7 @@ struct PageOpenTurnKey: View {
                         // no request, just otk info
                         _ = BlockChainInfoService.getBalance(address: self.otkNpi.otkData.btcAddress).done({result in
                             if (result > 0) {
-                                self.otkBtcBalance = Double(result) / 100000000
+                                self.otkBtcBalance = BtcUtils.satoshiToBtc(satoshi: result)
                             }
                         }).catch({_ in
                             self.otkBtcBalance =  -1

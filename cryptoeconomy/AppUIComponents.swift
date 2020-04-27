@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import CodeScanner
 import Introspect
 
 class TextFieldObserver: NSObject {
@@ -69,6 +70,51 @@ struct ImageQRCode: View {
         let image = filter?.outputImage
         let uiimage = UIImage(ciImage: image!)
         return uiimage.pngData()!
+    }
+}
+
+struct QRCodeScanner: View {
+    let closeScanner: ()->Void
+    let completion: (Result<String, CodeScannerView.ScanError>)->Void
+    
+    var body: some View {
+        ZStack {
+            CodeScannerView(codeTypes: [.qr], simulatedData: "Some simulated data", completion: self.completion)
+
+            ZStack {
+                GeometryReader { _ in
+                    EmptyView()
+                }
+                .background(Color.black)
+
+                GeometryReader { _ in
+                    EmptyView()
+                }
+                .frame(width: 250, height: 250)
+                .background(Color.white.opacity(0.2))
+            }
+            .opacity(0.4)
+
+            VStack {
+                VStack {
+                    Image(systemName: "minus").imageScale(.large)
+                    HStack {
+                        Spacer()
+                        Text(AppStrings.scanningQrCode).font(.headline).padding([.leading, .trailing, .bottom])
+                        Spacer()
+                    }
+                }.background(Color.gray)
+                Spacer()
+                Button(action: {
+                    self.closeScanner()
+                }){
+                    Image(systemName: "multiply.circle.fill")
+                    .font(.largeTitle)
+                    .padding()
+                }
+            }
+        }
+
     }
 }
 
@@ -169,7 +215,7 @@ struct ToastMessage: ViewModifier {
             content
             
             if (self.showToastMessage) {
-                ViewToastMessage(message: self.message, delay: 3.5, show: self.$showToastMessage)
+                ViewToastMessage(message: self.message, delay: 3.5, show: self.$showToastMessage).keyboardResponsive()
             }
         }
     }

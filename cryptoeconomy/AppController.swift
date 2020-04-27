@@ -326,11 +326,11 @@ class AppController: ObservableObject {
         UserDefaults.standard.set(selection, forKey: "FeesPriority")
         switch selection {
             case 1.0:
-                self.fees = Double(AppController.bestFees.low * AppController.ESTIMATED_BLOCK_SIZE) / 100000000
+                self.fees = BtcUtils.satoshiToBtc(satoshi:  Int64(AppController.bestFees.low * AppController.ESTIMATED_BLOCK_SIZE))
             case 2.0:
-                self.fees = Double(AppController.bestFees.mid * AppController.ESTIMATED_BLOCK_SIZE) / 100000000
+                self.fees = BtcUtils.satoshiToBtc(satoshi:  Int64(AppController.bestFees.mid * AppController.ESTIMATED_BLOCK_SIZE))
             case 3.0:
-                self.fees = Double(AppController.bestFees.high * AppController.ESTIMATED_BLOCK_SIZE) / 100000000
+                self.fees = BtcUtils.satoshiToBtc(satoshi:  Int64(AppController.bestFees.high * AppController.ESTIMATED_BLOCK_SIZE))
             default:
                 fees = UserDefaults.standard.double(forKey: "Fees")
         }

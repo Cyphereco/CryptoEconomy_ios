@@ -90,6 +90,8 @@ struct AppStrings {
     static let unlock_warning = localize("unlock_warning")
     static let reset_warning_message = localize("reset_warning_message")
     static let export_wif_warning_message = localize("export_wif_warning_message")
+    static let reset_step_intro = localize("reset_step_intro")
+    static let reset_command_sent = localize("reset_command_sent")
 
     private static func localize(_ str: String) -> String {
         return NSLocalizedString(str, comment: "")

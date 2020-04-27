@@ -62,42 +62,9 @@ struct TextFieldBtcAddress: View {
                     self.isShowingScanner = true
                 }){Image("scan_qrcode")}
                 .sheet(isPresented: self.$isShowingScanner) {
-                    ZStack {
-                        CodeScannerView(codeTypes: [.qr], simulatedData: "Some simulated data", completion: self.handleScan)
-
-                        ZStack {
-                            GeometryReader { _ in
-                                EmptyView()
-                            }
-                            .background(Color.black)
-
-                            GeometryReader { _ in
-                                EmptyView()
-                            }
-                            .frame(width: 250, height: 250)
-                            .background(Color.white.opacity(0.2))
-                        }
-                        .opacity(0.4)
-                        
-                        VStack {
-                            VStack {
-                                Image(systemName: "minus").imageScale(.large)
-                                HStack {
-                                    Spacer()
-                                    Text(AppStrings.scanningQrCode).font(.headline).padding([.leading, .trailing, .bottom])
-                                    Spacer()
-                                }
-                            }.background(Color.gray)
-                            Spacer()
-                            Button(action: {
-                                self.isShowingScanner = false
-                            }){
-                                Image(systemName: "multiply.circle.fill")
-                                .font(.largeTitle)
-                                .padding()
-                            }
-                        }
-                    }
+                    QRCodeScanner(closeScanner: {
+                        self.isShowingScanner = false
+                    }, completion: self.handleScan)
                     .setCustomDecoration(.accentColor)
                 }
                 Spacer().fixedSize().frame(width: 40, height: 0, alignment: .leading)

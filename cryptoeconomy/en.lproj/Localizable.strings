@@ -52,6 +52,7 @@
 "no_transaction_record" = "No Transaction Record";
 "Not OpenTurnKey!" = "Not OpenTurnKey!";
 "note" = "Note";
+"ok" = "OK";
 "openturnkey_information" = "OpenTurnKey Information";
 "pay" = "Pay";
 "pin_code_warning_message" = "PIN code setting guarantee an alternative backup access to the key when OpenTurnKey fingerprint authentication run into problem. In the most cases, we recommend you to use fingerprint authentication if possible. If PIN code authorization is to be used, make sure you use it only on trusted secure devices.";
@@ -65,6 +66,8 @@
 "Request processed." = "Request processed.";
 "request_success" = "Request Success";
 "reset" = "Reset";
+"reset_command_sent" = "Reset Command Sent";
+"reset_step_intro" = "To complete the reset process, please press and hold the fingerprint sensor on OpenTurnKey for 8 seconds.";
 "reset_warning_message" = "Reset OpenTurnKey will erase the enrolled fingerprint. unset the PIN code, and choose a new random key. If you don\'t have a backup to the current key, you will lose the access to the current funds. Please be careful!";
 "result" = "Result";
 "save" = "Save";
