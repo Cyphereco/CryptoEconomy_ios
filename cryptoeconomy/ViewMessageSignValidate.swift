@@ -25,7 +25,7 @@ struct ViewMessageSignValidate: View {
                     HStack {
                         HStack {
                             Spacer()
-                            Text("Sign")
+                            Text(AppStrings.sign)
                             Spacer()
                         }
                         .onTapGesture{
@@ -33,7 +33,7 @@ struct ViewMessageSignValidate: View {
                         }
                         HStack {
                             Spacer()
-                            Text("Verify")
+                            Text(AppStrings.validate)
                             Spacer()
                         }
                         .onTapGesture{
@@ -60,7 +60,7 @@ struct ViewMessageSignValidate: View {
 
                         VStack {
                             Spacer()
-                            Text("Verify message")
+                            Text("Validate signature")
                             Spacer()
                         }
                         .frame(width: geometry.size.width)

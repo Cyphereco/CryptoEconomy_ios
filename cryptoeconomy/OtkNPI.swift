@@ -193,6 +193,31 @@ enum OtkCommand: CaseIterable{
             return "0"
         }
     }
+
+    var desc: String {
+        switch self {
+        case .unlock:
+            return AppStrings.unlock
+        case .showKey:
+            return AppStrings.showKey
+        case .sign:
+            return AppStrings.sign
+        case .setKey:
+            return AppStrings.choose_key
+        case .setPin:
+            return AppStrings.setPinCode
+        case .setNote:
+            return AppStrings.writeNote
+        case .cancel:
+            return AppStrings.cancel
+        case .reset:
+            return AppStrings.reset
+        case .exportKey:
+            return AppStrings.exportKey
+        default:
+            return "Unknow command"
+        }
+    }
 }
 
 struct OtkNDEFTag {

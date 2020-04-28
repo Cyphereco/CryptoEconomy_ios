@@ -75,9 +75,7 @@ struct ViewChooseKey: View {
             HStack {
                 Spacer()
                 Button(action: {
-                    self.otkRequest.command = .invalid
-                    self.otkRequest.data = ""
-                    self.closeSheet()
+                    self.cancelRequest()
                 }) {
                     HStack(alignment: .center){
                         Text(AppStrings.cancel)
@@ -134,6 +132,12 @@ struct ViewChooseKey: View {
             self.clearFocus()
         }
         .toastMessage(message: self.$toastMessage, show: self.$showToastMessage)
+    }
+    
+    func cancelRequest() {
+        self.otkRequest.command = .invalid
+        self.otkRequest.data = ""
+        self.closeSheet()
     }
     
     func clearFocus() {

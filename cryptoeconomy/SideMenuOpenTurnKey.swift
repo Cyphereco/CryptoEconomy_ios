@@ -47,13 +47,13 @@ struct SideMenuOpenTurnKey: View {
                 self.closeMenu()
             }.setCustomDecoration(.foregroundNormal).padding()
             
-            RowButton(text: AppStrings.msgSignVerify){
+            RowButton(text: AppStrings.message_sign_validate){
                 self.otkRequest.command = .invalid
                 self.showSheet = true
                 self.closeMenu()
             }.setCustomDecoration(.foregroundNormal).padding()
             
-            RowButton(text: AppStrings.chooseKey){
+            RowButton(text: AppStrings.choose_key){
                 self.otkRequest.command = .setKey
 
                 self.messageTitle = AppStrings.warning
@@ -93,23 +93,25 @@ struct SideMenuOpenTurnKey: View {
             .sheet(isPresented: self.$showSheet, onDismiss: {
                 UIApplication.shared.endEditing()
                 if self.otkRequest.command == .setKey {
-                    
                     if self.otkRequest.data.count == 0 {
                         self.appController.cancelOtkRequest(continueAfterStarted: false)
                     }
                     else {
-                        self.setOtkRequest(self.otkRequest, hint: AppStrings.chooseKey)
+                        self.setOtkRequest(self.otkRequest, hint: AppStrings.choose_key)
                     }
+                }
+                else {
+                    self.appController.cancelOtkRequest(continueAfterStarted: false)
                 }
             }){
             if self.otkRequest.command == .setKey {
                 ViewChooseKey(otkRequest: self.$otkRequest, closeSheet: {
                     self.showSheet = false
-                }).addSheetTitle(AppStrings.chooseKey)
+                }).addSheetTitle(AppStrings.choose_key)
             }
             else {
                 ViewMessageSignValidate()
-                .addSheetTitle(AppStrings.msgSignVerify)
+                .addSheetTitle(AppStrings.message_sign_validate)
             }
         }
         .alert(

@@ -82,6 +82,7 @@
 "set_transaction_fees" = "手数料の設定";
 "show_full_public_key_information" = "完全な公開鍵情報を表示";
 "show_local_currency" = "現地通貨を表示";
+"sign" = "サイン";
 "sign_payment" = "支払いに署名";
 "Tag is not NDEF compliant." = "タグはNDEFに対応していません。";
 "Tag is read only. This is not an OpenTurnKey" = "タグは読み取り専用です。 これはOpenTurnKeyではありません。";
@@ -96,6 +97,7 @@
 "use_all_funds" = "すべての資金を出す";
 "use_fixed_address" = "固定支払いアドレスを使用";
 "user_guide" = "ユーザーガイド";
+"validate" = "検証";
 "Version" = "バージョン";
 "wallet_import_format_key" = "ウォレットに輸入的形式の鍵";
 "warning" = "注意!";

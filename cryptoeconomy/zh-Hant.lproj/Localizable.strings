@@ -82,6 +82,7 @@
 "set_transaction_fees" = "設定交易手續費";
 "show_full_public_key_information" = "顯示完整公鑰資訊";
 "show_local_currency" = "顯示當地貨幣";
+"sign" = "簽名";
 "sign_payment" = "簽名支付";
 "Tag is not NDEF compliant." = "非NDEF兼容標籤。";
 "Tag is read only. This is not an OpenTurnKey" = "唯讀標籤，不是有效的OpenTurnKey。";
@@ -96,6 +97,7 @@
 "use_all_funds" = "發送全部餘額";
 "use_fixed_address" = "使用固定收款地址";
 "user_guide" = "使用指南";
+"validate" = "驗證";
 "Version" = "版本";
 "wallet_import_format_key" = "錢包導入格式密鑰";
 "warning" = "注意!";

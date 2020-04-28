@@ -82,6 +82,7 @@
 "set_transaction_fees" = "Set Transaction Fees";
 "show_full_public_key_information" = "Show Full Public Key Information";
 "show_local_currency" = "Show Local Currency";
+"sign" = "Sign";
 "sign_payment" = "Sign Payment";
 "Tag is not NDEF compliant." = "Tag is not NDEF compliant.";
 "Tag is read only. This is not an OpenTurnKey" = "Tag is read only. This is not an OpenTurnKey";
@@ -96,6 +97,7 @@
 "use_all_funds" = "Use All Funds";
 "use_fixed_address" = "Use Fixed Address";
 "user_guide" = "User Guide";
+"validate" = "Validate";
 "Version" = "Version";
 "wallet_import_format_key" = "Wallet Import Format Key";
 "warning" = "Warning!";

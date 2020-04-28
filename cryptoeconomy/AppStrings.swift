@@ -57,8 +57,8 @@ struct AppStrings {
     static let setPinCode = localize("set_pin_code")
     static let showKey = localize("show_full_public_key_information")
     static let writeNote = localize("write_note")
-    static let msgSignVerify = localize("message_sign_validate")
-    static let chooseKey = localize("choose_key")
+    static let message_sign_validate = localize("message_sign_validate")
+    static let choose_key = localize("choose_key")
     static let unlock = localize("unlock")
     static let reset = localize("reset")
     static let exportKey = localize("export_key")
@@ -92,6 +92,8 @@ struct AppStrings {
     static let export_wif_warning_message = localize("export_wif_warning_message")
     static let reset_step_intro = localize("reset_step_intro")
     static let reset_command_sent = localize("reset_command_sent")
+    static let sign = localize("sign")
+    static let validate = localize("validate")
 
     private static func localize(_ str: String) -> String {
         return NSLocalizedString(str, comment: "")

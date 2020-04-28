@@ -88,17 +88,21 @@ struct PageOpenTurnKey: View {
                                 .sheet(isPresented: self.$showResult, onDismiss: {
                                     self.otkNpi.reset()
                                 }) {
-                                    if self.otkNpi.otkState.command == .exportKey {
-                                        ViewExportWifKey().environmentObject(self.appController)
-                                            .addSheetTitle(AppStrings.exportKey)
-                                    }
-                                    else if self.otkNpi.otkState.command == .showKey {
-                                        ViewPublicKeyInformation().environmentObject(self.appController)
-                                            .addSheetTitle(AppStrings.showKey)
-                                    }
-                                    else {
-                                        ViewOpenTurnKeyInfo(btcBalance: self.$otkBtcBalance).environmentObject(self.appController)
-                                            .addSheetTitle(AppStrings.openturnkeyInfo)
+                                    if self.otkNpi.readCompleted {
+                                        if self.otkNpi.otkState.execState == .success {
+                                            if self.otkNpi.otkState.command == .exportKey {
+                                                ViewExportWifKey().environmentObject(self.appController)
+                                                    .addSheetTitle(AppStrings.exportKey)
+                                            }
+                                            else if self.otkNpi.otkState.command == .showKey {
+                                                ViewPublicKeyInformation().environmentObject(self.appController)
+                                                    .addSheetTitle(AppStrings.showKey)
+                                            }
+                                        }
+                                        else if self.otkNpi.otkState.execState == .invalid && self.otkNpi.otkState.command == .invalid {
+                                            ViewOpenTurnKeyInfo(btcBalance: self.$otkBtcBalance).environmentObject(self.appController)
+                                                .addSheetTitle(AppStrings.openturnkeyInfo)
+                                        }
                                     }
                                 }
 
@@ -162,7 +166,6 @@ struct PageOpenTurnKey: View {
                 print(self.otkNpi)
                 let execState = self.otkNpi.otkState.execState
                 let command = self.otkNpi.otkState.command
-                let hint = self.appController.requestHint
                 
                 if execState == .success {
                     if command == .reset {
@@ -171,7 +174,7 @@ struct PageOpenTurnKey: View {
                         self.promptMessage = true
                     }
                     else if command == .unlock || command == .setKey || command == .setNote || command == .setPin {
-                        self.showToast(hint + "\n" + AppStrings.request_success)
+                        self.showToast(command.desc + "\n" + AppStrings.request_success)
                     }
                     else if command == .exportKey || command == .showKey {
                         self.showResult = true
@@ -179,7 +182,7 @@ struct PageOpenTurnKey: View {
                     }
                 }
                 if execState == .fail {
-                    self.showToast(hint + "\n" + AppStrings.request_fail)
+                    self.showToast(command.desc + "\n" + AppStrings.request_fail)
                 }
                 else {
                     if command == .invalid {
