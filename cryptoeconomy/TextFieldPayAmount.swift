@@ -10,7 +10,6 @@ import SwiftUI
 
 struct TextFieldPayAmount: View {
     @EnvironmentObject var appController: AppController
-    private let textFieldObserver = TextFieldObserver()
 
     var body: some View {
         VStack(alignment: .trailing) {
@@ -23,29 +22,19 @@ struct TextFieldPayAmount: View {
                     .padding(.top, -36.0)
                 VStack(alignment: .trailing) {
                     TextField("0.0", text: self.$appController.amountSend)
+                        .selectAllTextOnFocus()
                         .multilineTextAlignment(.trailing)
                         .addUnderline()
                         .font(.custom("", size: 24))
-                        .introspectTextField { textField in
-                            textField.addTarget(
-                                self.textFieldObserver,
-                                action: #selector(TextFieldObserver.textFieldDidBeginEditing),
-                                for: .editingDidBegin
-                            )}
                     Text("BTC")
                 }
                 Text(" = ").padding(.top, -30)
                 VStack(alignment: .trailing) {
                     TextField("0.0", text: self.$appController.amountSendFiat)
+                    .selectAllTextOnFocus()
                     .multilineTextAlignment(.trailing)
                     .addUnderline()
                     .font(.custom("", size: 24))
-                    .introspectTextField { textField in
-                        textField.addTarget(
-                            self.textFieldObserver,
-                            action: #selector(TextFieldObserver.textFieldDidBeginEditing),
-                            for: .editingDidBegin
-                        )}
                     Text(self.appController.getLocalCurrency().label)
                 }
                 .padding(.leading, 4.0)

@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Foundation
+import Combine
 
 class BestFees {
     var low: Int
@@ -161,6 +162,8 @@ enum Interacts: CaseIterable{
 }
 
 class AppController: ObservableObject {
+    let didChange = PassthroughSubject<AppController, Never>()
+
     static var shared = AppController()
     
     static let VERSION = "1.0"
@@ -180,12 +183,15 @@ class AppController: ObservableObject {
     @Published var currencySelection: Int = UserDefaults.standard.integer(forKey: "LocalCurrency") { didSet {
             setLocalCurrency(selection: currencySelection)
             self.amountSend = "\(self.amountSend)"
+            self.didChange.send(self)
         } }
     @Published var feesSelection: Double = UserDefaults.standard.double(forKey: "FeesPriority") { didSet {
             setFeesPriority(selection: feesSelection)
+            self.didChange.send(self)
         } }
     @Published var fees: Double = UserDefaults.standard.double(forKey: "Fees") { didSet {
             UserDefaults.standard.set(fees, forKey: "Fees")
+            self.didChange.send(self)
         } }
     @Published var strFees: String = "\(AppTools.btcToFormattedString(UserDefaults.standard.double(forKey: "Fees")))" { didSet {
         if let value = Double(strFees) {
@@ -195,67 +201,91 @@ class AppController: ObservableObject {
             strFees = "0.00001"
             fees = 0.00001
         }
+        self.didChange.send(self)
     } }
-    @Published var feesIncluded: Bool = UserDefaults.standard.bool(forKey: "FeesIncluded") { didSet { setFeesIncluded(included: feesIncluded) } }
+    @Published var feesIncluded: Bool = UserDefaults.standard.bool(forKey: "FeesIncluded") { didSet {
+        setFeesIncluded(included: feesIncluded)
+        self.didChange.send(self)
+    } }
     @Published var useFixedAddress: Bool = UserDefaults.standard.bool(forKey: "UseFixedAddress") { didSet {
-            setUseFixedAddress(use: useFixedAddress)
-            setFixedAddress(addr: useFixedAddress ? payeeAddr : "")
-        } }
-    @Published var useAllFunds: Bool = false
-    @Published var authByPin: Bool = false
-    @Published var payee: String = ""
-    @Published var payer: String = ""
+        setUseFixedAddress(use: useFixedAddress)
+        setFixedAddress(addr: useFixedAddress ? payeeAddr : "")
+        self.didChange.send(self)
+    } }
+    @Published var useAllFunds: Bool = false { didSet {
+        self.didChange.send(self)
+    }}
+    @Published var authByPin: Bool = false { didSet {
+        self.didChange.send(self)
+    }}
+    @Published var payee: String = "" { didSet {
+        self.didChange.send(self)
+    }}
+    @Published var payer: String = "" { didSet {
+        self.didChange.send(self)
+    }}
     @Published var amountSend: String = "" { didSet {
-            if let amount = Double(amountSend) {
+        if let amount = Double(amountSend) {
+            if !editLock {
+                editLock = true
+                self.amountSendFiat = amount > 0 ? "\(AppTools.fiatToFormattedString(AppTools.btcToFiat(amount, currencySelection: self.currencySelection)))" : "0"
+            }
+            else {
+                editLock = false
+            }
+        }
+        else {
+            amountSend = "0"
+        }
+        self.didChange.send(self)
+    } }
+    @Published var amountRecv: String = "" { didSet {
+        self.didChange.send(self)
+    }}
+    @Published var amountSendFiat: String = "" { didSet {
+        if let amount = Double(amountSendFiat) {
                 if !editLock {
                     editLock = true
-                    self.amountSendFiat = amount > 0 ? "\(AppTools.fiatToFormattedString(AppTools.btcToFiat(amount, currencySelection: self.currencySelection)))" : "0"
+                    self.amountSend = amount > 0 ? "\(AppTools.btcToFormattedString(AppTools.fiatToBtc(amount, currencySelection: self.currencySelection)))" : "0"
                 }
                 else {
                     editLock = false
-                }
-            }
-            else {
-                amountSend = "0"
-            }
-        } }
-    @Published var amountRecv: String = ""
-    @Published var amountSendFiat: String = "" { didSet {
-            if let amount = Double(amountSendFiat) {
-                    if !editLock {
-                        editLock = true
-                        self.amountSend = amount > 0 ? "\(AppTools.btcToFormattedString(AppTools.fiatToBtc(amount, currencySelection: self.currencySelection)))" : "0"
-                    }
-                    else {
-                        editLock = false
-                }
-            }
-            else {
-                amountSendFiat = "0"
-            }
-        } }
-    @Published var pageSelected: Int = 0 { didSet {
-            AppController.otkNpi.request = OtkRequest()
-            self.amountSend = ""
-            self.amountSendFiat = ""
-            self.useAllFunds = false
-            self.authByPin = false
-            self.requestHint = AppStrings.readGeneralInformation
-        
-            if !self.useFixedAddress {
-                self.payeeAddr = ""
-            }
-        }}
-    @Published var interacts: Interacts = .none
-    @Published var payeeAddr: String = UserDefaults.standard.string(forKey: "FixedAddress") ?? ""
-    @Published var requestHint: String = AppStrings.readGeneralInformation
-    @Published var requestId: UUID = UUID() { didSet {
-            if AppController.otkNpi.request.command == .invalid {
-                self.requestHint = AppStrings.readGeneralInformation
-                self.authByPin = false
             }
         }
-    }
+        else {
+            amountSendFiat = "0"
+        }
+        self.didChange.send(self)
+    } }
+    @Published var pageSelected: Int = 0 { didSet {
+        AppController.otkNpi.request = OtkRequest()
+        self.amountSend = ""
+        self.amountSendFiat = ""
+        self.useAllFunds = false
+        self.authByPin = false
+        self.requestHint = AppStrings.readGeneralInformation
+    
+        if !self.useFixedAddress {
+            self.payeeAddr = ""
+        }
+        self.didChange.send(self)
+    }}
+    @Published var interacts: Interacts = .none { didSet {
+        self.didChange.send(self)
+    }}
+    @Published var payeeAddr: String = UserDefaults.standard.string(forKey: "FixedAddress") ?? "" { didSet {
+        self.didChange.send(self)
+    }}
+    @Published var requestHint: String = AppStrings.readGeneralInformation { didSet {
+        self.didChange.send(self)
+    }}
+    @Published var requestId: UUID = UUID() { didSet {
+        if AppController.otkNpi.request.command == .invalid {
+            self.requestHint = AppStrings.readGeneralInformation
+            self.authByPin = false
+        }
+        self.didChange.send(self)
+    }}
 
     init() {
         UserDefaults.standard.register(defaults: ["LocalCurrency": 5])

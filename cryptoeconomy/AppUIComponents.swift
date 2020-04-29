@@ -17,6 +17,22 @@ class TextFieldObserver: NSObject {
     }
 }
 
+struct MultilineTextView: UIViewRepresentable {
+    @Binding var text: String
+
+    func makeUIView(context: Context) -> UITextView {
+        let view = UITextView()
+        view.isScrollEnabled = true
+        view.isEditable = true
+        view.isUserInteractionEnabled = true
+        return view
+    }
+
+    func updateUIView(_ uiView: UITextView, context: Context) {
+        uiView.text = text
+    }
+}
+
 struct CopyButton: View {
     var copyString: String
     var completion: ()->Void
@@ -179,6 +195,26 @@ struct SetCustomDecoration: ViewModifier {
 extension View {
     func setCustomDecoration(_ decoration: CustomDecoration) -> some View {
         self.modifier(SetCustomDecoration(decoration: decoration))
+    }
+}
+
+struct SelectAllTextOnFocus: ViewModifier {
+    private let textFieldObserver = TextFieldObserver()
+
+    func body(content: Content) -> some View {
+        content
+            .introspectTextField { textField in
+                textField.addTarget(
+                    self.textFieldObserver,
+                    action: #selector(TextFieldObserver.textFieldDidBeginEditing),
+                    for: .editingDidBegin
+            )}
+    }
+}
+
+extension TextField {
+    func selectAllTextOnFocus() -> some View {
+        self.modifier(SelectAllTextOnFocus())
     }
 }
 

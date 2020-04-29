@@ -49,9 +49,9 @@ struct ViewOpenTurnKeyInfo: View {
             HStack(alignment: .top) {
                 Text("\(AppStrings.note):")
                 Text(self.otkNpi.otkInfo.note)
-                    .frame(minWidth: 200)
-                    .lineLimit(5)
+                    .addUnderline()
                     .multilineTextAlignment(.leading)
+                    .frame(minWidth: 200)
                 Image("info")
                     .setCustomDecoration(.foregroundAccent)
                     .onTapGesture {
@@ -65,8 +65,7 @@ struct ViewOpenTurnKeyInfo: View {
                         )
                     }
                 )
-            }.padding(20)
-            Divider().frame(height: 1).padding(.bottom, 10)
+            }.padding()
         }
         .padding(.horizontal, 20.0)
         .setCustomDecoration(.accentColor)
