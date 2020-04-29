@@ -323,7 +323,9 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
     }
     
     func cancelSession() {
-        session?.invalidate(errorMessage: "Operation canceled!")
+        if session != nil {
+            session?.invalidate(errorMessage: "Operation canceled!")
+        }
     }
 
     // MARK: - NFCNDEFReaderSessionDelegate
@@ -496,7 +498,9 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
 
         print("End NFC session")
         self.session = nil
-        self.readStarted = false
+        DispatchQueue.main.async {
+            self.readStarted = false
+        }
 
         if !canceled {
             DispatchQueue.main.async {
@@ -552,7 +556,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         let headerNote = "Note"
         
         var otkInfo = OtkInfo()
-        let lines = strInfo.components(separatedBy: "\n")
+        let lines = strInfo.components(separatedBy: "\r\n")
         
         for line in lines {
             if (line.contains(headerMint)) {
