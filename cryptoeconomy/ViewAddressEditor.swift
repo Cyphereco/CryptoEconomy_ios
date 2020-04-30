@@ -59,10 +59,10 @@ struct ViewAddressEditor: View {
                     }
                     .frame(minWidth: 80)
                     .padding(12)
-                    .opacity(self.address.count < 1 ? 0.3 : 1)
+                    .opacity(self.address.isEmpty ? 0.3 : 1)
                     .setCustomDecoration(.roundedButton)
                 }
-                .disabled(self.address.count < 1)
+                .disabled(self.address.isEmpty)
                 .alert(isPresented: self.$showAlert) {
                     return Alert(title: Text(self.alertMessage))
                 }

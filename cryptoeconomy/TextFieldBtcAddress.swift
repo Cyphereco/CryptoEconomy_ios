@@ -19,7 +19,7 @@ struct TextFieldBtcAddress: View {
     var body: some View {
         VStack {
             HStack(alignment: .bottom) {
-                if self.address.count == 0 {
+                if self.address.isEmpty {
                     TextField(AppStrings.btcAddress, text: .constant(""))
                     .frame(minHeight: 44)
                     .lineLimit(5)

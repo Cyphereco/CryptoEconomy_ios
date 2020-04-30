@@ -117,7 +117,7 @@ struct ViewPublicKeyInformation: View {
                 self.QRCodeData = ""
             }
 
-            if self.QRCodeData.count > 0 {
+            if !self.QRCodeData.isEmpty {
                 VStack(alignment: .center) {
                     Text(self.QRCodeTitle).font(.headline).padding()
                     Text(self.QRCodeData).lineLimit(10).multilineTextAlignment(.leading).frame(maxWidth: 260, maxHeight: 150)

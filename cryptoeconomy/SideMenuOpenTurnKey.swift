@@ -96,7 +96,7 @@ struct SideMenuOpenTurnKey: View {
                     UIApplication.shared.endEditing()
                 }
                 if self.otkRequest.command == .setKey {
-                    if self.otkRequest.data.count == 0 {
+                    if self.otkRequest.data.isEmpty {
                         self.appController.cancelOtkRequest(continueAfterStarted: false)
                     }
                     else {
@@ -114,7 +114,8 @@ struct SideMenuOpenTurnKey: View {
             }
             else {
                 ViewMessageSignValidate()
-                .addSheetTitle(AppStrings.message_sign_validate)
+                    .environmentObject(self.appController)
+                    .addSheetTitle(AppStrings.message_sign_validate)
             }
         }
         .alert(

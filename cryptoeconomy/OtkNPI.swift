@@ -613,7 +613,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         let lines = strData.split(separator: "<")
         
         for line in lines {
-            if (line.count < 1) {
+            if (line.isEmpty) {
                 continue
             }
             else {

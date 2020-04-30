@@ -41,13 +41,13 @@ struct SideMenuPay: View {
                 Toggle(AppStrings.useFixedAddress, isOn: self.$appController.useFixedAddress)
                     .frame(maxWidth: 240)
                     .padding(.horizontal).padding(.bottom, 5)
-                    .disabled(self.appController.payeeAddr.count < 1)
+                    .disabled(self.appController.payeeAddr.isEmpty)
              
-                if(self.appController.payeeAddr.count < 1) {
+                if(self.appController.payeeAddr.isEmpty) {
                     Color.white.opacity(0.001)
                     .frame(maxHeight: 44)
                     .onTapGesture {
-                        if self.appController.payeeAddr.count < 1 {
+                        if self.appController.payeeAddr.isEmpty {
                             self.alertEmptyAddress = true
                         }
                     }

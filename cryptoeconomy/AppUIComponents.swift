@@ -20,16 +20,18 @@ class TextFieldObserver: NSObject {
 struct TextView: UIViewRepresentable {
     var placeholder: String
     @Binding var text: String
+    let editable: Bool
 
     var minHeight: CGFloat
     @Binding var calculatedHeight: CGFloat
     @Environment(\.colorScheme) var colorScheme
 
-    init(placeholder: String, text: Binding<String>, minHeight: CGFloat, calculatedHeight: Binding<CGFloat>) {
+    init(placeholder: String, text: Binding<String>, minHeight: CGFloat, calculatedHeight: Binding<CGFloat>, editable: Bool) {
         self.placeholder = placeholder
         self._text = text
         self.minHeight = minHeight
         self._calculatedHeight = calculatedHeight
+        self.editable = editable
     }
 
     func makeCoordinator() -> Coordinator {
@@ -44,12 +46,12 @@ struct TextView: UIViewRepresentable {
         textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
         textView.isScrollEnabled = true
-        textView.isEditable = true
+        textView.isEditable = self.editable
         textView.isUserInteractionEnabled = true
 
         // Set the placeholder
         textView.text = placeholder
-        textView.font = .systemFont(ofSize: 21)
+        textView.font = .systemFont(ofSize: 18)
         textView.textColor = UIColor.lightGray
 
         return textView
@@ -62,6 +64,7 @@ struct TextView: UIViewRepresentable {
             if self.text.isEmpty {
                 textView.text = self.placeholder
                 textView.textColor = UIColor.lightGray
+                UIApplication.shared.endEditing()
             }
             else {
                 textView.text = self.text
