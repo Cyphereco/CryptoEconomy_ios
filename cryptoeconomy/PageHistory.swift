@@ -12,6 +12,7 @@ struct PageHistory: View {
     @ObservedObject var transactionListVM = TransactionListViewModel()
 
     @State var showsAlert = false
+    @State var keyboardActive = false
 
     var body: some View {
         NavigationView {
@@ -29,7 +30,9 @@ struct PageHistory: View {
                 }
             }
             .onTapBackground({
-                UIApplication.shared.endEditing()
+                if self.keyboardActive {
+                    UIApplication.shared.endEditing()
+                }
             })
             .navigationBarTitle(Text(AppStrings.history), displayMode: .inline)
             .navigationBarItems(
@@ -59,6 +62,7 @@ struct PageHistory: View {
                 )
             )
         }
+        .isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
 }
 

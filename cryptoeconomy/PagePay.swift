@@ -13,6 +13,7 @@ struct PagePay: View {
     
     @ObservedObject var otkNpi = OtkNfcProtocolInterface()
     @State var alertUseFixedAddress = false
+    @State var keyboardActive = false
 
     var body: some View {
         NavigationView {
@@ -74,7 +75,9 @@ struct PagePay: View {
                 }
             }
             .onTapBackground({
-                UIApplication.shared.endEditing()
+                if self.keyboardActive {
+                    UIApplication.shared.endEditing()
+                }
             })
             .navigationBarTitle(Text(AppStrings.pay), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
@@ -85,6 +88,7 @@ struct PagePay: View {
                 Image("menu")
             })
         }
+        .isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
 }
 

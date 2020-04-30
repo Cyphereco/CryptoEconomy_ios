@@ -17,19 +17,101 @@ class TextFieldObserver: NSObject {
     }
 }
 
-struct MultilineTextView: UIViewRepresentable {
+struct TextView: UIViewRepresentable {
+    var placeholder: String
     @Binding var text: String
 
-    func makeUIView(context: Context) -> UITextView {
-        let view = UITextView()
-        view.isScrollEnabled = true
-        view.isEditable = true
-        view.isUserInteractionEnabled = true
-        return view
+    var minHeight: CGFloat
+    @Binding var calculatedHeight: CGFloat
+    @Environment(\.colorScheme) var colorScheme
+
+    init(placeholder: String, text: Binding<String>, minHeight: CGFloat, calculatedHeight: Binding<CGFloat>) {
+        self.placeholder = placeholder
+        self._text = text
+        self.minHeight = minHeight
+        self._calculatedHeight = calculatedHeight
     }
 
-    func updateUIView(_ uiView: UITextView, context: Context) {
-        uiView.text = text
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    func makeUIView(context: Context) -> UITextView {
+        let textView = UITextView()
+        textView.delegate = context.coordinator
+
+        // Decrease priority of content resistance, so content would not push external layout set in SwiftUI
+        textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
+        textView.isScrollEnabled = true
+        textView.isEditable = true
+        textView.isUserInteractionEnabled = true
+
+        // Set the placeholder
+        textView.text = placeholder
+        textView.font = .systemFont(ofSize: 21)
+        textView.textColor = UIColor.lightGray
+
+        return textView
+    }
+
+    func updateUIView(_ textView: UITextView, context: Context) {
+        recalculateHeight(view: textView)
+        
+        DispatchQueue.main.async {
+            if self.text.isEmpty {
+                textView.text = self.placeholder
+                textView.textColor = UIColor.lightGray
+            }
+            else {
+                textView.text = self.text
+                textView.textColor = self.colorScheme == .dark ? .white : .black
+            }
+        }
+    }
+
+    func recalculateHeight(view: UIView) {
+        let newSize = view.sizeThatFits(CGSize(width: view.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
+        if minHeight < newSize.height && $calculatedHeight.wrappedValue != newSize.height {
+            DispatchQueue.main.async {
+                self.$calculatedHeight.wrappedValue = newSize.height // !! must be called asynchronously
+            }
+        } else if minHeight >= newSize.height && $calculatedHeight.wrappedValue != minHeight {
+            DispatchQueue.main.async {
+                self.$calculatedHeight.wrappedValue = self.minHeight // !! must be called asynchronously
+            }
+        }
+    }
+
+    class Coordinator : NSObject, UITextViewDelegate {
+
+        var parent: TextView
+
+        init(_ uiTextView: TextView) {
+            self.parent = uiTextView
+        }
+
+        func textViewDidChange(_ textView: UITextView) {
+            // This is needed for multistage text input (eg. Chinese, Japanese)
+            if textView.markedTextRange == nil {
+                parent.text = textView.text ?? String()
+                parent.recalculateHeight(view: textView)
+            }
+        }
+
+        func textViewDidBeginEditing(_ textView: UITextView) {
+            if textView.textColor == UIColor.lightGray {
+                textView.text = nil
+                textView.textColor = UIColor.white
+            }
+        }
+
+        func textViewDidEndEditing(_ textView: UITextView) {
+            if textView.text.isEmpty {
+                textView.text = parent.placeholder
+                textView.textColor = UIColor.lightGray
+            }
+        }
     }
 }
 
@@ -195,6 +277,38 @@ struct SetCustomDecoration: ViewModifier {
 extension View {
     func setCustomDecoration(_ decoration: CustomDecoration) -> some View {
         self.modifier(SetCustomDecoration(decoration: decoration))
+    }
+}
+
+struct AddKeyboardDismissButton: ViewModifier {
+    @State var keyboardActive = false
+
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+            VStack {
+                Spacer()
+                if self.keyboardActive {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            UIApplication.shared.endEditing()
+                        }){
+                            Image(systemName: "keyboard.chevron.compact.down").padding(.top, 5)
+                        }.frame(width: 44, height: 44)
+                        .foregroundColor(.white)
+                        .background(Color.gray)
+                        .clipShape(Circle())
+                    }.padding(.horizontal)
+                }
+            }.keyboardResponsive()
+        }.isKeyboardActive(keyboardActive: self.$keyboardActive)
+    }
+}
+
+extension View {
+    func addKeyboardDismissButton() -> some View {
+        self.modifier(AddKeyboardDismissButton())
     }
 }
 
@@ -374,28 +488,53 @@ extension UIApplication {
 }
 
 struct KeyboardResponsiveModifier: ViewModifier {
-  @State private var offset: CGFloat = 0
+    @State private var offset: CGFloat = 0
 
-  func body(content: Content) -> some View {
-    content
-      .padding(.bottom, offset)
-      .onAppear {
-        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notif in
-          let value = notif.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
-          let height = value.height
-          let bottomInset = UIApplication.shared.windows.first?.safeAreaInsets.bottom
-          self.offset = height - (bottomInset ?? 0)
-        }
+    func body(content: Content) -> some View {
+        content
+        .padding(.bottom, offset)
+        .onAppear {
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notif in
+                let value = notif.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+                let height = value.height
+                let bottomInset = UIApplication.shared.windows.first?.safeAreaInsets.bottom
+                self.offset = height - (bottomInset ?? 0)
+            }
 
-        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { notif in
-          self.offset = 0
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { notif in
+                self.offset = 0
+            }
         }
     }
-  }
 }
 
 extension View {
-  func keyboardResponsive() -> ModifiedContent<Self, KeyboardResponsiveModifier> {
-    return modifier(KeyboardResponsiveModifier())
-  }
+    func keyboardResponsive() -> ModifiedContent<Self, KeyboardResponsiveModifier> {
+        return modifier(KeyboardResponsiveModifier())
+    }
+}
+
+struct IsKeyboardActive: ViewModifier {
+    @Binding var keyboardActive: Bool
+    @State private var offset: CGFloat = 0
+
+    func body(content: Content) -> some View {
+        content
+        .padding(.bottom, offset)
+        .onAppear {
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notif in
+                self.keyboardActive = true
+            }
+
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { notif in
+                self.keyboardActive = false
+            }
+        }
+    }
+}
+
+extension View {
+    func isKeyboardActive(keyboardActive: Binding<Bool>) -> ModifiedContent<Self, IsKeyboardActive> {
+        return modifier(IsKeyboardActive(keyboardActive: keyboardActive))
+    }
 }

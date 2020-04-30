@@ -18,6 +18,7 @@ struct SideMenuOpenTurnKey: View {
     @State var messageTitle  = ""
     @State var messageContent = ""
     @State var otkRequest = OtkRequest()
+    @State var keyboardActive = false
 
     var body: some View {
         VStack {
@@ -91,7 +92,9 @@ struct SideMenuOpenTurnKey: View {
             
         }.asSideMenu(isOpened: self.isOpened)
             .sheet(isPresented: self.$showSheet, onDismiss: {
-                UIApplication.shared.endEditing()
+                if self.keyboardActive {
+                    UIApplication.shared.endEditing()
+                }
                 if self.otkRequest.command == .setKey {
                     if self.otkRequest.data.count == 0 {
                         self.appController.cancelOtkRequest(continueAfterStarted: false)
@@ -154,6 +157,7 @@ struct SideMenuOpenTurnKey: View {
                 )
             }
         )
+        .isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
     
     func setOtkRequest(_ request: OtkRequest, hint: String) {

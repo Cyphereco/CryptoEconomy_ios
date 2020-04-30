@@ -22,6 +22,7 @@ struct ViewChooseKey: View {
     @State var toastMessage = ""
     
     @State var falseInput = false
+    @State var keyboardActive = false
 
     var body: some View {
         VStack (alignment: .leading) {
@@ -36,7 +37,9 @@ struct ViewChooseKey: View {
 
                 Button(action: {
                     self.isShowingScanner = true
-                    UIApplication.shared.endEditing()
+                    if self.keyboardActive {
+                        UIApplication.shared.endEditing()
+                    }
                 }){Image("scan_qrcode")}
                 
             }.padding().padding()
@@ -128,10 +131,13 @@ struct ViewChooseKey: View {
         }
         .setCustomDecoration(.accentColor)
         .onTapBackground {
-            UIApplication.shared.endEditing()
+            if self.keyboardActive {
+                UIApplication.shared.endEditing()
+            }
             self.clearFocus()
         }
         .toastMessage(message: self.$toastMessage, show: self.$showToastMessage)
+        .isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
     
     func cancelRequest() {
@@ -163,7 +169,9 @@ struct ViewChooseKey: View {
             self.showToastMessage = true
         }
         else {
-            UIApplication.shared.endEditing()
+            if self.keyboardActive {
+                UIApplication.shared.endEditing()
+            }
         }
     }
     

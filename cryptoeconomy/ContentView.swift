@@ -12,6 +12,7 @@ struct ContentView: View {
     let totalTabs = 4
     @GestureState  var dragOffset = CGSize.zero
     @EnvironmentObject var appController: AppController
+    @State var keyboardActive = false
 
     var body: some View {
         ZStack {
@@ -110,6 +111,7 @@ struct ContentView: View {
             .disabled(self.appController.interacts != .configFees)
             .offset(y: dragOffset.height > 0 ? dragOffset.height : 0)
         }
+        .isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
     
     init() {
@@ -117,7 +119,9 @@ struct ContentView: View {
     }
         
     func closeMenu() {
-        UIApplication.shared.endEditing()
+        if self.keyboardActive {
+            UIApplication.shared.endEditing()
+        }
         withAnimation {
             if self.appController.interacts == .configLocalCurrency {
                 

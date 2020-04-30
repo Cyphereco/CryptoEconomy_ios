@@ -13,6 +13,7 @@ struct ConfigFees: View {
     let closeMenu: ()->Void
 
     @EnvironmentObject var appController: AppController
+    @State var keyboardActive = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -54,12 +55,15 @@ struct ConfigFees: View {
                 .offset(y: self.isOpened ? 0 : geometry.size.height * 2)
                 .animation(.easeInOut)
                 .onTapGesture {
-                    UIApplication.shared.endEditing()
+                    if self.keyboardActive {
+                        UIApplication.shared.endEditing()
+                    }
                 }
             }
         }
         .setCustomDecoration(.accentColor)
         .keyboardResponsive()
+        .isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
     
     func feesPriorityDesc(feesSelection: Double) -> String {

@@ -24,6 +24,7 @@ struct PageOpenTurnKey: View {
     @State var messageContent = ""
 
     let otkNpi = AppController.otkNpi
+    @State var keyboardActive = false
 
     var body: some View {
         ZStack {
@@ -113,7 +114,9 @@ struct PageOpenTurnKey: View {
                 }
                 .disabled(self.executingRequest)
                 .onTapBackground({
-                    UIApplication.shared.endEditing()
+                    if self.keyboardActive {
+                        UIApplication.shared.endEditing()
+                    }
                 })
                 .navigationBarTitle(Text(AppStrings.openturnkey), displayMode: .inline)
                 .navigationBarItems(trailing: Button(action: {
@@ -143,7 +146,9 @@ struct PageOpenTurnKey: View {
             .opacity(self.showDialogEnterPin && self.otkNpi.request.command != .invalid ? 0.5 : 0.0)
             .animation(.easeInOut)
             .onTapGesture {
-                UIApplication.shared.endEditing()
+                if self.keyboardActive {
+                    UIApplication.shared.endEditing()
+                }
                 self.showDialogEnterPin = false
             }
 
@@ -157,6 +162,7 @@ struct PageOpenTurnKey: View {
                 self.makeRequest()
             })
         }
+        .isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
     
     func makeRequest() {

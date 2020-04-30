@@ -12,6 +12,7 @@ struct PageAddresses: View {
     @ObservedObject var addressListVM = AddressListViewModel()
     @State var searchText: String = ""
     @State var showAddressEditor = false
+    @State var keyboardActive = false
 
     var body: some View {
         
@@ -35,7 +36,9 @@ struct PageAddresses: View {
                 }
             }
             .onTapBackground({
-                UIApplication.shared.endEditing()
+                if self.keyboardActive {
+                    UIApplication.shared.endEditing()
+                }
             })
             .sheet(isPresented: self.$showAddressEditor) {
                 ViewAddressEditor(addressListVM: self.addressListVM, alias: "", address: "")
@@ -45,10 +48,13 @@ struct PageAddresses: View {
                 Image("plus")
                     .setCustomDecoration(.foregroundAccent)
                 .onTapGesture {
-                    UIApplication.shared.endEditing()
+                    if self.keyboardActive {
+                        UIApplication.shared.endEditing()
+                    }
                     self.showAddressEditor = true
                 })
         }
+        .isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
 }
 

@@ -16,6 +16,7 @@ struct ViewAddressEditor: View {
 
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
+    @State var keyboardActive = false
 
     var body: some View {
         VStack {
@@ -69,10 +70,13 @@ struct ViewAddressEditor: View {
         }
         .padding(.horizontal, 20.0)
         .onTapBackground({
-            UIApplication.shared.endEditing()
+            if self.keyboardActive {
+                UIApplication.shared.endEditing()
+            }
         })
         .setCustomDecoration(.accentColor)
         .addSheetTitle(AppStrings.editAddress)
+        .isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
 }
 
