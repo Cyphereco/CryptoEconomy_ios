@@ -13,12 +13,13 @@ struct ViewMessageSignValidate: View {
     @State var tabPage = 0
     @GestureState  var dragOffset = CGSize.zero
 
-    @State var message = ""
+    @State var messageToBeSigned = ""
+    @State var messageToBeSignedHeight: CGFloat = 24
+
     @State var useMasterKey = false
 
     let otkNpi = AppController.otkNpi
 
-    @State var messageHeight: CGFloat = 24
     @State var keyboardActive = false
     
     @State var signedMessage = ""
@@ -38,7 +39,7 @@ struct ViewMessageSignValidate: View {
     @State private var isShowingScanner = false
     @State private var showQRCodeSheet: Bool = false
 
-    @State var messageToBeValidated = ""
+    @State var messageToBeValidated = "Enter Message"
     @State var messageToBeValidatedHeight: CGFloat = 24
     
     @State var signatureIsValid = false
@@ -47,12 +48,15 @@ struct ViewMessageSignValidate: View {
     var body: some View {
         GeometryReader{ geometry in
             ZStack {
+                // Set bottom layer background to gesture detection
                 GeometryReader {_ in
                     EmptyView()
                 }
                 .background(Color.white.opacity(0.001))
                 
+                // main UI
                 VStack (alignment: .leading){
+                    // title tabs
                     HStack {
                         HStack {
                             Spacer()
@@ -61,10 +65,16 @@ struct ViewMessageSignValidate: View {
                         }
                         .onTapGesture{
                             self.tabPage = 0
+                            
+                            if self.messageToBeValidated.isEmpty {
+                                self.messageToBeValidated = "Enter Message"
+                            }
+                            
                             if self.keyboardActive {
                                 UIApplication.shared.endEditing()
                             }
                         }
+                        
                         HStack {
                             Spacer()
                             Text(AppStrings.validate)
@@ -72,28 +82,39 @@ struct ViewMessageSignValidate: View {
                         }
                         .onTapGesture{
                             self.tabPage = 1
+                            
+                            if self.messageToBeValidated == "Enter Message" {
+                                self.messageToBeValidated = ""
+                            }
+                            
                             if self.keyboardActive {
                                 UIApplication.shared.endEditing()
                             }
                         }
                     }.padding(.top)
                     
+                    // tab selection underline to indicate which tab is selected
                     self.line.frame(width: geometry.size.width/2)
                         .offset(x: self.tabPage == 0 ? 0 : geometry.size.width/2)
                         .offset(x: -self.dragOffset.width)
                         .animation(.default)
 
-                    
+                    // tab pages of message sign and validate
                     ZStack(alignment: .center) {
-                        // Sign Message page
+                        // tab page message sign
                         VStack (alignment: .leading) {
-                            Text("Message to Be Signed").font(.headline).padding(.horizontal)
+                            // header
+                            HStack {
+                                Text("Message to Be Signed").font(.headline)
+                            }.padding(.horizontal)
 
-                            TextView(placeholder: "Enter Message", text: self.$message, minHeight: self.messageHeight, calculatedHeight: self.$messageHeight, editable: true)
-                                .frame(height: self.messageHeight < 120 ? self.messageHeight : 120)
+                            // message to be signed
+                            TextView(placeholder: "Enter Message", text: self.$messageToBeSigned, minHeight: self.messageToBeSignedHeight, calculatedHeight: self.$messageToBeSignedHeight, editable: true)
+                                .frame(height: self.messageToBeSignedHeight < 120 ? self.messageToBeSignedHeight : 120)
                                 .addUnderline()
                                 .padding(.horizontal)
 
+                            // option for use master key to sign message
                             Toggle(isOn: self.$useMasterKey){
                                 HStack {
                                     Spacer()
@@ -101,7 +122,9 @@ struct ViewMessageSignValidate: View {
                                 }
                             }.padding(.horizontal)
 
+                            // signed message result
                             if !self.signedMessage.isEmpty {
+                                // header and copy/qrcode buttons
                                 HStack {
                                     Text("Signed Message").font(.headline)
                                     
@@ -118,18 +141,26 @@ struct ViewMessageSignValidate: View {
                                     }){Image("qrcode")}.padding(.horizontal)
                                 }.padding(.horizontal)
 
+                                // singed message, not editable
                                 TextView(placeholder: "", text: self.$signedMessage, minHeight: self.signedMessageHeight, calculatedHeight: self.$signedMessageHeight, editable: false)
                                     .frame(height: self.signedMessageHeight < 132 ? self.signedMessageHeight : 132)
                                     .addUnderline()
                                     .padding(.horizontal)
                             }
+                            
                             Spacer()
+                            
+                            // option for authoriztion by pin code
                             Toggle(isOn: self.$appController.authByPin){
                                 HStack {
                                     Spacer()
                                     Text(AppStrings.authByPin).font(.footnote)
                                 }
                             }.padding(.horizontal)
+                            
+                            Spacer()
+                            
+                            // sign message button
                             HStack {
                                 Spacer()
                                 Button(action: {
@@ -152,101 +183,113 @@ struct ViewMessageSignValidate: View {
                                         .fontWeight(.bold)
                                     }
                                     .padding(12)
-                                    .opacity(self.message.isEmpty ? 0.3 : 1)
+                                    .opacity(self.messageToBeSigned.isEmpty ? 0.3 : 1)
                                     .setCustomDecoration(.roundedButton)
                                 }
-                                .disabled(self.message.isEmpty)
+                                .disabled(self.messageToBeSigned.isEmpty)
                             }.padding([.horizontal, .bottom])
                         }
                         .frame(width: geometry.size.width)
                         .offset(x: self.tabPage == 0 ? 0 : -geometry.size.width)
                         .animation(.default)
 
-                        // Validate Signature page
-                        VStack {
-                            ZStack (alignment: .center) {
-                                VStack (alignment: .leading) {
-                                    HStack {
-                                        Text("Message to Be Validated").font(.headline)
-                                        
-                                        Spacer()
-                                        
-                                        Button(action: {
-                                            if let pasteString = self.pasteboard.string {
-                                                self.signatureIsValid = false
-                                                self.signatureIsInvalid = false
-                                                self.messageToBeValidated = pasteString
-                                            }
-                                        }){Image("paste")}
-
-                                        Button(action: {
-                                            self.signatureIsValid = false
-                                            self.signatureIsInvalid = false
-                                            self.isShowingScanner = true
-                                        }){Image("scan_qrcode")}.padding(.horizontal)
-                                        .sheet(isPresented: self.$isShowingScanner) {
-                                            QRCodeScanner(closeScanner: {
-                                                self.isShowingScanner = false
-                                            }, completion: {result in
-                                                self.isShowingScanner = false
-                                                switch result {
-                                                    case .success(let data):
-                                                        self.messageToBeValidated = data
-                                                    case .failure(let error):
-                                                        Logger.shared.warning("Scanning failed \(error)")
-                                                }
-                                            })
-                                            .setCustomDecoration(.accentColor)
-                                        }
-                                    }.padding(.horizontal)
-                                    
-                                    TextView(placeholder: "Enter Message", text: self.$messageToBeValidated, minHeight: self.messageToBeValidatedHeight, calculatedHeight: self.$messageToBeValidatedHeight, editable: true, onEditingChanged: {
+                        // tab page message validate
+                        VStack (alignment: .leading) {
+                            // header and paste/scan button
+                            HStack {
+                                Text("Message to Be Validated").font(.headline)
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    if let pasteString = self.pasteboard.string {
                                         self.signatureIsValid = false
                                         self.signatureIsInvalid = false
-                                    })
-                                        .frame(height: self.messageToBeValidatedHeight < 240 ? self.messageToBeValidatedHeight : 240)
-                                        .addUnderline()
-                                        .padding(.horizontal)
+                                        self.messageToBeValidated = pasteString
+                                    }
+                                }){Image("paste")}
 
-                                    Spacer()
-                                    
-                                    HStack {
-                                        Spacer()
-                                        Button(action: {
-                                            if self.messageToBeValidated == self.signedMessage {
-                                                self.toastMessage = "Signature is valid!"
-                                                self.signatureIsValid = true
-                                            }
-                                            else {
-                                                self.toastMessage = "Signature is invalide!"
-                                                self.signatureIsInvalid = true
-                                            }
-                                            self.showToastMessage = true
-                                        }) {
-                                            HStack{
-                                                Image("validate")
-                                                Text("Validate Message")
-                                                    .font(.system(size: 20))
-                                                .fontWeight(.bold)
-                                            }
-                                            .padding(12)
-                                            .opacity(self.message.isEmpty ? 0.3 : 1)
-                                            .setCustomDecoration(.roundedButton)
+                                Button(action: {
+                                    self.signatureIsValid = false
+                                    self.signatureIsInvalid = false
+                                    self.isShowingScanner = true
+                                }){Image("scan_qrcode")}.padding(.horizontal)
+                                .sheet(isPresented: self.$isShowingScanner) {
+                                    QRCodeScanner(closeScanner: {
+                                        self.isShowingScanner = false
+                                    }, completion: {result in
+                                        self.isShowingScanner = false
+                                        switch result {
+                                            case .success(let data):
+                                                self.messageToBeValidated = data
+                                            case .failure(let error):
+                                                Logger.shared.warning("Scanning failed \(error)")
                                         }
-                                        .disabled(self.messageToBeValidated.isEmpty)
-                                    }.padding([.horizontal, .bottom])
+                                    })
+                                    .setCustomDecoration(.accentColor)
                                 }
+                            }.padding(.horizontal)
 
+                            // text input field for message to be validated
+                            TextView(placeholder: "Enter Message", text: self.$messageToBeValidated, minHeight: self.messageToBeValidatedHeight, calculatedHeight: self.$messageToBeValidatedHeight, editable: true, onEditingChanged: {
+                                    self.signatureIsValid = false
+                                    self.signatureIsInvalid = false
+                                })
+                                .frame(height: self.messageToBeValidatedHeight < 240 ? self.messageToBeValidatedHeight : 240)
+                                .addUnderline()
+                                .padding(.horizontal)
+
+                            Spacer()
+                            
+                            // signature validation result
+                            HStack {
+                                Spacer()
                                 if self.signatureIsValid {
-                                    Image("confirm6").resizable().frame(width: 96, height: 96)
+                                    VStack (alignment: .center) {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .font(.system(size: 72))
+                                            .foregroundColor(.green)
+                                            .padding()
+                                        Text("Signature is valid.").font(.headline).foregroundColor(.green)
+                                    }
                                 }
-                                
-                                if self.signatureIsInvalid {
-                                    Image(systemName: "exclamationmark.circle.fill")
-                                        .font(.system(size: 96))
-                                        .foregroundColor(.red)
+                                else if self.signatureIsInvalid {
+                                    VStack (alignment: .center) {
+                                        Image(systemName: "exclamationmark.circle.fill")
+                                            .font(.system(size: 72))
+                                            .foregroundColor(.red)
+                                            .padding()
+                                        Text("Signature is invalid!").font(.headline).foregroundColor(.red)
+                                    }
                                 }
+                                Spacer()
                             }
+
+                            Spacer()
+                            
+                            // message validation button
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    if self.messageToBeValidated == self.signedMessage {
+                                        self.signatureIsValid = true
+                                    }
+                                    else {
+                                        self.signatureIsInvalid = true
+                                    }
+                                }) {
+                                    HStack{
+                                        Image("validate")
+                                        Text("Validate Message")
+                                            .font(.system(size: 20))
+                                        .fontWeight(.bold)
+                                    }
+                                    .padding(12)
+                                    .opacity(self.messageToBeValidated.isEmpty ? 0.3 : 1)
+                                    .setCustomDecoration(.roundedButton)
+                                }
+                                .disabled(self.messageToBeValidated.isEmpty)
+                            }.padding([.horizontal, .bottom])
                         }
                         .frame(width: geometry.size.width)
                         .offset(x: self.tabPage == 1 ? 0 : geometry.size.width)
@@ -256,6 +299,7 @@ struct ViewMessageSignValidate: View {
                     .setCustomDecoration(.accentColor)
                 }
                 
+                // Set front shaded cover to freeze under UI when QR code displayed and dismiss QR code on tapping
                 GeometryReader { _ in
                     EmptyView()
                 }
@@ -266,6 +310,7 @@ struct ViewMessageSignValidate: View {
                     self.QRCodeData = ""
                 }
 
+                // show signed message QR Code
                 if !self.QRCodeData.isEmpty {
                     VStack(alignment: .center) {
                         Text(self.QRCodeTitle).font(.headline).padding()
@@ -278,15 +323,21 @@ struct ViewMessageSignValidate: View {
                 }
             }
             .gesture(DragGesture()
-               .updating(self.$dragOffset, body: { (value, state, transaction) in
+                .updating(self.$dragOffset, body: { (value, state, transaction) in
                    state = value.translation
                 })
                 .onEnded { gesture in
                     if self.tabPage == 1 && gesture.translation.width > 100 {
                         self.tabPage = 0
+                        if self.messageToBeValidated.isEmpty {
+                            self.messageToBeValidated = "Enter Message"
+                        }
                     }
                     if self.tabPage == 0 && gesture.translation.width < -100 {
                         self.tabPage = 1
+                        if self.messageToBeValidated == "Enter Message" {
+                            self.messageToBeValidated = ""
+                        }
                     }
                     if self.keyboardActive {
                         UIApplication.shared.endEditing()
@@ -303,6 +354,7 @@ struct ViewMessageSignValidate: View {
         .toastMessage(message: self.$toastMessage, show: self.$showToastMessage)
     }
     
+    // tab selectionn indication line
     var line: some View {
         VStack {
             Divider().setCustomDecoration(.backgroundReversed)

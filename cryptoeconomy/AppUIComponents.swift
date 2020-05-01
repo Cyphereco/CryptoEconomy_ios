@@ -101,7 +101,6 @@ struct TextView: UIViewRepresentable {
         }
 
         func textViewDidChange(_ textView: UITextView) {
-            self.parent.onEditingChanged()
             // This is needed for multistage text input (eg. Chinese, Japanese)
             if textView.markedTextRange == nil {
                 parent.text = textView.text ?? String()
