@@ -20,18 +20,25 @@ class TextFieldObserver: NSObject {
 struct TextView: UIViewRepresentable {
     var placeholder: String
     @Binding var text: String
-    let editable: Bool
 
     var minHeight: CGFloat
     @Binding var calculatedHeight: CGFloat
     @Environment(\.colorScheme) var colorScheme
+    
+    let editable: Bool
+    let onEditingChanged: ()->Void
 
     init(placeholder: String, text: Binding<String>, minHeight: CGFloat, calculatedHeight: Binding<CGFloat>, editable: Bool) {
+        self.init(placeholder: placeholder, text: text, minHeight: minHeight, calculatedHeight: calculatedHeight, editable: editable, onEditingChanged: {})
+    }
+
+    init(placeholder: String, text: Binding<String>, minHeight: CGFloat, calculatedHeight: Binding<CGFloat>, editable: Bool, onEditingChanged: @escaping ()->Void) {
         self.placeholder = placeholder
         self._text = text
         self.minHeight = minHeight
         self._calculatedHeight = calculatedHeight
         self.editable = editable
+        self.onEditingChanged = onEditingChanged
     }
 
     func makeCoordinator() -> Coordinator {
@@ -58,8 +65,6 @@ struct TextView: UIViewRepresentable {
     }
 
     func updateUIView(_ textView: UITextView, context: Context) {
-        recalculateHeight(view: textView)
-        
         DispatchQueue.main.async {
             if self.text.isEmpty {
                 textView.text = self.placeholder
@@ -70,6 +75,7 @@ struct TextView: UIViewRepresentable {
                 textView.text = self.text
                 textView.textColor = self.colorScheme == .dark ? .white : .black
             }
+            self.recalculateHeight(view: textView)
         }
     }
 
@@ -95,6 +101,7 @@ struct TextView: UIViewRepresentable {
         }
 
         func textViewDidChange(_ textView: UITextView) {
+            self.parent.onEditingChanged()
             // This is needed for multistage text input (eg. Chinese, Japanese)
             if textView.markedTextRange == nil {
                 parent.text = textView.text ?? String()
@@ -103,6 +110,8 @@ struct TextView: UIViewRepresentable {
         }
 
         func textViewDidBeginEditing(_ textView: UITextView) {
+            self.parent.onEditingChanged()
+
             if textView.textColor == UIColor.lightGray {
                 textView.text = nil
                 textView.textColor = UIColor.white
