@@ -314,8 +314,12 @@ struct ViewMessageSignValidate: View {
                 if !self.QRCodeData.isEmpty {
                     VStack(alignment: .center) {
                         Text(self.QRCodeTitle).font(.headline).padding()
-                        Text(self.QRCodeData).lineLimit(10).multilineTextAlignment(.leading).frame(maxWidth: 260, maxHeight: 150)
                         ImageQRCode(text: self.QRCodeData).padding()
+                        Button(action: {
+                            self.QRCodeData = ""
+                        }){
+                            Image(systemName: "xmark.circle.fill").font(.title)
+                        }.padding()
                     }.frame(minWidth: 300, minHeight: 480)
                     .setCustomDecoration(.backgroundNormal)
                     .setCustomDecoration(.foregroundNormal)
