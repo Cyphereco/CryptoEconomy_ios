@@ -139,19 +139,6 @@ struct PageOpenTurnKey: View {
                 )
             }
             
-            GeometryReader { _ in
-                EmptyView()
-            }
-            .background(Color.gray.opacity(0.8))
-            .opacity(self.showDialogEnterPin && self.otkNpi.request.command != .invalid ? 0.5 : 0.0)
-            .animation(.easeInOut)
-            .onTapGesture {
-                if self.keyboardActive {
-                    UIApplication.shared.endEditing()
-                }
-                self.showDialogEnterPin = false
-            }
-
             DialogEnterPin(showDialog: self.showDialogEnterPin, closeDialog: {
                 withAnimation {
                     self.showDialogEnterPin = false
@@ -161,8 +148,7 @@ struct PageOpenTurnKey: View {
                 self.otkNpi.request.pin = pin
                 self.makeRequest()
             })
-        }
-        .isKeyboardActive(keyboardActive: self.$keyboardActive)
+        }.isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
     
     func makeRequest() {

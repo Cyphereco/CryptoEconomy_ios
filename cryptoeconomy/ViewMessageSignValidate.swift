@@ -364,6 +364,6 @@ struct ViewMessageSignValidate: View {
 
 struct TabPagesView_Previews: PreviewProvider {
     static var previews: some View {
-        ViewMessageSignValidate()
+        ViewMessageSignValidate().environmentObject(AppController())
     }
 }

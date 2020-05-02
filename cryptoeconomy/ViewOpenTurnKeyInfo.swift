@@ -34,7 +34,8 @@ struct ViewOpenTurnKeyInfo: View {
                 }
                 else {
                     Text("\(AppTools.btcToFormattedString(self.btcBalance)) BTC").font(.title)
-                    Text("(~ \(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btcBalance, currencySelection: self.appController.getLocalCurrency().ordinal))) \(appController.getLocalCurrency().label))").font(.headline)
+//                    Text("(~ \(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btcBalance, currencySelection: self.appController.getLocalCurrency().ordinal))) \(appController.getLocalCurrency().label))").font(.headline)
+                    Text("(~ \(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btcBalance, currencySelection: 0))) \(appController.getLocalCurrency().label))").font(.headline)
                 }
             }.padding()
             VStack {

@@ -349,7 +349,7 @@ class AppController: ObservableObject {
     }
     
     func getLocalCurrency() -> FiatCurrency {
-        return FiatCurrency.allCases[currencySelection]
+        return currencySelection < FiatCurrency.allCases.count ? FiatCurrency.allCases[currencySelection] : FiatCurrency.USD
     }
     
     func setFeesPriority(selection: Double) {

@@ -6,7 +6,7 @@ public struct PasscodeField: View {
     var maxDigits: Int = 8
     var label = "Enter PIN Code"
     
-    @State var pin: String = ""
+    @Binding var pin: String
     @State var showPin = false
     @State var isDisabled = false
     
@@ -149,6 +149,6 @@ extension Int {
 
 struct PasscodeField_Previews: PreviewProvider {
     static var previews: some View {
-        PasscodeField(handler: {_,_ in })
+        PasscodeField(pin: .constant(""), handler: {_,_ in})
     }
 }

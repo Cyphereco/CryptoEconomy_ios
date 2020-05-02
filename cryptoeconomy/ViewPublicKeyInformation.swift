@@ -122,9 +122,15 @@ struct ViewPublicKeyInformation: View {
                     Text(self.QRCodeTitle).font(.headline).padding()
                     Text(self.QRCodeData).lineLimit(10).multilineTextAlignment(.leading).frame(maxWidth: 260, maxHeight: 150)
                     ImageQRCode(text: self.QRCodeData).padding()
+                    Button(action: {
+                        self.QRCodeData = ""
+                    }){
+                        Image(systemName: "xmark.circle.fill").font(.title)
+                    }.padding()
                 }.frame(minWidth: 300, minHeight: 480)
                 .setCustomDecoration(.backgroundNormal)
                 .setCustomDecoration(.foregroundNormal)
+                .setCustomDecoration(.accentColor)
                 .clipShape(RoundedRectangle(cornerRadius: 10.0))
             }
         }

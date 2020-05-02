@@ -106,11 +106,10 @@ struct TextView: UIViewRepresentable {
                 parent.text = textView.text ?? String()
                 parent.recalculateHeight(view: textView)
             }
+            self.parent.onEditingChanged()
         }
 
         func textViewDidBeginEditing(_ textView: UITextView) {
-            self.parent.onEditingChanged()
-
             if textView.textColor == UIColor.lightGray {
                 textView.text = nil
                 textView.textColor = UIColor.white

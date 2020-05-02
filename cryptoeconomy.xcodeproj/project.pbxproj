@@ -30,6 +30,8 @@
 		BA2EEAE52434826A00522A63 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE42434826A00522A63 /* AppController.swift */; };
 		BA2EEAE72435839E00522A63 /* ListItemAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE62435839E00522A63 /* ListItemAddress.swift */; };
 		BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */; };
+		BA374855245C32DC001C634A /* DialogWriteNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA374854245C32DC001C634A /* DialogWriteNote.swift */; };
+		BA374857245C51B9001C634A /* DialogSetPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA374856245C51B9001C634A /* DialogSetPin.swift */; };
 		BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC537243048AB00F41471 /* PageAddresses.swift */; };
 		BA3FC53A2430576100F41471 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC5392430576100F41471 /* SearchBar.swift */; };
 		BA3FC53C243072BF00F41471 /* PageOpenTurnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */; };
@@ -109,6 +111,8 @@
 		BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemTransaction.swift; sourceTree = "<group>"; };
 		BA2EEAEF2435BEDE00522A63 /* BlockChainInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockChainInfoService.swift; sourceTree = "<group>"; };
 		BA2EEAF02435BEDE00522A63 /* BaseWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseWebService.swift; sourceTree = "<group>"; };
+		BA374854245C32DC001C634A /* DialogWriteNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogWriteNote.swift; sourceTree = "<group>"; };
+		BA374856245C51B9001C634A /* DialogSetPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogSetPin.swift; sourceTree = "<group>"; };
 		BA3FC537243048AB00F41471 /* PageAddresses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageAddresses.swift; sourceTree = "<group>"; };
 		BA3FC5392430576100F41471 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOpenTurnKey.swift; sourceTree = "<group>"; };
@@ -255,7 +259,9 @@
 				BA9595EA242EFD8900C48B37 /* ContentView.swift */,
 				BA2EEAE224346C6C00522A63 /* ConfigFees.swift */,
 				BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */,
+				BA374854245C32DC001C634A /* DialogWriteNote.swift */,
 				BA4869402451771600BD0860 /* DialogEnterPin.swift */,
+				BA374856245C51B9001C634A /* DialogSetPin.swift */,
 				BA9595F4242EFE4100C48B37 /* Info.plist */,
 				BA9595F1242EFE4100C48B37 /* LaunchScreen.storyboard */,
 				BA2EEAE62435839E00522A63 /* ListItemAddress.swift */,
@@ -614,6 +620,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA374857245C51B9001C634A /* DialogSetPin.swift in Sources */,
 				BA40150C2431D80C0094F6CF /* TextEstFeesInfo.swift in Sources */,
 				BA2EEAE52434826A00522A63 /* AppController.swift in Sources */,
 				BA3FC53E2431004D00F41471 /* PagePay.swift in Sources */,
@@ -657,6 +664,7 @@
 				BA1F873C24403BA9003DB110 /* ViewOpenTurnKeyInfo.swift in Sources */,
 				BA9595E9242EFD8900C48B37 /* SceneDelegate.swift in Sources */,
 				BA48693F2451240800BD0860 /* PasscodeField.swift in Sources */,
+				BA374855245C32DC001C634A /* DialogWriteNote.swift in Sources */,
 				BAADC8172439B02B00799FD0 /* OtkNPI.swift in Sources */,
 				BA9595EB242EFD8900C48B37 /* ContentView.swift in Sources */,
 				BF4ADD4C2445870200BB7A98 /* TransactionViewModel.swift in Sources */,
