@@ -135,7 +135,7 @@ struct ViewMessageSignValidate: View {
 
                                 // singed message, not editable
                                 TextView(placeholder: "", text: self.$signedMessage, minHeight: self.signedMessageHeight, calculatedHeight: self.$signedMessageHeight, editable: false)
-                                    .frame(height: self.signedMessageHeight < 132 ? self.signedMessageHeight : 132)
+                                    .frame(height: self.signedMessageHeight < 144 ? self.signedMessageHeight : 144)
                                     .addUnderline()
                                     .padding(.horizontal)
                             }
@@ -149,8 +149,6 @@ struct ViewMessageSignValidate: View {
                                     Text(AppStrings.authByPin).font(.footnote)
                                 }
                             }.padding(.horizontal)
-                            
-                            Spacer()
                             
                             // sign message button
                             HStack {

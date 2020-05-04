@@ -48,7 +48,7 @@ struct PagePay: View {
                                 Spacer()
                                 Text(AppStrings.useAllFunds).font(.footnote)
                             }
-                        }.padding(.horizontal, 20.0).padding(.top, 50)
+                        }.padding(.horizontal, 20.0).padding(.top, 30)
                         
                         TextFieldPayAmount()
                             .padding(.horizontal, 20.0)
