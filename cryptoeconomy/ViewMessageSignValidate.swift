@@ -39,7 +39,7 @@ struct ViewMessageSignValidate: View {
     @State private var isShowingScanner = false
     @State private var showQRCodeSheet: Bool = false
 
-    @State var messageToBeValidated = "Enter Message"
+    @State var messageToBeValidated = ""
     @State var messageToBeValidatedHeight: CGFloat = 24
     
     @State var signatureIsValid = false
@@ -65,11 +65,7 @@ struct ViewMessageSignValidate: View {
                         }
                         .onTapGesture{
                             self.tabPage = 0
-                            
-                            if self.messageToBeValidated.isEmpty {
-                                self.messageToBeValidated = "Enter Message"
-                            }
-                            
+                                                        
                             if self.keyboardActive {
                                 UIApplication.shared.endEditing()
                             }
@@ -82,11 +78,7 @@ struct ViewMessageSignValidate: View {
                         }
                         .onTapGesture{
                             self.tabPage = 1
-                            
-                            if self.messageToBeValidated == "Enter Message" {
-                                self.messageToBeValidated = ""
-                            }
-                            
+                                                        
                             if self.keyboardActive {
                                 UIApplication.shared.endEditing()
                             }
@@ -333,15 +325,9 @@ struct ViewMessageSignValidate: View {
                 .onEnded { gesture in
                     if self.tabPage == 1 && gesture.translation.width > 100 {
                         self.tabPage = 0
-                        if self.messageToBeValidated.isEmpty {
-                            self.messageToBeValidated = "Enter Message"
-                        }
                     }
                     if self.tabPage == 0 && gesture.translation.width < -100 {
                         self.tabPage = 1
-                        if self.messageToBeValidated == "Enter Message" {
-                            self.messageToBeValidated = ""
-                        }
                     }
                     if self.keyboardActive {
                         UIApplication.shared.endEditing()

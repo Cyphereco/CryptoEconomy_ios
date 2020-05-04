@@ -67,9 +67,7 @@ struct TextView: UIViewRepresentable {
     func updateUIView(_ textView: UITextView, context: Context) {
         DispatchQueue.main.async {
             if self.text.isEmpty {
-                textView.text = self.placeholder
                 textView.textColor = UIColor.lightGray
-                UIApplication.shared.endEditing()
             }
             else {
                 textView.text = self.text
@@ -118,6 +116,7 @@ struct TextView: UIViewRepresentable {
 
         func textViewDidEndEditing(_ textView: UITextView) {
             if textView.text.isEmpty {
+                self.parent.text = ""
                 textView.text = parent.placeholder
                 textView.textColor = UIColor.lightGray
             }
@@ -524,7 +523,7 @@ extension View {
 
 extension UIApplication {
     func endEditing() {
-//        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
