@@ -100,7 +100,7 @@ enum FeesPriority: CaseIterable {
             return 3
         }
     }
-
+    
     var label: String {
         switch self {
         case .CUSTOM:
@@ -229,6 +229,7 @@ class AppController: ObservableObject {
             if !editLock {
                 editLock = true
                 self.amountSendFiat = amount > 0 ? "\(AppTools.fiatToFormattedString(AppTools.btcToFiat(amount, currencySelection: self.currencySelection)))" : "0"
+                self.amountRecv = "\(amount - self.fees)"
             }
             else {
                 editLock = false
@@ -362,10 +363,10 @@ class AppController: ObservableObject {
             case 3.0:
                 self.fees = BtcUtils.satoshiToBtc(satoshi:  Int64(AppController.bestFees.high * AppController.ESTIMATED_BLOCK_SIZE))
             default:
-                fees = UserDefaults.standard.double(forKey: "Fees")
+                self.fees = UserDefaults.standard.double(forKey: "Fees")
         }
 
-        strFees = "\(AppTools.btcToFormattedString(fees))"
+        self.strFees = "\(AppTools.btcToFormattedString(fees))"
     }
     
     func getFeesPriority() -> FeesPriority {
@@ -381,6 +382,27 @@ class AppController: ObservableObject {
         else {
             return .HIGH
         }
+    }
+    
+    func getEstTime() -> String {
+        var estTime = "5~15"
+        if self.fees < BtcUtils.satoshiToBtc(satoshi:  Int64(AppController.bestFees.high * AppController.ESTIMATED_BLOCK_SIZE)) {
+            estTime = "15~35"
+        }
+        
+        if self.fees < BtcUtils.satoshiToBtc(satoshi:  Int64(AppController.bestFees.mid * AppController.ESTIMATED_BLOCK_SIZE)) {
+            estTime = "35~60+"
+        }
+        
+        return estTime
+    }
+    
+    func getAmountSend() -> Double {
+        if let amount = Double(self.amountSend) {
+            return amount
+        }
+
+        return 0
     }
        
     func setFeesIncluded(included: Bool) {

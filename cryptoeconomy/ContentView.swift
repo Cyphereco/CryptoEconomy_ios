@@ -13,11 +13,14 @@ struct ContentView: View {
     @GestureState  var dragOffset = CGSize.zero
     @EnvironmentObject var appController: AppController
     @State var keyboardActive = false
+    @State var promptMessage = ""
+    @State var showPaymentConfirmation = false
+    @State var paymentConfirmed = false
 
     var body: some View {
         ZStack {
             TabView(selection: self.$appController.pageSelected){
-                PagePay()
+                PagePay(promptMessage: self.$promptMessage, showConfirmation: self.$showPaymentConfirmation, confirmation: self.$paymentConfirmed)
                     .tabItem {
                         VStack {
                             Image("pay")
@@ -110,8 +113,17 @@ struct ContentView: View {
             })
             .disabled(self.appController.interacts != .configFees)
             .offset(y: dragOffset.height > 0 ? dragOffset.height : 0)
+            
+            DialogConfirmPayment(showDialog: self.showPaymentConfirmation, closeDialog: {
+                self.showPaymentConfirmation = false
+            }, onConfirm: {
+                self.showPaymentConfirmation = false
+            }, onCancel: {
+                self.showPaymentConfirmation = false
+            })
         }
         .isKeyboardActive(keyboardActive: self.$keyboardActive)
+        .fullScreenPrompt(message: self.$promptMessage)
     }
     
     init() {

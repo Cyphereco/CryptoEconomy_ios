@@ -366,6 +366,37 @@ extension View {
     }
 }
 
+struct FullScreenPrompt: ViewModifier {
+    @Binding var message: String
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+            
+            GeometryReader { _ in
+                EmptyView()
+            }
+            .background(Color.black.opacity(0.9))
+            .opacity(!self.message.isEmpty ? 0.8 : 0.0)
+            .animation(.easeInOut)
+            .onTapGesture(){}
+            .gesture(DragGesture())
+
+            Text(message)
+            .font(.headline)
+            .foregroundColor(.white)
+            .opacity(!self.message.isEmpty ? 1 : 0.0)
+            .animation(.easeInOut)
+        }
+    }
+}
+
+extension View {
+    func fullScreenPrompt(message: Binding<String>) -> some View {
+        self.modifier(FullScreenPrompt(message: message))
+    }
+}
+
 struct ToastMessage: ViewModifier {
     @Binding var message: String
     @Binding var showToastMessage: Bool
@@ -493,7 +524,7 @@ extension View {
 
 extension UIApplication {
     func endEditing() {
-        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+//        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 

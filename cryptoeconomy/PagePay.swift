@@ -9,11 +9,17 @@
 import SwiftUI
 
 struct PagePay: View {
+    @Binding var promptMessage: String
+    @Binding var showConfirmation: Bool
+    @Binding var confirmation: Bool
+    
     @EnvironmentObject var appController: AppController
     
     @ObservedObject var otkNpi = OtkNfcProtocolInterface()
     @State var alertUseFixedAddress = false
     @State var keyboardActive = false
+    @State var showToastMessage = false
+    @State var toastMessage = ""
 
     var body: some View {
         NavigationView {
@@ -53,7 +59,28 @@ struct PagePay: View {
                         }.padding(.horizontal, 20.0).padding(.top, 40).padding(.bottom, 10)
                         
                         Button(action: {
-                            self.otkNpi.beginScanning(onCompleted: {}, onCanceled: {})
+                            self.otkNpi.beginScanning(onCompleted: {
+                                if !self.otkNpi.otkData.btcAddress.isEmpty {
+                                    
+                                    self.promptMessage = "Checking balance, please wait..."
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.75) {
+                                        _ = BlockChainInfoService.getBalance(address: self.otkNpi.otkData.btcAddress).done({result in
+                                                self.clearPrompt()
+                                            if BtcUtils.satoshiToBtc(satoshi: result) > self.appController.getAmountSend() {
+                                                self.appController.payer = self.otkNpi.otkData.btcAddress
+                                                self.appController.payee = self.appController.payeeAddr
+                                                self.showConfirmation = true
+                                            }
+                                            else {
+                                                self.showToast("Balance not enough!")
+                                            }
+                                        }).catch({_ in
+                                            self.clearPrompt()
+                                            self.showToast("Balance cannot be updated at the momoent!")
+                                        })
+                                    }
+                                }
+                            }, onCanceled: {})
                         }) {
                             HStack{
                                 if (self.appController.authByPin) {
@@ -87,13 +114,26 @@ struct PagePay: View {
             }) {
                 Image("menu")
             })
+            .toastMessage(message: self.$toastMessage, show: self.$showToastMessage)
         }
         .isKeyboardActive(keyboardActive: self.$keyboardActive)
+    }
+    
+    func showPrompt(_ message: String) {
+        self.promptMessage = message
+    }
+    
+    func clearPrompt() {
+        self.promptMessage = ""
+    }
+    func showToast(_ message: String) {
+        self.toastMessage = message
+        self.showToastMessage = true
     }
 }
 
 struct PagePay_Previews: PreviewProvider {
     static var previews: some View {
-        PagePay().environmentObject(AppController())
+        PagePay(promptMessage: .constant(""), showConfirmation: .constant(false), confirmation: .constant(false)).environmentObject(AppController())
     }
 }

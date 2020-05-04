@@ -32,6 +32,7 @@
 		BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2EEAE8243583BF00522A63 /* ListItemTransaction.swift */; };
 		BA374855245C32DC001C634A /* DialogWriteNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA374854245C32DC001C634A /* DialogWriteNote.swift */; };
 		BA374857245C51B9001C634A /* DialogSetPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA374856245C51B9001C634A /* DialogSetPin.swift */; };
+		BA37485D245E6D79001C634A /* DialogConfirmPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA37485C245E6D79001C634A /* DialogConfirmPayment.swift */; };
 		BA3FC538243048AB00F41471 /* PageAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC537243048AB00F41471 /* PageAddresses.swift */; };
 		BA3FC53A2430576100F41471 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC5392430576100F41471 /* SearchBar.swift */; };
 		BA3FC53C243072BF00F41471 /* PageOpenTurnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */; };
@@ -113,6 +114,7 @@
 		BA2EEAF02435BEDE00522A63 /* BaseWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseWebService.swift; sourceTree = "<group>"; };
 		BA374854245C32DC001C634A /* DialogWriteNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogWriteNote.swift; sourceTree = "<group>"; };
 		BA374856245C51B9001C634A /* DialogSetPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogSetPin.swift; sourceTree = "<group>"; };
+		BA37485C245E6D79001C634A /* DialogConfirmPayment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogConfirmPayment.swift; sourceTree = "<group>"; };
 		BA3FC537243048AB00F41471 /* PageAddresses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageAddresses.swift; sourceTree = "<group>"; };
 		BA3FC5392430576100F41471 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		BA3FC53B243072BF00F41471 /* PageOpenTurnKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageOpenTurnKey.swift; sourceTree = "<group>"; };
@@ -259,9 +261,10 @@
 				BA9595EA242EFD8900C48B37 /* ContentView.swift */,
 				BA2EEAE224346C6C00522A63 /* ConfigFees.swift */,
 				BA2EEADE243450F200522A63 /* ConfigLocalCurrency.swift */,
-				BA374854245C32DC001C634A /* DialogWriteNote.swift */,
+				BA37485C245E6D79001C634A /* DialogConfirmPayment.swift */,
 				BA4869402451771600BD0860 /* DialogEnterPin.swift */,
 				BA374856245C51B9001C634A /* DialogSetPin.swift */,
+				BA374854245C32DC001C634A /* DialogWriteNote.swift */,
 				BA9595F4242EFE4100C48B37 /* Info.plist */,
 				BA9595F1242EFE4100C48B37 /* LaunchScreen.storyboard */,
 				BA2EEAE62435839E00522A63 /* ListItemAddress.swift */,
@@ -643,6 +646,7 @@
 				BA2EEAE9243583BF00522A63 /* ListItemTransaction.swift in Sources */,
 				BA2EEAD924330EB300522A63 /* SideMenuOpenTurnKey.swift in Sources */,
 				BA4869412451771600BD0860 /* DialogEnterPin.swift in Sources */,
+				BA37485D245E6D79001C634A /* DialogConfirmPayment.swift in Sources */,
 				BF63FECB2444BAE70094F7EC /* CoreDataManager.swift in Sources */,
 				B23FB960243ADDC800A2B80F /* Transaction.swift in Sources */,
 				BA2EEADF243450F200522A63 /* ConfigLocalCurrency.swift in Sources */,

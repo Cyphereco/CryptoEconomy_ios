@@ -14,7 +14,7 @@ struct SideMenuOpenTurnKey: View {
     @EnvironmentObject var appController: AppController
     
     @State var showSheet = false
-    @State var promptMessage = false
+    @State var showAlert = false
     @State var messageTitle  = ""
     @State var messageContent = ""
     @State var otkRequest = OtkRequest()
@@ -31,7 +31,7 @@ struct SideMenuOpenTurnKey: View {
 
                     self.messageTitle = AppStrings.warning
                     self.messageContent = AppStrings.pin_code_warning_message
-                    self.promptMessage = true
+                    self.showAlert = true
                     self.closeMenu()
                 }.setCustomDecoration(.foregroundNormal).padding()
                 
@@ -40,7 +40,7 @@ struct SideMenuOpenTurnKey: View {
 
                     self.messageTitle = AppStrings.warning
                     self.messageContent = AppStrings.full_pubkey_info_warning
-                    self.promptMessage = true
+                    self.showAlert = true
                     self.closeMenu()
                 }.setCustomDecoration(.foregroundNormal).padding()
                 
@@ -62,7 +62,7 @@ struct SideMenuOpenTurnKey: View {
 
                     self.messageTitle = AppStrings.warning
                     self.messageContent = AppStrings.choose_key_warning_message
-                    self.promptMessage = true
+                    self.showAlert = true
                     self.closeMenu()
                 }.setCustomDecoration(.foregroundNormal).padding()
                 
@@ -71,7 +71,7 @@ struct SideMenuOpenTurnKey: View {
 
                     self.messageTitle = AppStrings.warning
                     self.messageContent = AppStrings.unlock_warning
-                    self.promptMessage = true
+                    self.showAlert = true
                     self.closeMenu()
                 }.setCustomDecoration(.foregroundNormal).padding()
                 
@@ -80,7 +80,7 @@ struct SideMenuOpenTurnKey: View {
 
                     self.messageTitle = AppStrings.warning
                     self.messageContent = AppStrings.reset_warning_message
-                    self.promptMessage = true
+                    self.showAlert = true
                     self.closeMenu()
                 }.setCustomDecoration(.foregroundNormal).padding()
                 
@@ -89,7 +89,7 @@ struct SideMenuOpenTurnKey: View {
 
                     self.messageTitle = AppStrings.warning
                     self.messageContent = AppStrings.export_wif_warning_message
-                    self.promptMessage = true
+                    self.showAlert = true
                     self.closeMenu()
                 }.setCustomDecoration(.foregroundNormal).padding()
                 
@@ -122,7 +122,7 @@ struct SideMenuOpenTurnKey: View {
                 }
             }
             .alert(
-                isPresented: $promptMessage,
+                isPresented: $showAlert,
                 content: {
                     Alert(title: Text(self.messageTitle),
                           message: Text(self.messageContent),

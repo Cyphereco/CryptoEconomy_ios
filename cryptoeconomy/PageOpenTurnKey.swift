@@ -19,7 +19,7 @@ struct PageOpenTurnKey: View {
     @State var showToast = false
     @State var showDialogEnterPin = false
     @State var pin  = ""
-    @State var promptMessage = false
+    @State var showAlert = false
     @State var messageTitle = ""
     @State var messageContent = ""
 
@@ -129,7 +129,7 @@ struct PageOpenTurnKey: View {
                 })
                 .toastMessage(message: self.$message, show: self.$showToast)
                 .alert(
-                    isPresented: $promptMessage,
+                    isPresented: $showAlert,
                     content: {
                         Alert(title: Text(self.messageTitle),
                               message: Text(self.messageContent),
@@ -163,7 +163,7 @@ struct PageOpenTurnKey: View {
                     if command == .reset {
                         self.messageTitle = AppStrings.reset_command_sent
                         self.messageContent = AppStrings.reset_step_intro
-                        self.promptMessage = true
+                        self.showAlert = true
                     }
                     else if command == .unlock || command == .setKey || command == .setNote || command == .setPin {
                         self.showToast(command.desc + "\n" + AppStrings.request_success)
