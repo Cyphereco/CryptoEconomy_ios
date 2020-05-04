@@ -67,7 +67,9 @@ struct TextView: UIViewRepresentable {
     func updateUIView(_ textView: UITextView, context: Context) {
         DispatchQueue.main.async {
             if self.text.isEmpty {
+                textView.text = self.placeholder
                 textView.textColor = UIColor.lightGray
+                textView.resignFirstResponder()
             }
             else {
                 textView.text = self.text
@@ -79,15 +81,15 @@ struct TextView: UIViewRepresentable {
 
     func recalculateHeight(view: UIView) {
         let newSize = view.sizeThatFits(CGSize(width: view.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
-        if minHeight < newSize.height && $calculatedHeight.wrappedValue != newSize.height {
+//        if minHeight < newSize.height && $calculatedHeight.wrappedValue != newSize.height {
             DispatchQueue.main.async {
                 self.$calculatedHeight.wrappedValue = newSize.height // !! must be called asynchronously
             }
-        } else if minHeight >= newSize.height && $calculatedHeight.wrappedValue != minHeight {
-            DispatchQueue.main.async {
-                self.$calculatedHeight.wrappedValue = self.minHeight // !! must be called asynchronously
-            }
-        }
+//        } else if minHeight >= newSize.height && $calculatedHeight.wrappedValue != minHeight {
+//            DispatchQueue.main.async {
+//                self.$calculatedHeight.wrappedValue = self.minHeight // !! must be called asynchronously
+//            }
+//        }
     }
 
     class Coordinator : NSObject, UITextViewDelegate {

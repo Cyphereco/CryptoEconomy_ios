@@ -35,7 +35,9 @@ struct PagePay: View {
                             .padding()
                             .disabled(self.appController.useFixedAddress)
                             .onTapGesture {
-                                self.alertUseFixedAddress = true
+                                if self.appController.useFixedAddress {
+                                    self.alertUseFixedAddress = true
+                                }
                             }
                             .alert(isPresented: self.$alertUseFixedAddress){
                                 Alert(title: Text("use_fixed_address"))

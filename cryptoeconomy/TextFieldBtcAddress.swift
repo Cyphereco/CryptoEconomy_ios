@@ -13,28 +13,17 @@ struct TextFieldBtcAddress: View {
     @Binding var address: String
     @ObservedObject var otkNpi = OtkNfcProtocolInterface()
     @State private var isShowingScanner = false
-
+    @State var textHeight = CGFloat(0)
     private let pasteboard = UIPasteboard.general
 
     var body: some View {
         VStack {
             HStack(alignment: .bottom) {
-                if self.address.isEmpty {
-                    TextField(AppStrings.btcAddress, text: .constant(""))
-                    .frame(minHeight: 44)
-                    .lineLimit(5)
-                    .multilineTextAlignment(.leading)
-                    .addUnderline()
-                    .padding(.bottom, -10)
-                }
-                else {
-                    Text(self.address)
-                    .frame(minHeight: 44)
-                    .lineLimit(5)
-                    .multilineTextAlignment(.leading)
-                    .addUnderline()
-                    .padding(.bottom, -10)
-                }
+                TextView(placeholder: AppStrings.btcAddress, text: self.$address, minHeight: self.textHeight, calculatedHeight: self.$textHeight, editable: false)
+                .frame(height: self.textHeight)
+                .addUnderline()
+                .padding(.bottom, -10)
+
                 Button(action: {
                     self.address = ""
                 }){Image("clear")}
