@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct ViewToastMessage: View {
+struct ViewBubbleAlert: View {
 
     @State var message: String
     @State var delay: Double
@@ -29,7 +29,7 @@ struct ViewToastMessage: View {
                 })
                 .frame(minWidth: 80)
                 .padding(12)
-                .setCustomDecoration(.toast)
+                .setCustomDecoration(.bubble)
                 .opacity(self.show ? 1 : 0)
             }
             Spacer().frame(maxHeight: 40)
@@ -37,8 +37,8 @@ struct ViewToastMessage: View {
     }
 }
 
-struct ViewToastMessage_Previews: PreviewProvider {
+struct ViewBubbleMessage_Previews: PreviewProvider {
     static var previews: some View {
-        ViewToastMessage(message: "Hello World!", delay: 1.5, show: .constant(true))
+        ViewBubbleAlert(message: "Hello World!", delay: 1.5, show: .constant(true))
     }
 }

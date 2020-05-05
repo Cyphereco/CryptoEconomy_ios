@@ -59,12 +59,12 @@ struct DialogConfirmPayment: View {
                             Text("")
                             HStack{
                                 Spacer()
-                                Text("(Recipient)").font(.subheadline).padding(.horizontal)
+                                Text("(>> Recipient)").font(.subheadline).padding(.horizontal)
                             }
                             BtcAddress(btcAddr: self.appController.payee)
                             Text("")
                             HStack{
-                                Text("(Sender)").font(.subheadline)
+                                Text("(Sender >>)").font(.subheadline)
                                 Spacer()
                             }
                             BtcAddress(btcAddr: self.appController.payer)

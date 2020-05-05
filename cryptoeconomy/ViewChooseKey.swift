@@ -18,8 +18,8 @@ struct ViewChooseKey: View {
     @State var keyIndexes = ["", "", "", "", ""]
     @State var requireFocus = [true, false, false, false, false]
     @State var isShowingScanner = false
-    @State var showToastMessage = false
-    @State var toastMessage = ""
+    @State var showBubble = false
+    @State var bubbleMessage = ""
     
     @State var falseInput = false
     @State var keyboardActive = false
@@ -51,8 +51,8 @@ struct ViewChooseKey: View {
                             self.falseInput = false
                             self.clearFocus()
                             if !self.validateKeyIndex(self.toInt(self.keyIndexes[item])){
-                                self.toastMessage = "Index out of rage: \(self.keyIndexes[item])"
-                                self.showToastMessage = true
+                                self.bubbleMessage = "Index out of rage: \(self.keyIndexes[item])"
+                                self.showBubble = true
                                 self.keyIndexes[item] = ""
                                 self.requireFocus[item] = true
                                 self.falseInput = true
@@ -136,7 +136,7 @@ struct ViewChooseKey: View {
             }
             self.clearFocus()
         }
-        .toastMessage(message: self.$toastMessage, show: self.$showToastMessage)
+        .bubbleMessage(message: self.$bubbleMessage, show: self.$showBubble)
         .isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
     
@@ -165,8 +165,8 @@ struct ViewChooseKey: View {
             for i in 0...self.keyIndexes.count - 1 {
                 self.keyIndexes[i] = ""
             }
-            self.toastMessage = "Invalid path!"
-            self.showToastMessage = true
+            self.bubbleMessage = "Invalid path!"
+            self.showBubble = true
         }
         else {
             if self.keyboardActive {

@@ -12,7 +12,7 @@ struct ViewPublicKeyInformation: View {
     @EnvironmentObject var appController: AppController
     @State var showOtkInfo = false
     @State var message = ""
-    @State var showToast = false
+    @State var showBubble = false
     @State var QRCodeData = ""
     @State var QRCodeTitle = ""
 
@@ -26,7 +26,7 @@ struct ViewPublicKeyInformation: View {
                     Spacer()
                     CopyButton(copyString: self.otkNpi.otkData.masterKey){
                         self.message = AppStrings.master_public_key + AppStrings.copied
-                        self.showToast = true
+                        self.showBubble = true
                     }
                     Button(action: {
                         self.QRCodeTitle = AppStrings.master_public_key
@@ -45,7 +45,7 @@ struct ViewPublicKeyInformation: View {
                     Spacer()
                     CopyButton(copyString: self.otkNpi.otkData.derivativeKey){
                         self.message = AppStrings.derivative_public_key + AppStrings.copied
-                        self.showToast = true
+                        self.showBubble = true
                     }
                     Button(action: {
                         self.QRCodeTitle = AppStrings.derivative_public_key
@@ -64,7 +64,7 @@ struct ViewPublicKeyInformation: View {
                     Spacer()
                     CopyButton(copyString: self.otkNpi.otkData.derivativePath){
                         self.message = AppStrings.derivative_key_paths + AppStrings.copied
-                        self.showToast = true
+                        self.showBubble = true
                     }
                     Button(action: {
                         self.QRCodeTitle = AppStrings.derivative_key_paths
@@ -105,7 +105,7 @@ struct ViewPublicKeyInformation: View {
             .blur(radius: self.QRCodeData.count > 0 ? 0.8 : 0)
             .padding(.horizontal, 20.0)
             .setCustomDecoration(.accentColor)
-            .toastMessage(message: self.$message, show: self.$showToast)
+            .bubbleMessage(message: self.$message, show: self.$showBubble)
 
             GeometryReader { _ in
                 EmptyView()

@@ -16,7 +16,7 @@ struct PageOpenTurnKey: View {
     @State var showResult = false
     @State var otkBtcBalance = 0.0
     @State var message = ""
-    @State var showToast = false
+    @State var showBubble = false
     @State var showDialogEnterPin = false
     @State var pin  = ""
     @State var showAlert = false
@@ -127,7 +127,7 @@ struct PageOpenTurnKey: View {
                 }) {
                     Image("menu")
                 })
-                .toastMessage(message: self.$message, show: self.$showToast)
+                .bubbleMessage(message: self.$message, show: self.$showBubble)
                 .alert(
                     isPresented: $showAlert,
                     content: {
@@ -204,7 +204,7 @@ struct PageOpenTurnKey: View {
         self.appController.cancelOtkRequest(continueAfterStarted: false)
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
             self.message = message
-            self.showToast = true
+            self.showBubble = true
             self.executingRequest = false
         }
     }

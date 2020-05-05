@@ -12,7 +12,7 @@ struct ViewExportWifKey: View {
     @EnvironmentObject var appController: AppController
     @State var showOtkInfo = false
     @State var message = ""
-    @State var showToast = false
+    @State var showBubble = false
 
     let otkNpi = AppController.otkNpi
 
@@ -23,7 +23,7 @@ struct ViewExportWifKey: View {
                 Spacer()
                 CopyButton(copyString: self.otkNpi.otkData.wifKey){
                     self.message = AppStrings.wallet_import_format_key + AppStrings.copied
-                    self.showToast = true
+                    self.showBubble = true
                 }
             }.padding()
             Text(self.otkNpi.otkData.wifKey)
@@ -35,7 +35,7 @@ struct ViewExportWifKey: View {
         }
         .padding(.horizontal, 20.0)
         .setCustomDecoration(.accentColor)
-        .toastMessage(message: self.$message, show: self.$showToast)
+        .bubbleMessage(message: self.$message, show: self.$showBubble)
     }
 }
 

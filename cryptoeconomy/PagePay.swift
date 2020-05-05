@@ -18,8 +18,8 @@ struct PagePay: View {
     @ObservedObject var otkNpi = OtkNfcProtocolInterface()
     @State var alertUseFixedAddress = false
     @State var keyboardActive = false
-    @State var showToastMessage = false
-    @State var toastMessage = ""
+    @State var showBubble = false
+    @State var bubbleMessage = ""
 
     var body: some View {
         NavigationView {
@@ -116,7 +116,7 @@ struct PagePay: View {
             }) {
                 Image("menu")
             })
-            .toastMessage(message: self.$toastMessage, show: self.$showToastMessage)
+            .bubbleMessage(message: self.$bubbleMessage, show: self.$showBubble)
         }
         .isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
@@ -129,8 +129,8 @@ struct PagePay: View {
         self.promptMessage = ""
     }
     func showToast(_ message: String) {
-        self.toastMessage = message
-        self.showToastMessage = true
+        self.bubbleMessage = message
+        self.showBubble = true
     }
 }
 

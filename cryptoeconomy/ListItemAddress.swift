@@ -13,8 +13,8 @@ struct AddressQRCodeView: View {
     @State var alias: String = ""
     @State var address: String = ""
     private let pasteboard = UIPasteboard.general
-    @State var showToastMessage = false
-    @State var toastMessage = ""
+    @State var showBubble = false
+    @State var bubbleMessage = ""
 
     var body: some View {
         NavigationView {
@@ -27,8 +27,8 @@ struct AddressQRCodeView: View {
                         .font(.headline)
                     CopyButton(copyString: self.address) {
                         withAnimation {
-                            self.toastMessage = AppStrings.btcAddress + AppStrings.copied
-                            self.showToastMessage = true
+                            self.bubbleMessage = AppStrings.btcAddress + AppStrings.copied
+                            self.showBubble = true
                         }
                     }
                 }.padding([.horizontal, .top])
@@ -47,7 +47,7 @@ struct AddressQRCodeView: View {
             }) {
                 Image("clear")
             })
-                .toastMessage(message: self.$toastMessage, show: self.$showToastMessage)
+                .bubbleMessage(message: self.$bubbleMessage, show: self.$showBubble)
         }
     }
 }

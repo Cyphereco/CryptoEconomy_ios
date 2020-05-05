@@ -28,8 +28,8 @@ struct ViewMessageSignValidate: View {
     @EnvironmentObject var appController: AppController
     @Environment(\.colorScheme) var colorScheme
 
-    @State var showToastMessage = false
-    @State var toastMessage = ""
+    @State var showBubble = false
+    @State var bubbleMessage = ""
 
     @State var QRCodeData = ""
     @State var QRCodeTitle = ""
@@ -123,8 +123,8 @@ struct ViewMessageSignValidate: View {
                                     Spacer()
                                     
                                     CopyButton(copyString: self.signedMessage){
-                                        self.toastMessage = "Signed Message" + AppStrings.copied
-                                        self.showToastMessage = true
+                                        self.bubbleMessage = "Signed Message" + AppStrings.copied
+                                        self.showBubble = true
                                     }
                                     
                                     Button(action: {
@@ -339,7 +339,7 @@ struct ViewMessageSignValidate: View {
         }
         .addKeyboardDismissButton()
         .isKeyboardActive(keyboardActive: self.$keyboardActive)
-        .toastMessage(message: self.$toastMessage, show: self.$showToastMessage)
+        .bubbleMessage(message: self.$bubbleMessage, show: self.$showBubble)
     }
     
     // tab selectionn indication line

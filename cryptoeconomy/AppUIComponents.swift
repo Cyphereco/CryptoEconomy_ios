@@ -235,7 +235,7 @@ enum CustomDecoration {
     case foregroundAccent
     case foregourndWhite
     case roundedButton
-    case toast
+    case bubble
 }
 
 extension View {
@@ -277,7 +277,7 @@ struct SetCustomDecoration: ViewModifier {
                 .cornerRadius(24)
                 .foregroundColor(.white)
             }
-            .if(self.decoration == .toast) { cnt in
+            .if(self.decoration == .bubble) { cnt in
                 cnt.background(Color.gray)
                 .cornerRadius(8)
                 .foregroundColor(.white)
@@ -398,24 +398,24 @@ extension View {
     }
 }
 
-struct ToastMessage: ViewModifier {
+struct BubbleMessage: ViewModifier {
     @Binding var message: String
-    @Binding var showToastMessage: Bool
+    @Binding var showBubble: Bool
     
     func body(content: Content) -> some View {
         ZStack {
             content
             
-            if (self.showToastMessage) {
-                ViewToastMessage(message: self.message, delay: 3.5, show: self.$showToastMessage).keyboardResponsive()
+            if (self.showBubble) {
+                ViewBubbleAlert(message: self.message, delay: 3.5, show: self.$showBubble).keyboardResponsive()
             }
         }
     }
 }
 
 extension View {
-    func toastMessage(message: Binding<String>, show: Binding<Bool>) -> some View {
-        self.modifier(ToastMessage(message: message, showToastMessage: show))
+    func bubbleMessage(message: Binding<String>, show: Binding<Bool>) -> some View {
+        self.modifier(BubbleMessage(message: message, showBubble: show))
     }
 }
 

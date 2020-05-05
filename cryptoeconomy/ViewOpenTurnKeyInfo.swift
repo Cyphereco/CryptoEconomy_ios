@@ -13,8 +13,8 @@ struct ViewOpenTurnKeyInfo: View {
     @EnvironmentObject var appController: AppController
     @Environment(\.colorScheme) var colorScheme
     @State var showOtkInfo = false
-    @State var showToastMessage = false
-    @State var toastMessage = ""
+    @State var showBubble = false
+    @State var bubbleMessage = ""
 
     let otkNpi = AppController.otkNpi
     
@@ -42,8 +42,8 @@ struct ViewOpenTurnKeyInfo: View {
                 ImageQRCode(text: self.otkNpi.otkData.btcAddress)
                 Text(self.otkNpi.otkData.btcAddress).multilineTextAlignment(.center).padding()
                 CopyButton(copyString: self.otkNpi.otkData.btcAddress){
-                    self.toastMessage = AppStrings.btcAddress + AppStrings.copied
-                    self.showToastMessage = true
+                    self.bubbleMessage = AppStrings.btcAddress + AppStrings.copied
+                    self.showBubble = true
                 }
             }.padding()
             Spacer()
@@ -70,7 +70,7 @@ struct ViewOpenTurnKeyInfo: View {
         }
         .padding(.horizontal, 20.0)
         .setCustomDecoration(.accentColor)
-        .toastMessage(message: self.$toastMessage, show: self.$showToastMessage)
+        .bubbleMessage(message: self.$bubbleMessage, show: self.$showBubble)
     }
         
     func showLockState(state: Bool) -> Image{
