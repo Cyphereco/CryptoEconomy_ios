@@ -81,7 +81,7 @@ struct DialogConfirmPayment: View {
                             }
                             HStack {
                                 Spacer()
-                                AmountBtcFiat(btc: self.appController.getAmountSend()).font(.headline).foregroundColor(.blue)
+                                AmountBtcFiat(btc: self.appController.getAmountToBeSent()).font(.headline).foregroundColor(.blue)
                             }
                             HStack {
                                 Text("Fees: ").font(.subheadline)
@@ -90,7 +90,7 @@ struct DialogConfirmPayment: View {
                             HStack {
                                 Text("-)")
                                 Spacer()
-                                AmountBtcFiat(btc: self.appController.getAmountSend() - self.appController.fees).foregroundColor(.blue)
+                                AmountBtcFiat(btc: self.appController.fees).foregroundColor(.blue)
                             }.addUnderline().padding(.bottom, -10)
                             HStack {
                                 Text("Received: ").font(.subheadline)
@@ -100,7 +100,7 @@ struct DialogConfirmPayment: View {
                                 Text("=")
                                 Spacer()
                                 
-                                AmountBtcFiat(btc: self.appController.fees)
+                                AmountBtcFiat(btc: self.appController.getAmountReceived())
                                 .foregroundColor(.blue)
                             }
                         }

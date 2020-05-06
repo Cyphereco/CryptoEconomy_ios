@@ -213,6 +213,7 @@ class AppController: ObservableObject {
         self.didChange.send(self)
     } }
     @Published var useAllFunds: Bool = false { didSet {
+        self.amountSend = "0"
         self.didChange.send(self)
     }}
     @Published var authByPin: Bool = false { didSet {
@@ -222,6 +223,9 @@ class AppController: ObservableObject {
         self.didChange.send(self)
     }}
     @Published var payer: String = "" { didSet {
+        self.didChange.send(self)
+    }}
+    @Published var balance: Double = 0.0 { didSet {
         self.didChange.send(self)
     }}
     @Published var amountSend: String = "" { didSet {
@@ -397,12 +401,14 @@ class AppController: ObservableObject {
         return estTime
     }
     
-    func getAmountSend() -> Double {
-        if let amount = Double(self.amountSend) {
-            return amount
-        }
-
-        return 0
+    func getAmountToBeSent() -> Double {
+        let amount = Double(self.amountSend) ?? 0.0
+        
+        return self.useAllFunds ? self.balance : self.feesIncluded ? amount : amount + self.fees
+    }
+       
+    func getAmountReceived() -> Double {
+        return self.getAmountToBeSent() - self.fees
     }
        
     func setFeesIncluded(included: Bool) {

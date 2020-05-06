@@ -20,6 +20,8 @@ struct PagePay: View {
     @State var keyboardActive = false
     @State var showBubble = false
     @State var bubbleMessage = ""
+    @Binding var showToast: Bool
+    @Binding var toastMessage: String
 
     var body: some View {
         NavigationView {
@@ -51,6 +53,7 @@ struct PagePay: View {
                         }.padding(.horizontal, 20.0).padding(.top, 30)
                         
                         TextFieldPayAmount()
+                            .disabled(self.appController.useAllFunds)
                             .padding(.horizontal, 20.0)
                         
                         Toggle(isOn: self.$appController.authByPin){
@@ -61,24 +64,55 @@ struct PagePay: View {
                         }.padding(.horizontal, 20.0).padding(.top, 40).padding(.bottom, 10)
                         
                         Button(action: {
+                            if self.appController.payeeAddr.isEmpty {
+                                self.toastMessage = "Recipient address is empty!"
+                                self.showToast = true
+                                return
+                            }
+                            
+                            if !self.appController.useAllFunds {
+                                if self.appController.feesIncluded && self.appController.getAmountReceived() < 0.0 {
+                                   self.toastMessage = "Amount is less than transaction fees!"
+                                   self.showToast = true
+                                   return
+                                }
+                                
+                                if self.appController.amountSend.isEmpty || (Double(self.appController.amountSend) ?? 0.0) == 0.0 {
+                                    self.toastMessage = "Send amount is not entered!"
+                                    self.showToast = true
+                                    return
+                                }
+                           }
+                            
                             self.otkNpi.beginScanning(onCompleted: {
                                 if !self.otkNpi.otkData.btcAddress.isEmpty {
                                     
+                                    self.appController.balance = 0
                                     self.promptMessage = "Checking balance, please wait..."
+                                    
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.75) {
                                         _ = BlockChainInfoService.getBalance(address: self.otkNpi.otkData.btcAddress).done({result in
-                                                self.clearPrompt()
-                                            if BtcUtils.satoshiToBtc(satoshi: result) > self.appController.getAmountSend() {
-                                                self.appController.payer = self.otkNpi.otkData.btcAddress
-                                                self.appController.payee = self.appController.payeeAddr
-                                                self.showConfirmation = true
+                                            
+                                            self.clearPrompt()
+                                            
+                                            self.appController.balance = BtcUtils.satoshiToBtc(satoshi: result)
+                                            
+                                            if !self.appController.useAllFunds &&
+                                                 self.appController.balance < self.appController.getAmountToBeSent() {
+                                                self.showBubble("Balance not enough!")
+                                                return
                                             }
-                                            else {
-                                                self.showToast("Balance not enough!")
+                                            else if self.appController.balance < self.appController.fees {
+                                                self.showBubble("Balance not enough!")
+                                                return
                                             }
+                                            
+                                            self.appController.payer = self.otkNpi.otkData.btcAddress
+                                            self.appController.payee = self.appController.payeeAddr
+                                            self.showConfirmation = true
                                         }).catch({_ in
                                             self.clearPrompt()
-                                            self.showToast("Balance cannot be updated at the momoent!")
+                                            self.showBubble("Balance cannot be updated at the momoent!")
                                         })
                                     }
                                 }
@@ -128,7 +162,7 @@ struct PagePay: View {
     func clearPrompt() {
         self.promptMessage = ""
     }
-    func showToast(_ message: String) {
+    func showBubble(_ message: String) {
         self.bubbleMessage = message
         self.showBubble = true
     }
@@ -136,6 +170,6 @@ struct PagePay: View {
 
 struct PagePay_Previews: PreviewProvider {
     static var previews: some View {
-        PagePay(promptMessage: .constant(""), showConfirmation: .constant(false), confirmation: .constant(false)).environmentObject(AppController())
+        PagePay(promptMessage: .constant(""), showConfirmation: .constant(false), confirmation: .constant(false), showToast: .constant(false), toastMessage: .constant("")).environmentObject(AppController())
     }
 }

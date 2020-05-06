@@ -236,6 +236,7 @@ enum CustomDecoration {
     case foregourndWhite
     case roundedButton
     case bubble
+    case toast
 }
 
 extension View {
@@ -280,6 +281,10 @@ struct SetCustomDecoration: ViewModifier {
             .if(self.decoration == .bubble) { cnt in
                 cnt.background(Color.gray)
                 .cornerRadius(8)
+                .foregroundColor(.white)
+            }
+            .if(self.decoration == .toast) { cnt in
+                cnt.background(Color.gray)
                 .foregroundColor(.white)
             }
     }
@@ -416,6 +421,27 @@ struct BubbleMessage: ViewModifier {
 extension View {
     func bubbleMessage(message: Binding<String>, show: Binding<Bool>) -> some View {
         self.modifier(BubbleMessage(message: message, showBubble: show))
+    }
+}
+
+struct ToastMessage: ViewModifier {
+    @Binding var message: String
+    @Binding var show: Bool
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+            
+            if (self.show) {
+                ViewToastAlert(message: self.message, delay: 1.5, show: self.$show)
+            }
+        }
+    }
+}
+
+extension View {
+    func toastMessage(message: Binding<String>, show: Binding<Bool>) -> some View {
+        self.modifier(ToastMessage(message: message, show: show))
     }
 }
 

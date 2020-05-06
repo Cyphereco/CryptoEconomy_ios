@@ -16,11 +16,13 @@ struct ContentView: View {
     @State var promptMessage = ""
     @State var showPaymentConfirmation = false
     @State var paymentConfirmed = false
+    @State var showToast = false
+    @State var toastMessage = ""
 
     var body: some View {
         ZStack {
             TabView(selection: self.$appController.pageSelected){
-                PagePay(promptMessage: self.$promptMessage, showConfirmation: self.$showPaymentConfirmation, confirmation: self.$paymentConfirmed)
+                PagePay(promptMessage: self.$promptMessage, showConfirmation: self.$showPaymentConfirmation, confirmation: self.$paymentConfirmed, showToast: self.$showToast, toastMessage: self.$toastMessage)
                     .tabItem {
                         VStack {
                             Image("pay")
@@ -119,11 +121,14 @@ struct ContentView: View {
             }, onConfirm: {
                 self.showPaymentConfirmation = false
             }, onCancel: {
+                self.toastMessage = "Payment canceled!"
+                self.showToast = true
                 self.showPaymentConfirmation = false
             })
         }
         .isKeyboardActive(keyboardActive: self.$keyboardActive)
         .fullScreenPrompt(message: self.$promptMessage)
+        .toastMessage(message: self.$toastMessage, show: self.$showToast)
     }
     
     init() {
