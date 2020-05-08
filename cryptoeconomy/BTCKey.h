@@ -32,17 +32,17 @@
 - (id) initWithPublicKey:(NSData*)publicKey;
 
 // Initializes public key using a point on elliptic curve secp256k1.
-- (id) initWithCurvePoint:(BTCCurvePoint*)curvePoint;
+//- (id) initWithCurvePoint:(BTCCurvePoint*)curvePoint;
 
 // Instantiates a key with secret parameter (32 bytes).
-- (id) initWithPrivateKey:(NSData*)privateKey;
+//- (id) initWithPrivateKey:(NSData*)privateKey;
 
 // Instantiates with a WIF-encoded private key (52 bytes like 5znkrJzL5GTFCaXWufUCUaPzDmLj2Pe2pWtAcSzg4hRUVxS2XqHa).
 // See also -initWithPrivateKeyAddress.
-- (id) initWithWIF:(NSString*)wifString;
+//- (id) initWithWIF:(NSString*)wifString;
 
 // Instantiates with a DER-encoded private key (279 bytes).
-- (id) initWithDERPrivateKey:(NSData*)DERPrivateKey;
+//- (id) initWithDERPrivateKey:(NSData*)DERPrivateKey;
 
 // These properties return mutable copy of data so you can clear it if needed.
 
@@ -75,11 +75,11 @@
 
 // Multiplies a public key of the receiver with a given private key and returns resulting curve point as BTCKey object (pubkey only).
 // Pubkey compression flag is the same as on receiver.
-- (BTCKey*) diffieHellmanWithPrivateKey:(BTCKey*)privkey;
+//- (BTCKey*) diffieHellmanWithPrivateKey:(BTCKey*)privkey;
 
 // Returns a signature data for a 256-bit hash using private key.
 // Returns nil if signing failed or a private key is not present.
-- (NSData*) signatureForHash:(NSData*)hash;
+//- (NSData*) signatureForHash:(NSData*)hash;
 
 // Same as above, but also appends a hash type byte to the signature.
 //- (NSData*) signatureForHash:(NSData*)hash hashType:(BTCSignatureHashType)hashType;
@@ -88,7 +88,7 @@
 // [RFC6979 implementation](https://tools.ietf.org/html/rfc6979).
 // Returns 32-byte `k` nonce generated deterministically from the `hash` and the private key.
 // Returns a mutable data to make it clearable.
-- (NSMutableData*) signatureNonceForHash:(NSData*)hash;
+//- (NSMutableData*) signatureNonceForHash:(NSData*)hash;
 
 // Clears all key data from memory making receiver invalid.
 - (void) clear;
@@ -97,7 +97,7 @@
 
 
 // Instantiate with a private key in a form of address. Also takes care about compressing pubkey if needed.
-- (id) initWithPrivateKeyAddress:(BTCPrivateKeyAddress*)privateKeyAddress;
+//- (id) initWithPrivateKeyAddress:(BTCPrivateKeyAddress*)privateKeyAddress;
 
 // Public key hash.
 // IMPORTANT: resulting address depends on whether `publicKeyCompressed` is YES or NO.
@@ -126,9 +126,7 @@
 // Returns a compact signature for 256-bit hash. Aka "CKey::SignCompact" in BitcoinQT.
 // Initially used for signing text messages (see BTCKey+BitcoinSignedMessage).
 - (NSData*) compactSignatureForHash:(NSData*)data;
-//- (NSData*) convertToCompactSignatureForHash:(NSData*)hash forSignaure:(NSData*)signature;
 - (NSData*) convert2CompactSignature:(NSData*)signature hash:(NSData*)hash;
-- (NSData*) convertToCompactSignatureForHash:(NSData*)hash;
 
 // Verifies digest against given compact signature. On success returns a public key.
 + (BTCKey*) verifyCompactSignature:(NSData*)compactSignature forHash:(NSData*)hash;
@@ -142,7 +140,7 @@
 
 
 // Returns a signature for message prepended with "Bitcoin Signed Message:\n" line.
-- (NSData*) signatureForMessage:(NSString*)message;
+//- (NSData*) signatureForMessage:(NSString*)message;
 - (NSData*) signatureForBinaryMessage:(NSData*)data;
 + (NSData*) signatureHashForMessage:(NSString*)message;
 
@@ -163,13 +161,13 @@
 // Read more on that here: https://bitcointalk.org/index.php?topic=8392.80
 
 // Note: non-canonical pubkey could still be valid for EC internals of OpenSSL and thus accepted by Bitcoin nodes.
-+ (BOOL) isCanonicalPublicKey:(NSData*)data error:(NSError**)errorOut;
+//+ (BOOL) isCanonicalPublicKey:(NSData*)data error:(NSError**)errorOut;
 
 // Checks if the script signature is canonical.
 // The signature is assumed to include hash type byte (see BTCSignatureHashType).
-+ (BOOL) isCanonicalSignatureWithHashType:(NSData*)data verifyLowerS:(BOOL)verifyLowerS error:(NSError**)errorOut;
+//+ (BOOL) isCanonicalSignatureWithHashType:(NSData*)data verifyLowerS:(BOOL)verifyLowerS error:(NSError**)errorOut;
 
-+ (BOOL) isCanonicalSignatureWithHashType:(NSData*)data verifyEvenS:(BOOL)verifyEvenS error:(NSError**)errorOut DEPRECATED_ATTRIBUTE;
+//+ (BOOL) isCanonicalSignatureWithHashType:(NSData*)data verifyEvenS:(BOOL)verifyEvenS error:(NSError**)errorOut DEPRECATED_ATTRIBUTE;
 
 @end
 

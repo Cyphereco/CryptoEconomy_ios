@@ -3,11 +3,7 @@
 #import "BTCKey.h"
 #import "BTCData.h"
 #import "BTCAddress.h"
-//#import "BTCCurvePoint.h"
-//#import "BTCBigNumber.h"
 #import "BTCProtocolSerialization.h"
-//#import "BTCErrors.h"
-//#include <CommonCrypto/CommonCrypto.h>
 #include <openssl/ec.h>
 #include <openssl/ecdsa.h>
 #include <openssl/evp.h>
@@ -20,9 +16,9 @@
 #define BTCCompressedPubkeyLength   (33)
 #define BTCUncompressedPubkeyLength (65)
 
-static BOOL    BTCKeyCheckPrivateKeyRange(const unsigned char *secret, size_t length);
-static BOOL    BTCKeyCheckSignatureElement(const unsigned char *bytes, int length, BOOL half);
-static int     BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key);
+//static BOOL    BTCKeyCheckPrivateKeyRange(const unsigned char *secret, size_t length);
+//static BOOL    BTCKeyCheckSignatureElement(const unsigned char *bytes, int length, BOOL half);
+//static int     BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key);
 static NSData* BTCSignatureHashForBinaryMessage(NSData* data);
 static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const unsigned char *msg, int msglen, int recid, int check);
 
@@ -44,9 +40,9 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     return self;
 }
 
-//- (id) init {
-//    return [self initWithNewKeyPair:YES];
-//}
+- (id) init {
+    return [self initWithNewKeyPair:YES];
+}
 
 - (id) initWithPublicKey:(NSData*)publicKey {
     if (self = [super init]) {
@@ -653,20 +649,8 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     return sigdata;
 }
 
-// Returns a compact signature for 256-bit hash. Aka "CKey::SignCompact" in BitcoinQT.
-// Initially used for signing text messages.
-//
-// The format is one header byte, followed by two times 32 bytes for the serialized r and s values.
-// The header byte: 0x1B = first key with even y, 0x1C = first key with odd y,
-//                  0x1D = second key with even y, 0x1E = second key with odd y,
-//                  add 0x04 for compressed keys.
-//- (NSData*) convertToCompactSignatureForHash:(NSData*)hash forSignature:(NSData*)signature {
 - (NSData*) convert2CompactSignature:(NSData*)signature hash:(NSData*)hash {
-//- (NSData*) convertToCompactSignatureForHash:(NSData*)hash {
-//    NSMutableData* sigdata = [NSMutableData dataWithLength:65];
-//    unsigned char* sigbytes = sigdata.mutableBytes;
-//    sigbytes[0] = 0x1b + 1 + 4;
-//    return sigdata;
+
     CHECK_IF_CLEARED;
     NSMutableData* sigdata = [NSMutableData dataWithLength:65];
     unsigned char* sigbytes = sigdata.mutableBytes;
@@ -678,11 +662,6 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
     unsigned char *p64 = (sigbytes + 1); // first byte is reserved for header.
 
-//    ECDSA_SIG *sig = ECDSA_do_sign(hashbytes, hashlength, _key);
-//    if (sig==NULL) {
-//        return nil;
-//    }
-    printf("signature:%s, length:%lu\n", signatureBytes, (unsigned long)signature.length);
     ECDSA_SIG *sig = d2i_ECDSA_SIG(NULL, &signatureBytes, signature.length);
     if (sig==NULL) {
         printf("return nil\n");
@@ -873,9 +852,9 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 
 
-+ (BOOL) isCanonicalSignatureWithHashType:(NSData*)data verifyEvenS:(BOOL)verifyLowerS error:(NSError**)errorOut { // deprecated
-    return [self isCanonicalSignatureWithHashType:data verifyLowerS:verifyLowerS error:errorOut];
-}
+//+ (BOOL) isCanonicalSignatureWithHashType:(NSData*)data verifyEvenS:(BOOL)verifyLowerS error:(NSError**)errorOut { // deprecated
+//    return [self isCanonicalSignatureWithHashType:data verifyLowerS:verifyLowerS error:errorOut];
+//}
 
 //+ (BOOL) isCanonicalSignatureWithHashType:(NSData*)data verifyLowerS:(BOOL)verifyLowerS error:(NSError**)errorOut {
 //    // See https://bitcointalk.org/index.php?topic=8392.msg127623#msg127623
@@ -989,22 +968,22 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 
 // Order of secp256k1's generator minus 1.
-static const unsigned char BTCKeyMaxModOrder[32] = {
-    0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-    0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFE,
-    0xBA,0xAE,0xDC,0xE6,0xAF,0x48,0xA0,0x3B,
-    0xBF,0xD2,0x5E,0x8C,0xD0,0x36,0x41,0x40
-};
+//static const unsigned char BTCKeyMaxModOrder[32] = {
+//    0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
+//    0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFE,
+//    0xBA,0xAE,0xDC,0xE6,0xAF,0x48,0xA0,0x3B,
+//    0xBF,0xD2,0x5E,0x8C,0xD0,0x36,0x41,0x40
+//};
 
 // Half of the order of secp256k1's generator minus 1.
-static const unsigned char BTCKeyMaxModHalfOrder[32] = {
-    0x7F,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-    0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
-    0x5D,0x57,0x6E,0x73,0x57,0xA4,0x50,0x1D,
-    0xDF,0xE9,0x2F,0x46,0x68,0x1B,0x20,0xA0
-};
+//static const unsigned char BTCKeyMaxModHalfOrder[32] = {
+//    0x7F,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
+//    0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
+//    0x5D,0x57,0x6E,0x73,0x57,0xA4,0x50,0x1D,
+//    0xDF,0xE9,0x2F,0x46,0x68,0x1B,0x20,0xA0
+//};
 
-static const unsigned char BTCKeyZero[0] = {};
+//static const unsigned char BTCKeyZero[0] = {};
 
 NSComparisonResult BTCKeyCompareBigEndian(const unsigned char *c1, size_t c1len,
                                           const unsigned char *c2, size_t c2len) {
@@ -1028,15 +1007,15 @@ NSComparisonResult BTCKeyCompareBigEndian(const unsigned char *c1, size_t c1len,
     return NSOrderedSame;
 }
 
-static BOOL BTCKeyCheckPrivateKeyRange(const unsigned char *secret, size_t length) {
-    return BTCKeyCompareBigEndian(secret, length, BTCKeyZero, 0) > 0 &&
-           BTCKeyCompareBigEndian(secret, length, BTCKeyMaxModOrder, 32) <= 0;
-}
+//static BOOL BTCKeyCheckPrivateKeyRange(const unsigned char *secret, size_t length) {
+//    return BTCKeyCompareBigEndian(secret, length, BTCKeyZero, 0) > 0 &&
+//           BTCKeyCompareBigEndian(secret, length, BTCKeyMaxModOrder, 32) <= 0;
+//}
 
-static BOOL BTCKeyCheckSignatureElement(const unsigned char *bytes, int length, BOOL half) {
-    return BTCKeyCompareBigEndian(bytes, length, BTCKeyZero, 0) > 0 &&
-           BTCKeyCompareBigEndian(bytes, length, half ? BTCKeyMaxModHalfOrder : BTCKeyMaxModOrder, 32) <= 0;
-}
+//static BOOL BTCKeyCheckSignatureElement(const unsigned char *bytes, int length, BOOL half) {
+//    return BTCKeyCompareBigEndian(bytes, length, BTCKeyZero, 0) > 0 &&
+//           BTCKeyCompareBigEndian(bytes, length, half ? BTCKeyMaxModHalfOrder : BTCKeyMaxModOrder, 32) <= 0;
+//}
 
 static NSData* BTCSignatureHashForBinaryMessage(NSData* msg) {
     NSMutableData* data = [NSMutableData data];
@@ -1047,30 +1026,30 @@ static NSData* BTCSignatureHashForBinaryMessage(NSData* msg) {
 
 
 
-static int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key) {
-    BN_CTX *ctx = NULL;
-    EC_POINT *pub_key = NULL;
-    
-    if (!eckey) return 0;
-    
-    const EC_GROUP *group = EC_KEY_get0_group(eckey);
-    
-    BOOL success = NO;
-    if ((ctx = BN_CTX_new())) {
-        if ((pub_key = EC_POINT_new(group))) {
-            if (EC_POINT_mul(group, pub_key, priv_key, NULL, NULL, ctx)) {
-                EC_KEY_set_private_key(eckey, priv_key);
-                EC_KEY_set_public_key(eckey, pub_key);
-                success = YES;
-            }
-        }
-    }
-    
-    if (pub_key) EC_POINT_free(pub_key);
-    if (ctx) BN_CTX_free(ctx);
-    
-    return success;
-}
+//static int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key) {
+//    BN_CTX *ctx = NULL;
+//    EC_POINT *pub_key = NULL;
+//    
+//    if (!eckey) return 0;
+//    
+//    const EC_GROUP *group = EC_KEY_get0_group(eckey);
+//    
+//    BOOL success = NO;
+//    if ((ctx = BN_CTX_new())) {
+//        if ((pub_key = EC_POINT_new(group))) {
+//            if (EC_POINT_mul(group, pub_key, priv_key, NULL, NULL, ctx)) {
+//                EC_KEY_set_private_key(eckey, priv_key);
+//                EC_KEY_set_public_key(eckey, pub_key);
+//                success = YES;
+//            }
+//        }
+//    }
+//    
+//    if (pub_key) EC_POINT_free(pub_key);
+//    if (ctx) BN_CTX_free(ctx);
+//    
+//    return success;
+//}
 
 
 

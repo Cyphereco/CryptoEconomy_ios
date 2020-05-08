@@ -306,11 +306,11 @@ enum
     return addr;
 }
 
-- (BTCKey*) key {
-    BTCKey* key = [[BTCKey alloc] initWithPrivateKey:self.data];
-    key.publicKeyCompressed = self.isPublicKeyCompressed;
-    return key;
-}
+//- (BTCKey*) key {
+//    BTCKey* key = [[BTCKey alloc] initWithPrivateKey:self.data];
+//    key.publicKeyCompressed = self.isPublicKeyCompressed;
+//    return key;
+//}
 
 - (BTCAddress*) publicAddress {
     return [BTCPublicKeyAddress addressWithData:BTCHash160(self.key.publicKey)];
