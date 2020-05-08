@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ViewAddressEditor: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @ObservedObject var addressListVM: AddressListViewModel
+    @ObservedObject var addressListVM = AddressListViewModel()
     @State var alias: String
     @State var address: String
 

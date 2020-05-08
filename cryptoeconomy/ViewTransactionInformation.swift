@@ -9,10 +9,16 @@
 import SwiftUI
 
 struct ViewTransactionInformation: View {
+    let dismiss: ()->Void
+    @State var transactionList: TransactionListViewModel
+    @State var transaction: TransactionViewModel
     @EnvironmentObject var appController: AppController
     @State var showAlert = false
     @State var msg = ""
     @State var showLocalCurrency = false
+    
+    @Environment(\.presentationMode) var presentationMode
+    @State var confirmations = "Unconfirmed"
 
     var body: some View {
         GeometryReader {geometry in
@@ -28,8 +34,8 @@ struct ViewTransactionInformation: View {
 
 
                     VStack(alignment: .leading) {
-                        Text("04/11/20 10:55:21")
-                        Text("1 \(AppStrings.confirmations)")
+                        Text(AppTools.formatTime(self.transaction.time))
+                        Text(self.confirmations)
                     }
                     
                     Spacer()
@@ -40,20 +46,23 @@ struct ViewTransactionInformation: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 24.0,height:24.0)
-                            Image("delete")
+                            Button(action: {
+                                self.showAlert = true
+                            }) {
+                                Image("delete")
                                 .padding(.leading, 5.0)
+                            }
                         }
                     }
-                    .setCustomDecoration(.foregroundAccent)
-                    .frame(width: geometry.size.width / 4)
+                    .setCustomDecoration(.accentColor)
                 }
-                .padding([.top, .leading, .trailing])
+                .padding([.top, .horizontal])
 
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
                         Text("\(AppStrings.sender) :")
                             .font(.headline)
-                        Text("1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab")
+                        Text(self.transaction.payer)
                             .lineLimit(3)
                             .multilineTextAlignment(.leading)
                             .padding(.leading)
@@ -63,16 +72,39 @@ struct ViewTransactionInformation: View {
                         Text("\(AppStrings.sendAmount) :")
                             .font(.headline)
                         Spacer()
-                        Text("0.1234 5678 BTC")
+                        Text(self.amountSent())
                     }
                 }.padding([.top, .leading, .trailing])
                 Divider()
+                .alert(isPresented: self.$showAlert) {
+                    return Alert(title: Text("Delete this transaction record?"),
+                        primaryButton: .default(Text("delete"), action: {
+                            let next = CoreDataManager.shared.getNextTransaction(self.transaction)
+                            
+                            let prev = CoreDataManager.shared.getPreviousTransaction(self.transaction)
+                            
+                            _ = CoreDataManager.shared.deleteTransaction(transactionVM: self.transaction)
+                            
+                            self.transactionList.fetch()
+                            
+                            if next != nil {
+                                self.transaction = next!
+                            }
+                            else if prev != nil {
+                                self.transaction = prev!
+                            }
+                            else {
+                                self.dismiss()
+                            }
+                        }),
+                        secondaryButton: .default(Text(AppStrings.cancel)))
+                }
 
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
                         Text("\(AppStrings.recipient) :")
                             .font(.headline)
-                        Text("1QEma6prBJscNqw7s3t8EGFcx3zF7mzWab")
+                        Text(self.transaction.payee)
                             .multilineTextAlignment(.leading)
                             .lineLimit(3)
                             .padding(.leading)
@@ -82,7 +114,7 @@ struct ViewTransactionInformation: View {
                         Text("\(AppStrings.recvAmount) :")
                             .font(.headline)
                         Spacer()
-                        Text("0.1234 4678 BTC")
+                        Text(self.amountRecv())
                     }
                     Divider()
                 }.padding()
@@ -91,7 +123,7 @@ struct ViewTransactionInformation: View {
                     Text("\(AppStrings.fees) :")
                         .font(.headline)
                     Spacer()
-                    Text("0.0000 1 BTC")
+                    Text(self.amountFees())
                 }.padding(.horizontal)
 
                 HStack {
@@ -111,43 +143,53 @@ struct ViewTransactionInformation: View {
                         .setCustomDecoration(.foregroundAccent)
                     Spacer()
                 }.padding(.horizontal)
-                Text("5dc7bee70b2d4d486d2e9ca997354e6909769049b2d971dc4034e2c03df909c7").padding(.horizontal).frame(height: 50.0)
+                Text(self.transaction.hash).padding(.horizontal).frame(height: 50.0)
                 HStack {
-                    VStack {
+                    Button(action: {
+                        self.transaction = CoreDataManager.shared.getPreviousTransaction(self.transaction)!
+                    }) {
                         Image(systemName: "backward").font(.system(size: 19)).padding(4)
                     }
-                    .onTapGesture {
-                        self.showAlert = true
-                        self.msg = "Previous"
-                    }
-                    .alert(isPresented: self.$showAlert){
-                        Alert(title: Text(self.msg))
-                    }
+                    .disabled(CoreDataManager.shared.getPreviousTransaction(self.transaction) == nil)
                     .padding(.bottom)
-                    .setCustomDecoration(.foregroundAccent)
+                    .setCustomDecoration(.accentColor)
                     .frame(width: geometry.size.width/2)
 
-                    VStack {
+                    Button(action: {
+                        self.transaction = CoreDataManager.shared.getNextTransaction(self.transaction)!
+                    }) {
                         Image(systemName: "forward").font(.system(size: 19)).padding(4)
                     }
-                    .onTapGesture {
-                        self.showAlert = true
-                        self.msg = "Next"
-                    }
-                    .alert(isPresented: self.$showAlert){
-                        Alert(title: Text(self.msg))
-                    }
+                    .disabled(CoreDataManager.shared.getNextTransaction(self.transaction) == nil)
                     .padding(.bottom)
-                    .setCustomDecoration(.foregroundAccent)
+                    .setCustomDecoration(.accentColor)
                     .frame(width: geometry.size.width/2)
                }
             }
+        }
+    }
+    
+    func amountSent() -> String {
+        return AppTools.btcToFormattedString(self.transaction.amountSent)
+    }
+    
+    func amountRecv() -> String {
+        return AppTools.btcToFormattedString(self.transaction.amountRecv)
+    }
+    
+    func amountFees() -> String {
+        return AppTools.btcToFormattedString(self.transaction.amountSent - self.transaction.amountRecv)
+    }
+
+    func checkConfirmation() {
+        if self.transaction.blockHeight > 0 {
+            self.confirmations = "1 \(AppStrings.confirmations)"
         }
     }
 }
 
 struct ViewTransactionRecord_Previews: PreviewProvider {
     static var previews: some View {
-        ViewTransactionInformation().environmentObject(AppController())
+        ViewTransactionInformation(dismiss: {}, transactionList: TransactionListViewModel(), transaction: TransactionViewModel(transaction: DBTransaction())).environmentObject(AppController())
     }
 }

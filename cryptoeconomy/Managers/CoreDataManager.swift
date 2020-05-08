@@ -22,6 +22,7 @@ class CoreDataManager {
     func getAllAddresses() -> [DBAddress] {
         var addresses = [DBAddress]()
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DBAddress")
+        request.sortDescriptors = [NSSortDescriptor(key: "alias", ascending: true), NSSortDescriptor(key: "address", ascending: true)]
 
         do {
             addresses = try self.moc.fetch(request) as! [DBAddress]
@@ -38,6 +39,7 @@ class CoreDataManager {
             let items = try self.moc.fetch(request)
 
             let addr = DBAddress(context: self.moc)
+            addr.id = addressVM.id
             addr.alias = addressVM.alias
             addr.address = addressVM.address
 
@@ -58,13 +60,12 @@ class CoreDataManager {
 
     func deleteAddress(addressVM: AddressViewModel) -> Bool {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DBAddress")
+        request.predicate = NSPredicate(format: "id == %@", addressVM.id as CVarArg)
 
         do {
             let items = try self.moc.fetch(request)
             for item in items as! [DBAddress] {
-                if (item.alias == addressVM.alias) && (item.address == addressVM.address) {
-                    self.moc.delete(item)
-                }
+                self.moc.delete(item)
             }
             try self.moc.save()
         } catch {
@@ -78,7 +79,8 @@ class CoreDataManager {
     func getAllTransaction() -> [DBTransaction] {
         var transactions = [DBTransaction]()
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DBTransaction")
-
+        request.sortDescriptors = [NSSortDescriptor(key: "time", ascending: false)]
+        
         do {
             transactions = try self.moc.fetch(request) as! [DBTransaction]
         } catch let error as NSError {
@@ -111,6 +113,40 @@ class CoreDataManager {
                 }
             }
 
+            try self.moc.save()
+        } catch {
+            print(error)
+            return false
+        }
+
+        return true
+    }
+    
+    func getPreviousTransaction(_ transaction: TransactionViewModel) -> TransactionViewModel? {
+        let transactions = getAllTransaction().map(TransactionViewModel.init)
+        if let index = transactions.firstIndex(where: {$0.id == transaction.id}) {
+            return index > 0 ? transactions[index - 1] : nil
+        }
+        return nil
+    }
+
+    func getNextTransaction(_ transaction: TransactionViewModel) -> TransactionViewModel? {
+        let transactions = getAllTransaction().map(TransactionViewModel.init)
+        if let index = transactions.firstIndex(where: {$0.id == transaction.id}) {
+            return index < transactions.count - 1 ? transactions[index + 1] : nil
+        }
+        return nil
+    }
+
+    func deleteTransaction(transactionVM: TransactionViewModel) -> Bool {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DBTransaction")
+        request.predicate = NSPredicate(format: "id == %@", transactionVM.id as CVarArg)
+
+        do {
+            let items = try self.moc.fetch(request)
+            for item in items as! [DBTransaction] {
+                self.moc.delete(item)
+            }
             try self.moc.save()
         } catch {
             print(error)

@@ -47,7 +47,7 @@ struct AddressQRCodeView: View {
             }) {
                 Image("clear")
             })
-                .bubbleMessage(message: self.$bubbleMessage, show: self.$showBubble)
+            .bubbleMessage(message: self.$bubbleMessage, show: self.$showBubble)
         }
     }
 }
@@ -83,8 +83,7 @@ struct ListItemAddress: View {
                 return Alert(title: Text("Delete this address?"),
                     primaryButton: .default(Text("delete"), action: {
                         if CoreDataManager.shared.deleteAddress(
-                                addressVM: AddressViewModel(alias: self.recordAddress.alias,
-                                                            address: self.recordAddress.address)) {
+                            addressVM: self.recordAddress) {
                             self.addressListVM.fetchAllAddresses()
                         }
                     }),

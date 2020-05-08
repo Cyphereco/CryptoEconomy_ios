@@ -3,6 +3,7 @@
     <entity name="DBAddress" representedClassName="DBAddress" syncable="YES" codeGenerationType="class">
         <attribute name="address" optional="YES" attributeType="String"/>
         <attribute name="alias" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
     <entity name="DBTransaction" representedClassName="DBTransaction" syncable="YES" codeGenerationType="class">
         <attribute name="amountRecv" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -17,7 +18,7 @@
         <attribute name="transHash" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="DBAddress" positionX="-45" positionY="0" width="128" height="73"/>
+        <element name="DBAddress" positionX="-45" positionY="0" width="128" height="88"/>
         <element name="DBTransaction" positionX="-45" positionY="18" width="128" height="193"/>
     </elements>
 </model>

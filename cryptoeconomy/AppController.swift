@@ -229,18 +229,19 @@ class AppController: ObservableObject {
         self.didChange.send(self)
     }}
     @Published var amountSend: String = "" { didSet {
-        if let amount = Double(amountSend) {
-            if !editLock {
-                editLock = true
-                self.amountSendFiat = amount > 0 ? "\(AppTools.fiatToFormattedString(AppTools.btcToFiat(amount, currencySelection: self.currencySelection)))" : "0"
+        if !editLock {
+            editLock = true
+            if let amount = Double(amountSend) {
+                self.amountSendFiat =  "\(AppTools.fiatToFormattedString(AppTools.btcToFiat(amount, currencySelection: self.currencySelection)))"
                 self.amountRecv = "\(amount - self.fees)"
             }
             else {
-                editLock = false
+                self.amountSendFiat = ""
+                self.amountRecv = ""
             }
         }
         else {
-            amountSend = "0"
+            self.editLock = false
         }
         self.didChange.send(self)
     } }
@@ -248,17 +249,17 @@ class AppController: ObservableObject {
         self.didChange.send(self)
     }}
     @Published var amountSendFiat: String = "" { didSet {
-        if let amount = Double(amountSendFiat) {
-                if !editLock {
-                    editLock = true
-                    self.amountSend = amount > 0 ? "\(AppTools.btcToFormattedString(AppTools.fiatToBtc(amount, currencySelection: self.currencySelection)))" : "0"
-                }
-                else {
-                    editLock = false
+        if !editLock {
+            editLock = true
+            if let amount = Double(amountSendFiat) {
+                self.amountSend =  "\(AppTools.btcToFormattedString(AppTools.fiatToBtc(amount, currencySelection: self.currencySelection)))"
+            }
+            else {
+                self.amountSend = ""
             }
         }
         else {
-            amountSendFiat = "0"
+            editLock = false
         }
         self.didChange.send(self)
     } }

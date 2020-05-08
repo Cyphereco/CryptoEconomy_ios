@@ -17,7 +17,6 @@ struct TextFieldPayAmount: View {
             HStack(alignment: .center) {
                 Button(action: {
                     self.appController.amountSend = ""
-                    self.appController.amountSendFiat = ""
                 }){Image("clear")}
                     .padding(.top, -36.0)
                 VStack(alignment: .trailing) {

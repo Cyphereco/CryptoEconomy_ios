@@ -59,7 +59,7 @@ struct ListItemTransaction: View {
             self.showTransactionInfo = true
         }
         .sheet(isPresented: $showTransactionInfo){
-            ViewTransactionInformation()
+            ViewTransactionInformation(dismiss: {self.showTransactionInfo = false}, transactionList: self.transactionListVM, transaction: self.recordTransaction)
                 .addSheetTitle(AppStrings.transactionInfo)
         }
     }

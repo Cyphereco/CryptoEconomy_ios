@@ -45,6 +45,12 @@ struct AppTools {
         return Int(blockHeight)
     }
     
+    static func formatTime(_ time: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "M/d/YY HH:mm:ss"
+        return formatter.string(from: time)
+    }
+    
     static func timeToStringDate(_ time: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .short

@@ -13,16 +13,19 @@ struct ContentView: View {
     @GestureState  var dragOffset = CGSize.zero
     @EnvironmentObject var appController: AppController
     @State var keyboardActive = false
-    @State var promptMessage = ""
+    @State var fullscreenMessage = ""
     @State var showPaymentConfirmation = false
     @State var paymentConfirmed = false
     @State var showToast = false
     @State var toastMessage = ""
+    @State var showTransactionInfo = false
+    @ObservedObject var transactionList = TransactionListViewModel()
+    @State private var transaction: TransactionViewModel? = nil
 
     var body: some View {
         ZStack {
             TabView(selection: self.$appController.pageSelected){
-                PagePay(promptMessage: self.$promptMessage, showConfirmation: self.$showPaymentConfirmation, confirmation: self.$paymentConfirmed, showToast: self.$showToast, toastMessage: self.$toastMessage)
+                PagePay(promptMessage: self.$fullscreenMessage, showConfirmation: self.$showPaymentConfirmation, confirmation: self.$paymentConfirmed, showToast: self.$showToast, toastMessage: self.$toastMessage)
                     .tabItem {
                         VStack {
                             Image("pay")
@@ -119,22 +122,36 @@ struct ContentView: View {
             DialogConfirmPayment(showDialog: self.showPaymentConfirmation, closeDialog: {
                 self.showPaymentConfirmation = false
             }, onConfirm: {
+                self.transaction = TransactionViewModel(time: Date(), hash: "fake_hash", payer: self.appController.payer, payee: self.appController.payee, amountSent: self.appController.getAmountToBeSent(), amountRecv: self.appController.getAmountReceived(), rawData: "fake_raw_data", blockHeight: -1, exchangeRate: AppController.exchangeRates.toString())
+                
+                if CoreDataManager.shared.insertTransaction(transactionVM: self.transaction!)
+                {
+                }
+                else {
+                }
+
                 self.showPaymentConfirmation = false
+                self.fullscreenMessage = "Processing transaction..."
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.fullscreenMessage = ""
+                    self.appController.pageSelected = 2
+                    self.showTransactionInfo = true
+                }
             }, onCancel: {
                 self.toastMessage = "Payment canceled!"
                 self.showToast = true
                 self.showPaymentConfirmation = false
             })
         }
+        .sheet(isPresented: $showTransactionInfo){
+            ViewTransactionInformation(dismiss: {self.showTransactionInfo = false}, transactionList: self.transactionList, transaction: self.transaction!)
+                .addSheetTitle(AppStrings.transactionInfo)
+        }
         .isKeyboardActive(keyboardActive: self.$keyboardActive)
-        .fullScreenPrompt(message: self.$promptMessage)
+        .fullScreenPrompt(message: self.$fullscreenMessage)
         .toastMessage(message: self.$toastMessage, show: self.$showToast)
     }
-    
-    init() {
-        
-    }
-        
+            
     func closeMenu() {
         if self.keyboardActive {
             UIApplication.shared.endEditing()

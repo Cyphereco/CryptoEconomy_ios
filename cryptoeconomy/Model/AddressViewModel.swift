@@ -11,18 +11,20 @@ import SwiftUI
 import Combine
 
 class AddressViewModel: Identifiable {
-    var alias = ""
-    var address = ""
-    var id = UUID()
+    var alias: String
+    var address: String
+    var id: UUID
 
     init(addr: DBAddress) {
         self.alias = addr.alias!
         self.address = addr.address!
+        self.id = addr.id ?? UUID()
     }
 
     init(alias: String, address: String) {
         self.alias = alias
         self.address = address
+        self.id = UUID()
     }
 }
 
