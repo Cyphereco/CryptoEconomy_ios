@@ -11,6 +11,7 @@ target 'cryptoeconomy' do
   pod 'PromiseKit/Alamofire', '~> 6.0'
   pod 'BigInt', '~> 5.0'
   pod 'Introspect'
+  pod 'OpenSSL-Universal'
 
   target 'cryptoeconomyTests' do
     inherit! :search_paths
