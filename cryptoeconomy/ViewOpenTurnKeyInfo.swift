@@ -17,9 +17,7 @@ struct ViewOpenTurnKeyInfo: View {
     @State var bubbleMessage = ""
 
     let otkNpi = AppController.otkNpi
-    
-    var pasteboard = UIPasteboard.general
- 
+     
     var body: some View {
         VStack {
             HStack {

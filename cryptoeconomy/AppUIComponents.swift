@@ -403,6 +403,39 @@ extension View {
     }
 }
 
+struct PagingIndicator: ViewModifier {
+    @Binding var paging: Int
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+            
+            if paging > 0 {
+                Image(systemName: "forward").font(.system(size: 80)).padding(4)
+                    .opacity(paging > 0 ? 0.2 : 0).animation(.easeIn).onAppear(){
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                        self.paging = 0
+                    })
+                }
+            }
+            
+            if paging < 0 {
+                Image(systemName: "backward").font(.system(size: 80)).padding(4).opacity(paging < 0 ? 0.2 : 0).animation(.easeIn).onAppear(){
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                        self.paging = 0
+                    })
+                }
+            }
+        }
+    }
+}
+
+extension View {
+    func pagingIndicator(paging: Binding<Int>) -> some View {
+        self.modifier(PagingIndicator(paging: paging))
+    }
+}
+
 struct BubbleMessage: ViewModifier {
     @Binding var message: String
     @Binding var showBubble: Bool

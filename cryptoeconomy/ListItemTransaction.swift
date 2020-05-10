@@ -9,6 +9,7 @@
 import SwiftUI
 struct ListItemTransaction: View {
     @ObservedObject var transactionListVM: TransactionListViewModel
+    @EnvironmentObject var appController: AppController
 
     var recordTransaction: TransactionViewModel
     @State var showTransactionInfo = false
@@ -60,6 +61,7 @@ struct ListItemTransaction: View {
         }
         .sheet(isPresented: $showTransactionInfo){
             ViewTransactionInformation(dismiss: {self.showTransactionInfo = false}, transactionList: self.transactionListVM, transaction: self.recordTransaction)
+                .environmentObject(self.appController)
                 .addSheetTitle(AppStrings.transactionInfo)
         }
     }

@@ -34,10 +34,15 @@ class CoreDataManager {
 
     func insertAddress(addressVM: AddressViewModel) -> Bool {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DBAddress")
+        request.predicate = NSPredicate(format: "alias == %@", addressVM.alias as CVarArg)
 
         do {
             let items = try self.moc.fetch(request)
 
+            if items.count > 0 {
+                return false
+            }
+            
             let addr = DBAddress(context: self.moc)
             addr.id = addressVM.id
             addr.alias = addressVM.alias
@@ -91,9 +96,14 @@ class CoreDataManager {
 
     func insertTransaction(transactionVM: TransactionViewModel) -> Bool {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DBTransaction")
+//        request.predicate = NSPredicate(format: "hash == %@", transactionVM.hash as CVarArg)
 
         do {
             let items = try self.moc.fetch(request)
+            
+//            if items.count > 0 {
+//                return false
+//            }
 
             let trans = DBTransaction(context: self.moc)
             trans.id = transactionVM.id

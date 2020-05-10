@@ -94,22 +94,22 @@ struct SideMenuOpenTurnKey: View {
                 }.setCustomDecoration(.foregroundNormal).padding()
                 
             }.asSideMenu(isOpened: self.isOpened)
-                .sheet(isPresented: self.$showSheet, onDismiss: {
-                    if self.keyboardActive {
-                        UIApplication.shared.endEditing()
-                    }
-                    if self.otkRequest.command == .setKey {
-                        if self.otkRequest.data.isEmpty {
-                            self.appController.cancelOtkRequest(continueAfterStarted: false)
-                        }
-                        else {
-                            self.setOtkRequest(self.otkRequest, hint: AppStrings.choose_key)
-                        }
-                    }
-                    else {
+            .sheet(isPresented: self.$showSheet, onDismiss: {
+                if self.keyboardActive {
+                    UIApplication.shared.endEditing()
+                }
+                if self.otkRequest.command == .setKey {
+                    if self.otkRequest.data.isEmpty {
                         self.appController.cancelOtkRequest(continueAfterStarted: false)
                     }
-                }){
+                    else {
+                        self.setOtkRequest(self.otkRequest, hint: AppStrings.choose_key)
+                    }
+                }
+                else {
+                    self.appController.cancelOtkRequest(continueAfterStarted: false)
+                }
+            }){
                 if self.otkRequest.command == .setKey {
                     ViewChooseKey(otkRequest: self.$otkRequest, closeSheet: {
                         self.showSheet = false
@@ -207,6 +207,6 @@ struct SideMenuOpenTurnKey: View {
 
 struct SideMenuOpenTurnKey_Previews: PreviewProvider {
     static var previews: some View {
-        SideMenuOpenTurnKey(isOpened: true, closeMenu: {})
+        SideMenuOpenTurnKey(isOpened: true, closeMenu: {}).environmentObject(AppController())
     }
 }

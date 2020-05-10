@@ -2,6 +2,9 @@ PODS:
   - Alamofire (4.9.1)
   - BigInt (5.0.0)
   - Introspect (0.1.0)
+  - OpenSSL-Universal (1.0.2.19):
+    - OpenSSL-Universal/Static (= 1.0.2.19)
+  - OpenSSL-Universal/Static (1.0.2.19)
   - PromiseKit/Alamofire (6.13.1):
     - Alamofire (~> 4.0)
     - PromiseKit/CorePromise
@@ -12,6 +15,7 @@ PODS:
 DEPENDENCIES:
   - BigInt (~> 5.0)
   - Introspect
+  - OpenSSL-Universal
   - PromiseKit/Alamofire (~> 6.0)
   - SwiftyBeaver
   - SwiftyJSON (~> 4.0)
@@ -21,6 +25,7 @@ SPEC REPOS:
     - Alamofire
     - BigInt
     - Introspect
+    - OpenSSL-Universal
     - PromiseKit
     - SwiftyBeaver
     - SwiftyJSON
@@ -29,10 +34,11 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   BigInt: 74b4d88367b0e819d9f77393549226d36faeb0d8
   Introspect: ad32f2b7b9e7ac2c008b9dfec3d5325fbd3660fa
+  OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   SwiftyBeaver: a1f5691458561414bcfab51874b2b7445451602b
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: e1cd17b6f28b4367ea238e43f255e2a3c3f74462
+PODFILE CHECKSUM: a79c35e96ad7cdf2a4139b772ac92c3305793c30
 
 COCOAPODS: 1.9.1

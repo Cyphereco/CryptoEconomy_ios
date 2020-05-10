@@ -64,6 +64,40 @@ class ExchangeRates {
         self.twd = twd
         self.usd = usd
     }
+
+    init(exchangeRates: String) {
+        self.cny = 0
+        self.eur = 0
+        self.jpy = 0
+        self.twd = 0
+        self.usd = 0
+        print(exchangeRates)
+        var str = exchangeRates.replacingOccurrences(of: "[", with: "")
+        str = str.replacingOccurrences(of: "]", with: "")
+        str = str.replacingOccurrences(of: " ", with: "")
+        print(str)
+        let rates = str.components(separatedBy: ",")
+        print("\(rates)")
+        for rate in rates {
+            let val = Double(rate.components(separatedBy: ":")[1]) ?? 0
+            print(val)
+            if rate.contains("cny") {
+                self.cny = val
+            }
+            if rate.contains("eur") {
+                self.eur = val
+            }
+            if rate.contains("jpy") {
+                self.jpy = val
+            }
+            if rate.contains("twd") {
+                self.twd = val
+            }
+            if rate.contains("usd") {
+                self.usd = val
+            }
+        }
+    }
     
     func copy(exchangeRates: ExchangeRates) {
         self.cny = exchangeRates.cny

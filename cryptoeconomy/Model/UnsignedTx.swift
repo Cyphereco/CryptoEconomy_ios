@@ -20,7 +20,7 @@ class UnsignedTx {
     init(from: String, to: String, amount: Double, fees: Int64, toSign: Array<String>, jsonData: JSON) {
         Logger.shared.debug("from:\(from), to:\(to), amount:\(amount), fees:\(fees), toSign:\(toSign)")
         self.from = from
-        self.to = from
+        self.to = to
         self.amount = amount
         self.fees = fees
         self.toSign = toSign

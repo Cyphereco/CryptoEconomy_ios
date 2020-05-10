@@ -18,6 +18,8 @@ struct ContentView: View {
     @State var paymentConfirmed = false
     @State var showToast = false
     @State var toastMessage = ""
+    @State var showBubble = false
+    @State var bubbleMessage = ""
     @State var showTransactionInfo = false
     @ObservedObject var transactionList = TransactionListViewModel()
     @State private var transaction: TransactionViewModel? = nil
@@ -122,20 +124,27 @@ struct ContentView: View {
             DialogConfirmPayment(showDialog: self.showPaymentConfirmation, closeDialog: {
                 self.showPaymentConfirmation = false
             }, onConfirm: {
-                self.transaction = TransactionViewModel(time: Date(), hash: "fake_hash", payer: self.appController.payer, payee: self.appController.payee, amountSent: self.appController.getAmountToBeSent(), amountRecv: self.appController.getAmountReceived(), rawData: "fake_raw_data", blockHeight: -1, exchangeRate: AppController.exchangeRates.toString())
-                
-                if CoreDataManager.shared.insertTransaction(transactionVM: self.transaction!)
-                {
-                }
-                else {
-                }
-
                 self.showPaymentConfirmation = false
                 self.fullscreenMessage = "Processing transaction..."
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    self.fullscreenMessage = ""
-                    self.appController.pageSelected = 2
-                    self.showTransactionInfo = true
+
+                _ = BlockCypherService.newTransaction(from: self.appController.payer, to: self.appController.payee, amountInSatoshi: BtcUtils.BtcToSatoshi(btc: self.appController.getAmountToBeSent()), fees: BtcUtils.BtcToSatoshi(btc: self.appController.fees)).done(){ unsignedTx in
+                    print(unsignedTx.toString())
+                    self.transaction = TransactionViewModel(time: Date(), hash: "fake_hash", payer: self.appController.payer, payee: self.appController.payee, amountSent: self.appController.getAmountToBeSent(), amountRecv: self.appController.getAmountReceived(), rawData: "fake_raw_data", blockHeight: -1, exchangeRate: AppController.exchangeRates.toString())
+                    
+                    _ = CoreDataManager.shared.insertTransaction(transactionVM: self.transaction!)
+
+                    DispatchQueue.main.async {
+                        self.fullscreenMessage = ""
+                        self.appController.pageSelected = 2
+                        self.showTransactionInfo = true
+                    }
+                }.catch(){err in
+                    print("failed to generate transaction")
+                    DispatchQueue.main.async {
+                        self.fullscreenMessage = ""
+                        self.bubbleMessage = "Failed to generate transaction: (\(err))"
+                        self.showBubble = true
+                    }
                 }
             }, onCancel: {
                 self.toastMessage = "Payment canceled!"
@@ -145,11 +154,13 @@ struct ContentView: View {
         }
         .sheet(isPresented: $showTransactionInfo){
             ViewTransactionInformation(dismiss: {self.showTransactionInfo = false}, transactionList: self.transactionList, transaction: self.transaction!)
+                .environmentObject(self.appController)
                 .addSheetTitle(AppStrings.transactionInfo)
         }
         .isKeyboardActive(keyboardActive: self.$keyboardActive)
         .fullScreenPrompt(message: self.$fullscreenMessage)
         .toastMessage(message: self.$toastMessage, show: self.$showToast)
+        .bubbleMessage(message: self.$bubbleMessage, show: self.$showBubble)
     }
             
     func closeMenu() {

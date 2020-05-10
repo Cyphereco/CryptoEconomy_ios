@@ -13,12 +13,18 @@ struct ViewTransactionInformation: View {
     @State var transactionList: TransactionListViewModel
     @State var transaction: TransactionViewModel
     @EnvironmentObject var appController: AppController
+    @State var showRawData = false
     @State var showAlert = false
     @State var msg = ""
     @State var showLocalCurrency = false
     
     @Environment(\.presentationMode) var presentationMode
     @State var confirmations = "Unconfirmed"
+    var pasteboard = UIPasteboard.general
+    @State var bubbleMessage = ""
+    @State var showBubble = false
+    @GestureState  var dragOffset = CGSize.zero
+    @State var paging = 0
 
     var body: some View {
         GeometryReader {geometry in
@@ -42,10 +48,15 @@ struct ViewTransactionInformation: View {
                     
                     VStack(alignment: .trailing) {
                         HStack {
-                            Image("raw_data")
+                            Button(action: {
+                                self.showRawData = true
+                                print(self.showRawData)
+                            }) {
+                                Image("raw_data")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 24.0,height:24.0)
+                            }
                             Button(action: {
                                 self.showAlert = true
                             }) {
@@ -55,6 +66,13 @@ struct ViewTransactionInformation: View {
                         }
                     }
                     .setCustomDecoration(.accentColor)
+                    .alert(isPresented: self.$showRawData) {
+                        return Alert(title: Text("Raw Data"), message: Text("\(self.transaction.rawData)"), primaryButton: .default(Text("cancel")), secondaryButton: .default(Text("copy"), action: {
+                            self.pasteboard.string = self.transaction.rawData
+                            self.bubbleMessage = "raw_data" + AppStrings.copied
+                            self.showBubble = true
+                        }))
+                    }
                 }
                 .padding([.top, .horizontal])
 
@@ -72,7 +90,8 @@ struct ViewTransactionInformation: View {
                         Text("\(AppStrings.sendAmount) :")
                             .font(.headline)
                         Spacer()
-                        Text(self.amountSent())
+                        Text(self.amountSent(showLocalCurrency: self.showLocalCurrency) + " ") +
+                            Text(self.showLocalCurrency ? self.appController.getLocalCurrency().label : "BTC")
                     }
                 }.padding([.top, .leading, .trailing])
                 Divider()
@@ -114,7 +133,8 @@ struct ViewTransactionInformation: View {
                         Text("\(AppStrings.recvAmount) :")
                             .font(.headline)
                         Spacer()
-                        Text(self.amountRecv())
+                        Text(self.amountRecv(showLocalCurrency: self.showLocalCurrency) + " ") +
+                        Text(self.showLocalCurrency ? self.appController.getLocalCurrency().label : "BTC")
                     }
                     Divider()
                 }.padding()
@@ -123,13 +143,17 @@ struct ViewTransactionInformation: View {
                     Text("\(AppStrings.fees) :")
                         .font(.headline)
                     Spacer()
-                    Text(self.amountFees())
+                    Text(self.amountFees(showLocalCurrency: self.showLocalCurrency) + " ") +
+                    Text(self.showLocalCurrency ? self.appController.getLocalCurrency().label : "BTC")
                 }.padding(.horizontal)
 
                 HStack {
                     Spacer()
-                    Image("pay")
-                        .setCustomDecoration(.foregroundAccent)
+                    Button(action: {
+                        print(self.transaction.exchangeRate)
+                    }) {
+                        Image("pay")
+                    }.setCustomDecoration(.accentColor)
                     Text(AppStrings.showLocalCurrency).lineLimit(1).font(.headline)
                     Toggle("", isOn: self.$showLocalCurrency)
                         .labelsHidden()
@@ -146,7 +170,10 @@ struct ViewTransactionInformation: View {
                 Text(self.transaction.hash).padding(.horizontal).frame(height: 50.0)
                 HStack {
                     Button(action: {
-                        self.transaction = CoreDataManager.shared.getPreviousTransaction(self.transaction)!
+                        if let tx = CoreDataManager.shared.getPreviousTransaction(self.transaction) {
+                            self.paging = -1
+                            self.transaction = tx
+                        }
                     }) {
                         Image(systemName: "backward").font(.system(size: 19)).padding(4)
                     }
@@ -156,7 +183,10 @@ struct ViewTransactionInformation: View {
                     .frame(width: geometry.size.width/2)
 
                     Button(action: {
-                        self.transaction = CoreDataManager.shared.getNextTransaction(self.transaction)!
+                        if let tx = CoreDataManager.shared.getNextTransaction(self.transaction) {
+                            self.paging = 1
+                            self.transaction = tx
+                        }
                     }) {
                         Image(systemName: "forward").font(.system(size: 19)).padding(4)
                     }
@@ -167,18 +197,66 @@ struct ViewTransactionInformation: View {
                }
             }
         }
+        .pagingIndicator(paging: self.$paging)
+        .bubbleMessage(message: self.$bubbleMessage, show: self.$showBubble)
+        .gesture(DragGesture()
+            .onEnded { gesture in
+                if gesture.translation.width < -100 {
+                    withAnimation {
+                        if let tx = CoreDataManager.shared.getNextTransaction(self.transaction) {
+                            self.paging = 1
+                            self.transaction = tx
+                        }
+                    }
+                }
+                else if gesture.translation.width > 100 {
+                    withAnimation {
+                        if let tx = CoreDataManager.shared.getPreviousTransaction(self.transaction) {
+                            self.paging = -1
+                            self.transaction = tx
+                        }
+                    }
+                }
+            })
     }
     
-    func amountSent() -> String {
-        return AppTools.btcToFormattedString(self.transaction.amountSent)
+    func fiatExchangeRate() -> Double {
+        let exchangeRates = ExchangeRates(exchangeRates: self.transaction.exchangeRate)
+        print(exchangeRates.toString())
+        let currency = self.appController.getLocalCurrency()
+        
+        switch currency {
+        case .CNY:
+            return exchangeRates.cny
+        case .EUR:
+            return exchangeRates.eur
+        case .JPY:
+            return exchangeRates.jpy
+        case .TWD:
+            return exchangeRates.twd
+        default:
+            return exchangeRates.usd
+        }
     }
     
-    func amountRecv() -> String {
-        return AppTools.btcToFormattedString(self.transaction.amountRecv)
+    func amountSent(showLocalCurrency: Bool) -> String {
+        let amount = showLocalCurrency ? self.transaction.amountSent * fiatExchangeRate() : self.transaction.amountSent
+        print(amount)
+        print(fiatExchangeRate())
+        return showLocalCurrency ? AppTools.fiatToFormattedString(amount) : AppTools.btcToFormattedString(amount)
     }
     
-    func amountFees() -> String {
-        return AppTools.btcToFormattedString(self.transaction.amountSent - self.transaction.amountRecv)
+    func amountRecv(showLocalCurrency: Bool) -> String {
+        let amount = showLocalCurrency ? self.transaction.amountRecv * fiatExchangeRate() : self.transaction.amountRecv
+        
+        return showLocalCurrency ? AppTools.fiatToFormattedString(amount) : AppTools.btcToFormattedString(amount)
+    }
+    
+    func amountFees(showLocalCurrency: Bool) -> String {
+        let fees = self.transaction.amountSent - self.transaction.amountRecv
+        let amount = showLocalCurrency ? fees * fiatExchangeRate() : fees
+        
+        return showLocalCurrency ? AppTools.fiatToFormattedString(amount) : AppTools.btcToFormattedString(amount)
     }
 
     func checkConfirmation() {
