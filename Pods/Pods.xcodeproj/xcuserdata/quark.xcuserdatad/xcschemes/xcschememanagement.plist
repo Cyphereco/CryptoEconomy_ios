@@ -25,6 +25,11 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>Log4swift.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
 		<key>OpenSSL-Universal.xcscheme</key>
 		<dict>
 			<key>isShown</key>

@@ -211,7 +211,8 @@ class AppController: ObservableObject {
     @State static var exchangeRates = ExchangeRates()
     @State static var bestFees = BestFees()
 
-    private var editLock = false
+    private var editingAmountSend = false
+    private var editingAmountSendFiat = false
 
     // default values
     @Published var currencySelection: Int = UserDefaults.standard.integer(forKey: "LocalCurrency") { didSet {
@@ -263,19 +264,16 @@ class AppController: ObservableObject {
         self.didChange.send(self)
     }}
     @Published var amountSend: String = "" { didSet {
-        if !editLock {
-            editLock = true
-            if let amount = Double(amountSend) {
+        if !self.editingAmountSendFiat {
+            self.editingAmountSend = true
+            let amount = Double(amountSend) ?? 0.0
+            if amount > 0 {
                 self.amountSendFiat =  "\(AppTools.fiatToFormattedString(AppTools.btcToFiat(amount, currencySelection: self.currencySelection)))"
-                self.amountRecv = "\(amount - self.fees)"
             }
             else {
                 self.amountSendFiat = ""
-                self.amountRecv = ""
             }
-        }
-        else {
-            self.editLock = false
+            self.editingAmountSend = false
         }
         self.didChange.send(self)
     } }
@@ -283,24 +281,22 @@ class AppController: ObservableObject {
         self.didChange.send(self)
     }}
     @Published var amountSendFiat: String = "" { didSet {
-        if !editLock {
-            editLock = true
-            if let amount = Double(amountSendFiat) {
+        if !self.editingAmountSend {
+            self.editingAmountSendFiat = true
+            let amount = Double(amountSendFiat) ?? 0.0
+            if amount > 0 {
                 self.amountSend =  "\(AppTools.btcToFormattedString(AppTools.fiatToBtc(amount, currencySelection: self.currencySelection)))"
             }
             else {
                 self.amountSend = ""
             }
-        }
-        else {
-            editLock = false
+            self.editingAmountSendFiat = false
         }
         self.didChange.send(self)
     } }
     @Published var pageSelected: Int = 0 { didSet {
         AppController.otkNpi.request = OtkRequest()
         self.amountSend = ""
-        self.amountSendFiat = ""
         self.useAllFunds = false
         self.authByPin = false
         self.requestHint = AppStrings.readGeneralInformation

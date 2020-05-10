@@ -60,6 +60,11 @@ struct ContentView: View {
                     }
                     .tag(3)
             }
+            .sheet(isPresented: $showTransactionInfo){
+                ViewTransactionInformation(dismiss: {self.showTransactionInfo = false}, transactionList: self.transactionList, transaction: self.transaction!)
+                    .environmentObject(self.appController)
+                    .addSheetTitle(AppStrings.transactionInfo)
+            }
             .blur(radius: self.appController.interacts != .none ? 0.8 : 0)
             .animation(.easeInOut)
             .setCustomDecoration(.accentColor)
@@ -151,11 +156,6 @@ struct ContentView: View {
                 self.showToast = true
                 self.showPaymentConfirmation = false
             })
-        }
-        .sheet(isPresented: $showTransactionInfo){
-            ViewTransactionInformation(dismiss: {self.showTransactionInfo = false}, transactionList: self.transactionList, transaction: self.transaction!)
-                .environmentObject(self.appController)
-                .addSheetTitle(AppStrings.transactionInfo)
         }
         .isKeyboardActive(keyboardActive: self.$keyboardActive)
         .fullScreenPrompt(message: self.$fullscreenMessage)

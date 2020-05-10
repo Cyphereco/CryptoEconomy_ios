@@ -25,176 +25,231 @@ struct ViewTransactionInformation: View {
     @State var showBubble = false
     @GestureState  var dragOffset = CGSize.zero
     @State var paging = 0
-
+    @State var showRates = false
+    
     var body: some View {
         GeometryReader {geometry in
-            VStack {
-                HStack {
-                    VStack(alignment: .trailing) {
-                        Text("\(AppStrings.date)/\(AppStrings.time) :")
-                            .font(.headline)
-                        Text("\(AppStrings.result) :")
-                            .font(.headline)
-                    }
-                    .frame(width: geometry.size.width / 4)
+            ZStack {
+                VStack {
+                    HStack {
+                        VStack(alignment: .trailing) {
+                            Text("\(AppStrings.date)/\(AppStrings.time) :")
+                                .font(.headline)
+                            Text("\(AppStrings.result) :")
+                                .font(.headline)
+                        }
+                        .frame(width: geometry.size.width / 4)
 
+
+                        VStack(alignment: .leading) {
+                            Text(AppTools.formatTime(self.transaction.time))
+                            Text(self.confirmations)
+                        }
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .trailing) {
+                            HStack {
+                                Button(action: {
+                                    self.showRawData = true
+                                    print(self.showRawData)
+                                }) {
+                                    Image("raw_data")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 24.0,height:24.0)
+                                }
+                                Button(action: {
+                                    self.showAlert = true
+                                }) {
+                                    Image("delete")
+                                    .padding(.leading, 5.0)
+                                }
+                            }
+                        }
+                        .setCustomDecoration(.accentColor)
+                        .alert(isPresented: self.$showRawData) {
+                            return Alert(title: Text("Raw Data"), message: Text("\(self.transaction.rawData)"), primaryButton: .default(Text("cancel")), secondaryButton: .default(Text("copy"), action: {
+                                self.pasteboard.string = self.transaction.rawData
+                                self.bubbleMessage = "raw_data" + AppStrings.copied
+                                self.showBubble = true
+                            }))
+                        }
+                    }
+                    .padding([.top, .horizontal])
 
                     VStack(alignment: .leading) {
-                        Text(AppTools.formatTime(self.transaction.time))
-                        Text(self.confirmations)
-                    }
-                    
-                    Spacer()
-                    
-                    VStack(alignment: .trailing) {
+                        VStack(alignment: .leading) {
+                            Text("\(AppStrings.sender) :")
+                                .font(.headline)
+                            Text(self.transaction.payer)
+                                .lineLimit(3)
+                                .multilineTextAlignment(.leading)
+                                .padding(.leading)
+                                .frame(height: 50)
+                        }
                         HStack {
-                            Button(action: {
-                                self.showRawData = true
-                                print(self.showRawData)
-                            }) {
-                                Image("raw_data")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 24.0,height:24.0)
-                            }
-                            Button(action: {
-                                self.showAlert = true
-                            }) {
-                                Image("delete")
-                                .padding(.leading, 5.0)
-                            }
+                            Text("\(AppStrings.sendAmount) :")
+                                .font(.headline)
+                            Spacer()
+                            Text(self.amountSent(showLocalCurrency: self.showLocalCurrency) + " ") +
+                                Text(self.showLocalCurrency ? self.appController.getLocalCurrency().label : "BTC")
                         }
-                    }
-                    .setCustomDecoration(.accentColor)
-                    .alert(isPresented: self.$showRawData) {
-                        return Alert(title: Text("Raw Data"), message: Text("\(self.transaction.rawData)"), primaryButton: .default(Text("cancel")), secondaryButton: .default(Text("copy"), action: {
-                            self.pasteboard.string = self.transaction.rawData
-                            self.bubbleMessage = "raw_data" + AppStrings.copied
-                            self.showBubble = true
-                        }))
-                    }
-                }
-                .padding([.top, .horizontal])
-
-                VStack(alignment: .leading) {
-                    VStack(alignment: .leading) {
-                        Text("\(AppStrings.sender) :")
-                            .font(.headline)
-                        Text(self.transaction.payer)
-                            .lineLimit(3)
-                            .multilineTextAlignment(.leading)
-                            .padding(.leading)
-                            .frame(height: 50)
-                    }
-                    HStack {
-                        Text("\(AppStrings.sendAmount) :")
-                            .font(.headline)
-                        Spacer()
-                        Text(self.amountSent(showLocalCurrency: self.showLocalCurrency) + " ") +
-                            Text(self.showLocalCurrency ? self.appController.getLocalCurrency().label : "BTC")
-                    }
-                }.padding([.top, .leading, .trailing])
-                Divider()
-                .alert(isPresented: self.$showAlert) {
-                    return Alert(title: Text("Delete this transaction record?"),
-                        primaryButton: .default(Text("delete"), action: {
-                            let next = CoreDataManager.shared.getNextTransaction(self.transaction)
-                            
-                            let prev = CoreDataManager.shared.getPreviousTransaction(self.transaction)
-                            
-                            _ = CoreDataManager.shared.deleteTransaction(transactionVM: self.transaction)
-                            
-                            self.transactionList.fetch()
-                            
-                            if next != nil {
-                                self.transaction = next!
-                            }
-                            else if prev != nil {
-                                self.transaction = prev!
-                            }
-                            else {
-                                self.dismiss()
-                            }
-                        }),
-                        secondaryButton: .default(Text(AppStrings.cancel)))
-                }
-
-                VStack(alignment: .leading) {
-                    VStack(alignment: .leading) {
-                        Text("\(AppStrings.recipient) :")
-                            .font(.headline)
-                        Text(self.transaction.payee)
-                            .multilineTextAlignment(.leading)
-                            .lineLimit(3)
-                            .padding(.leading)
-                        .frame(height: 50)
-                    }
-                    HStack {
-                        Text("\(AppStrings.recvAmount) :")
-                            .font(.headline)
-                        Spacer()
-                        Text(self.amountRecv(showLocalCurrency: self.showLocalCurrency) + " ") +
-                        Text(self.showLocalCurrency ? self.appController.getLocalCurrency().label : "BTC")
-                    }
+                    }.padding([.top, .leading, .trailing])
                     Divider()
-                }.padding()
-
-                HStack {
-                    Text("\(AppStrings.fees) :")
-                        .font(.headline)
-                    Spacer()
-                    Text(self.amountFees(showLocalCurrency: self.showLocalCurrency) + " ") +
-                    Text(self.showLocalCurrency ? self.appController.getLocalCurrency().label : "BTC")
-                }.padding(.horizontal)
-
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        print(self.transaction.exchangeRate)
-                    }) {
-                        Image("pay")
-                    }.setCustomDecoration(.accentColor)
-                    Text(AppStrings.showLocalCurrency).lineLimit(1).font(.headline)
-                    Toggle("", isOn: self.$showLocalCurrency)
-                        .labelsHidden()
-                }.padding([.leading, .bottom, .trailing])
-
-                Spacer()
-                HStack {
-                    Text("\(AppStrings.transactionId):")
-                        .font(.headline)
-                    Image("eye")
-                        .setCustomDecoration(.foregroundAccent)
-                    Spacer()
-                }.padding(.horizontal)
-                Text(self.transaction.hash).padding(.horizontal).frame(height: 50.0)
-                HStack {
-                    Button(action: {
-                        if let tx = CoreDataManager.shared.getPreviousTransaction(self.transaction) {
-                            self.paging = -1
-                            self.transaction = tx
-                        }
-                    }) {
-                        Image(systemName: "backward").font(.system(size: 19)).padding(4)
+                    .alert(isPresented: self.$showAlert) {
+                        return Alert(title: Text("Delete this transaction record?"),
+                            primaryButton: .default(Text("delete"), action: {
+                                let next = CoreDataManager.shared.getNextTransaction(self.transaction)
+                                
+                                let prev = CoreDataManager.shared.getPreviousTransaction(self.transaction)
+                                
+                                _ = CoreDataManager.shared.deleteTransaction(transactionVM: self.transaction)
+                                
+                                self.transactionList.fetch()
+                                
+                                if next != nil {
+                                    self.transaction = next!
+                                }
+                                else if prev != nil {
+                                    self.transaction = prev!
+                                }
+                                else {
+                                    self.dismiss()
+                                }
+                            }),
+                            secondaryButton: .default(Text(AppStrings.cancel)))
                     }
-                    .disabled(CoreDataManager.shared.getPreviousTransaction(self.transaction) == nil)
-                    .padding(.bottom)
-                    .setCustomDecoration(.accentColor)
-                    .frame(width: geometry.size.width/2)
 
-                    Button(action: {
-                        if let tx = CoreDataManager.shared.getNextTransaction(self.transaction) {
-                            self.paging = 1
-                            self.transaction = tx
+                    VStack(alignment: .leading) {
+                        VStack(alignment: .leading) {
+                            Text("\(AppStrings.recipient) :")
+                                .font(.headline)
+                            Text(self.transaction.payee)
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(3)
+                                .padding(.leading)
+                            .frame(height: 50)
                         }
-                    }) {
-                        Image(systemName: "forward").font(.system(size: 19)).padding(4)
-                    }
-                    .disabled(CoreDataManager.shared.getNextTransaction(self.transaction) == nil)
-                    .padding(.bottom)
+                        HStack {
+                            Text("\(AppStrings.recvAmount) :")
+                                .font(.headline)
+                            Spacer()
+                            Text(self.amountRecv(showLocalCurrency: self.showLocalCurrency) + " ") +
+                            Text(self.showLocalCurrency ? self.appController.getLocalCurrency().label : "BTC")
+                        }
+                        Divider()
+                    }.padding()
+
+                    HStack {
+                        Text("\(AppStrings.fees) :")
+                            .font(.headline)
+                        Spacer()
+                        Text(self.amountFees(showLocalCurrency: self.showLocalCurrency) + " ") +
+                        Text(self.showLocalCurrency ? self.appController.getLocalCurrency().label : "BTC")
+                    }.padding(.horizontal)
+
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            self.showRates = true
+                        }) {
+                            Image("pay")
+                        }.setCustomDecoration(.accentColor)
+                        Text(AppStrings.showLocalCurrency).lineLimit(1).font(.headline)
+                        Toggle("", isOn: self.$showLocalCurrency)
+                            .labelsHidden()
+                    }.padding([.leading, .bottom, .trailing])
+
+                    Spacer()
+                    HStack {
+                        Text("\(AppStrings.transactionId):")
+                            .font(.headline)
+                        Image("eye")
+                            .setCustomDecoration(.foregroundAccent)
+                        Spacer()
+                    }.padding(.horizontal)
+                    Text(self.transaction.hash).padding(.horizontal).frame(height: 50.0)
+                    HStack {
+                        Button(action: {
+                            if let tx = CoreDataManager.shared.getPreviousTransaction(self.transaction) {
+                                self.paging = -1
+                                self.transaction = tx
+                            }
+                        }) {
+                            Image(systemName: "backward").font(.system(size: 19)).padding(4)
+                        }
+                        .disabled(CoreDataManager.shared.getPreviousTransaction(self.transaction) == nil)
+                        .padding(.bottom)
+                        .setCustomDecoration(.accentColor)
+                        .frame(width: geometry.size.width/2)
+
+                        Button(action: {
+                            if let tx = CoreDataManager.shared.getNextTransaction(self.transaction) {
+                                self.paging = 1
+                                self.transaction = tx
+                            }
+                        }) {
+                            Image(systemName: "forward").font(.system(size: 19)).padding(4)
+                        }
+                        .disabled(CoreDataManager.shared.getNextTransaction(self.transaction) == nil)
+                        .padding(.bottom)
+                        .setCustomDecoration(.accentColor)
+                        .frame(width: geometry.size.width/2)
+                   }
+                }
+
+                GeometryReader { _ in
+                    EmptyView()
+                }
+                .background(Color.gray.opacity(0.6))
+                .opacity(self.showRates ? 0.5 : 0.0)
+                .animation(.easeInOut)
+                .onTapGesture {
+                    self.showRates = false
+                }
+
+                if self.showRates {
+                    VStack(alignment: .center) {
+                        Text("Exchange Rates").font(.headline).padding(5)
+                        VStack(alignment: .trailing) {
+                            HStack {
+                                Text("Data/Time: ").font(.headline)
+                                Text(AppTools.formatTime(self.transaction.time))
+                            }.padding(.vertical)
+                            Text("1 BTC")
+                            Text("=").padding(.horizontal)
+                            HStack {
+                                Text("\(self.formatedExchangeRate(currency: FiatCurrency.CNY)) ")
+                                Text(FiatCurrency.CNY.label).frame(width: 40)
+                            }
+                            HStack {
+                                Text("\(self.formatedExchangeRate(currency: FiatCurrency.EUR)) ")
+                                Text(FiatCurrency.EUR.label).frame(width: 40)
+                            }
+                            HStack {
+                                Text("\(self.formatedExchangeRate(currency: FiatCurrency.JPY)) ")
+                                Text(FiatCurrency.JPY.label).frame(width: 40)
+                            }
+                            HStack {
+                                Text("\(self.formatedExchangeRate(currency: FiatCurrency.TWD)) ")
+                                Text(FiatCurrency.TWD.label).frame(width: 40)
+                            }
+                            HStack {
+                                Text("\(self.formatedExchangeRate(currency: FiatCurrency.USD)) ")
+                                Text(FiatCurrency.USD.label).frame(width: 40)
+                            }
+                        }.padding(.vertical)
+                        Button(action: {
+                            self.showRates = false
+                        }){
+                            Image(systemName: "xmark.circle.fill").font(.title)
+                        }
+                    }.padding()
                     .setCustomDecoration(.accentColor)
-                    .frame(width: geometry.size.width/2)
-               }
+                    .setCustomDecoration(.backgroundNormal)
+                    .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                }
             }
         }
         .pagingIndicator(paging: self.$paging)
@@ -220,23 +275,29 @@ struct ViewTransactionInformation: View {
             })
     }
     
-    func fiatExchangeRate() -> Double {
+    func formatedExchangeRate(currency: FiatCurrency) -> String {
+        return AppTools.fiatToFormattedString(getExchangeRate(currency: currency))
+    }
+    
+    func getExchangeRate(currency: FiatCurrency) -> Double {
         let exchangeRates = ExchangeRates(exchangeRates: self.transaction.exchangeRate)
-        print(exchangeRates.toString())
-        let currency = self.appController.getLocalCurrency()
-        
+
         switch currency {
-        case .CNY:
-            return exchangeRates.cny
-        case .EUR:
-            return exchangeRates.eur
-        case .JPY:
-            return exchangeRates.jpy
-        case .TWD:
-            return exchangeRates.twd
-        default:
-            return exchangeRates.usd
+            case .CNY:
+                return exchangeRates.cny
+            case .EUR:
+                return exchangeRates.eur
+            case .JPY:
+                return exchangeRates.jpy
+            case .TWD:
+                return exchangeRates.twd
+            default:
+                return exchangeRates.usd
         }
+    }
+    
+    func fiatExchangeRate() -> Double {
+        return getExchangeRate(currency: self.appController.getLocalCurrency())
     }
     
     func amountSent(showLocalCurrency: Bool) -> String {
