@@ -93,7 +93,7 @@ class CoreDataManager {
         }
         return transactions
     }
-
+    
     func insertTransaction(transactionVM: TransactionViewModel) -> Bool {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DBTransaction")
 //        request.predicate = NSPredicate(format: "hash == %@", transactionVM.hash as CVarArg)
@@ -121,6 +121,35 @@ class CoreDataManager {
                 if item.id == transactionVM.id {
                     return true
                 }
+            }
+
+            try self.moc.save()
+        } catch {
+            print(error)
+            return false
+        }
+
+        return true
+    }
+    
+    func updateTransaction(transactionVM: TransactionViewModel) -> Bool {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "DBTransaction")
+        request.predicate = NSPredicate(format: "id == %@", transactionVM.id as CVarArg)
+
+        do {
+            let items = try self.moc.fetch(request)
+            
+            for trans in items as! [DBTransaction] {
+                trans.id = transactionVM.id
+                trans.time = transactionVM.time
+                trans.transHash = transactionVM.hash
+                trans.payer = transactionVM.payer
+                trans.payee = transactionVM.payee
+                trans.amountSent = transactionVM.amountSent
+                trans.amountRecv = transactionVM.amountRecv
+                trans.rawData = transactionVM.rawData
+                trans.blockHeight = transactionVM.blockHeight
+                trans.exchangeRate = transactionVM.exchangeRate
             }
 
             try self.moc.save()

@@ -62,6 +62,7 @@ enum OtkExecState {
         }
     }
 }
+
 enum OtkCommand: CaseIterable{
     case invalid
     case unlock
@@ -641,12 +642,16 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                 else if (words[0].contains("Derivative_Path")) {
                     otkData.derivativePath = trimSting(words[1])
                 }
-                else if (words[0].contains("Public_key")) {
+                else if (words[0].contains("Public_Key")) {
                     otkData.publicKey = trimSting(words[1])
                 }
                 else if (words[0].contains("Request_Signature")) {
-                    let signatures = words[1].components(separatedBy: "\n")
-                    otkData.signatures = signatures
+                    let signatures = words[1].components(separatedBy: "\r\n")
+                    for signature in signatures {
+                        if !signature.isEmpty {
+                            otkData.signatures.append(signature)
+                        }
+                    }
                 }
                 else if (words[0].contains("WIF_Key")) {
                     otkData.wifKey = trimSting(words[1])

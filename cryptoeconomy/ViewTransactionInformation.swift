@@ -19,7 +19,6 @@ struct ViewTransactionInformation: View {
     @State var showLocalCurrency = false
     
     @Environment(\.presentationMode) var presentationMode
-    @State var confirmations = "Unconfirmed"
     var pasteboard = UIPasteboard.general
     @State var bubbleMessage = ""
     @State var showBubble = false
@@ -43,7 +42,7 @@ struct ViewTransactionInformation: View {
 
                         VStack(alignment: .leading) {
                             Text(AppTools.formatTime(self.transaction.time))
-                            Text(self.confirmations)
+                            Text(self.getConfirmation())
                         }
                         
                         Spacer()
@@ -52,7 +51,6 @@ struct ViewTransactionInformation: View {
                             HStack {
                                 Button(action: {
                                     self.showRawData = true
-                                    print(self.showRawData)
                                 }) {
                                     Image("raw_data")
                                     .resizable()
@@ -165,8 +163,13 @@ struct ViewTransactionInformation: View {
                     HStack {
                         Text("\(AppStrings.transactionId):")
                             .font(.headline)
-                        Image("eye")
-                            .setCustomDecoration(.foregroundAccent)
+                        Button(action: {
+                            if let url = URL(string: "https://blockchain.info/tx/" + self.transaction.hash) {
+                                UIApplication.shared.open(url)
+                            }
+                        }){
+                            Image("eye")
+                        }.setCustomDecoration(.accentColor)
                         Spacer()
                     }.padding(.horizontal)
                     Text(self.transaction.hash).padding(.horizontal).frame(height: 50.0)
@@ -252,6 +255,17 @@ struct ViewTransactionInformation: View {
                 }
             }
         }
+        .onAppear(){
+            print(self.transaction.toString())
+            if self.transaction.rawData.isEmpty {
+                _ = WebServices.getRawTranaction(webServiceProvider: BlockChainInfoService.self, hash: self.transaction.hash)
+                    .done(){ rawData in
+                        print("RawData: >> \(rawData)")
+                        self.transaction.rawData = rawData
+                        _ = CoreDataManager.shared.updateTransaction(transactionVM: self.transaction)
+                }
+            }
+        }
         .pagingIndicator(paging: self.$paging)
         .bubbleMessage(message: self.$bubbleMessage, show: self.$showBubble)
         .gesture(DragGesture()
@@ -273,6 +287,23 @@ struct ViewTransactionInformation: View {
                     }
                 }
             })
+    }
+        
+    func getConfirmation() -> String {
+        if self.transaction.blockHeight < 0 {
+            _ = BlockChainInfoService.getBlockHeight(hash: self.transaction.hash)
+                .done(){ height in
+                    print("Height: >> \(height)")
+                    self.transaction.blockHeight = height
+                    _ = CoreDataManager.shared.updateTransaction(transactionVM: self.transaction)
+            }
+            
+            return "Unconfirmed"
+        }
+        else {
+            let confirmations = self.appController.calcConfirmations(self.transaction.blockHeight)
+            return "\(confirmations > 144 ? ">144" : "\(confirmations)") Confirmations"
+        }
     }
     
     func formatedExchangeRate(currency: FiatCurrency) -> String {
@@ -302,8 +333,6 @@ struct ViewTransactionInformation: View {
     
     func amountSent(showLocalCurrency: Bool) -> String {
         let amount = showLocalCurrency ? self.transaction.amountSent * fiatExchangeRate() : self.transaction.amountSent
-        print(amount)
-        print(fiatExchangeRate())
         return showLocalCurrency ? AppTools.fiatToFormattedString(amount) : AppTools.btcToFormattedString(amount)
     }
     
@@ -318,12 +347,6 @@ struct ViewTransactionInformation: View {
         let amount = showLocalCurrency ? fees * fiatExchangeRate() : fees
         
         return showLocalCurrency ? AppTools.fiatToFormattedString(amount) : AppTools.btcToFormattedString(amount)
-    }
-
-    func checkConfirmation() {
-        if self.transaction.blockHeight > 0 {
-            self.confirmations = "1 \(AppStrings.confirmations)"
-        }
     }
 }
 

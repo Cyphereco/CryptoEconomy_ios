@@ -154,10 +154,21 @@ struct ViewMessageSignValidate: View {
                             HStack {
                                 Spacer()
                                 Button(action: {
+                                    let hash = BtcUtils.generateMessageToSign(message: self.messageToBeSigned)
+                                    var request = OtkRequest()
+                                    request.command = .sign
+                                    request.data = hash.hexEncodedString()
+                                    self.otkNpi.request = request
                                     self.otkNpi.beginScanning(onCompleted: {
-                                        if (self.otkNpi.readCompleted) {
+                                        if (self.otkNpi.readCompleted && self.otkNpi.otkState.execState == .success) {
                                             // process signature to signed message format
-                                            self.signedMessage = self.otkNpi.readTag.info + self.otkNpi.readTag.state + self.otkNpi.readTag.data
+                                            do {
+                                                let signature = try BtcUtils.processSignedMessage(encodedMessageToSign: request.data, publicKey: self.otkNpi.otkData.publicKey, signedMessage: self.otkNpi.otkData.signatures[0])
+                                                self.signedMessage = SignedMessage(address: self.otkNpi.otkData.btcAddress, signature: signature, message: self.messageToBeSigned).getFormattedMessage()
+                                            }
+                                            catch {
+                                                print(error)
+                                            }
                                         }
                                     }, onCanceled: {})
                                 }) {
@@ -261,11 +272,20 @@ struct ViewMessageSignValidate: View {
                             HStack {
                                 Spacer()
                                 Button(action: {
-                                    if self.messageToBeValidated == self.signedMessage {
-                                        self.signatureIsValid = true
+                                    do {
+                                        let signedMessage = try SignedMessage(formattedMessage: self.messageToBeValidated)
+                                        let hash = BtcUtils.generateMessageToSign(message: signedMessage.message)
+                                        let result = try BtcUtils.verifySignature(address: signedMessage.address, message: hash.hexEncodedString(), signature: signedMessage.signature)
+                                        
+                                        if result {
+                                            self.signatureIsValid = true
+                                        }
+                                        else {
+                                            self.signatureIsInvalid = true
+                                        }
                                     }
-                                    else {
-                                        self.signatureIsInvalid = true
+                                    catch {
+                                        print(error)
                                     }
                                 }) {
                                     HStack{

@@ -81,7 +81,7 @@ struct DialogConfirmPayment: View {
                             }
                             HStack {
                                 Spacer()
-                                AmountBtcFiat(btc: self.appController.getAmountToBeSent()).font(.headline).foregroundColor(.blue)
+                                AmountBtcFiat(btc: self.appController.getAmountSent()).font(.headline).foregroundColor(.blue)
                             }
                             HStack {
                                 Text("Fees: ").font(.subheadline)

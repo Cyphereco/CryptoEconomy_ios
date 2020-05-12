@@ -49,6 +49,19 @@ class TransactionViewModel: Identifiable {
         self.blockHeight = blockHeight
         self.exchangeRate = exchangeRate
     }
+    
+    func toString() -> String {
+        return "id: \(self.id)\n"
+            + "time: \(self.time)\n"
+            + "hash: \(self.hash)\n"
+            + "payer: \(self.payer)\n"
+            + "payee: \(self.payee)\n"
+            + "amountSent: \(self.amountSent)\n"
+            + "amountRecv: \(self.amountRecv)\n"
+            + "rawData: \(self.rawData)\n"
+            + "blockHeight: \(self.blockHeight)\n"
+            + "exchangeRate: \(self.exchangeRate)\n"
+    }
 }
 
 class TransactionListViewModel: ObservableObject {

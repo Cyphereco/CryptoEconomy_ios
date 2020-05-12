@@ -71,16 +71,14 @@ class ExchangeRates {
         self.jpy = 0
         self.twd = 0
         self.usd = 0
-        print(exchangeRates)
+
         var str = exchangeRates.replacingOccurrences(of: "[", with: "")
         str = str.replacingOccurrences(of: "]", with: "")
         str = str.replacingOccurrences(of: " ", with: "")
-        print(str)
         let rates = str.components(separatedBy: ",")
-        print("\(rates)")
+
         for rate in rates {
             let val = Double(rate.components(separatedBy: ":")[1]) ?? 0
-            print(val)
             if rate.contains("cny") {
                 self.cny = val
             }
@@ -322,6 +320,9 @@ class AppController: ObservableObject {
         }
         self.didChange.send(self)
     }}
+    @Published var currentBlockHeight: Int64 = -1 { didSet {
+        self.didChange.send(self)
+    }}
 
     init() {
         UserDefaults.standard.register(defaults: ["LocalCurrency": 5])
@@ -331,10 +332,40 @@ class AppController: ObservableObject {
         UserDefaults.standard.register(defaults: ["UseFixedAddress": false])
         UserDefaults.standard.register(defaults: ["FixedAddress": ""])
         
+        updateBlockHeight()
         updateTxFees()
         updateExchangeRates()
     }
     
+    func calcConfirmations(_ blockHeight: Int64) -> Int {
+        return blockHeight > 0 ? Int(self.currentBlockHeight - blockHeight + 1) : -1
+    }
+
+    @objc func updateBlockHeight() {
+        var nextUpdate = 10.0  // seconds
+        
+        _ = BlockChainInfoService.getLatestBlockHeight()
+            .done({ height in
+            print("Current Blockheight: \(height)")
+            
+            if height > 0 {
+                self.currentBlockHeight = height
+                nextUpdate = 300.0
+            }
+                
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
+               self.updateTxFees()
+            }
+        })
+            .catch() {err in
+            print(err)
+            DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
+               self.updateTxFees()
+            }
+        }
+    }
+
     @objc func updateTxFees() {
         var nextUpdate = 10.0  // seconds
 
@@ -351,12 +382,19 @@ class AppController: ObservableObject {
                self.updateTxFees()
             }
         })
+        .catch(){err in
+            print(err)
+            DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
+               self.updateTxFees()
+            }
+        }
     }
 
     @objc func updateExchangeRates() {
         var nextUpdate = 10.0  // seconds
 
-        _ = WebServices.updateBtcExchangeRates().done({ exchangeRates in
+        _ = WebServices.updateBtcExchangeRates()
+        .done({ exchangeRates in
             AppController.exchangeRates.copy(exchangeRates: exchangeRates)
             print(AppController.exchangeRates.toString())
 
@@ -369,6 +407,12 @@ class AppController: ObservableObject {
                        self.updateExchangeRates()
             }
         })
+        .catch(){err in
+            print(err)
+            DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
+                       self.updateExchangeRates()
+            }
+        }
     }
     
     func cancelOtkRequest(continueAfterStarted: Bool) {
@@ -432,14 +476,14 @@ class AppController: ObservableObject {
         return estTime
     }
     
-    func getAmountToBeSent() -> Double {
+    func getAmountSent() -> Double {
         let amount = Double(self.amountSend) ?? 0.0
         
         return self.useAllFunds ? self.balance : self.feesIncluded ? amount : amount + self.fees
     }
        
     func getAmountReceived() -> Double {
-        return self.getAmountToBeSent() - self.fees
+        return self.getAmountSent() - self.fees
     }
        
     func setFeesIncluded(included: Bool) {

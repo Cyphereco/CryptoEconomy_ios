@@ -39,11 +39,6 @@ struct AppTools {
     static func fiatToBtc(_ fiat: Double, currencySelection: Int) -> Double {
         return fiat / getExchangeRate(currency: currencySelection)
     }
-
-    static func calcConfirmations(_ blockHeight: Int64) -> Int {
-//        return Int(getCurrentBlockHeight() - blockHeight)
-        return Int(blockHeight)
-    }
     
     static func formatTime(_ time: Date) -> String {
         let formatter = DateFormatter()

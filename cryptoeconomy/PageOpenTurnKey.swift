@@ -144,7 +144,6 @@ struct PageOpenTurnKey: View {
                     self.showDialogEnterPin = false
                 }
             }, pin: "", handler: {pin in
-                print(pin)
                 self.otkNpi.request.pin = pin
                 self.makeRequest()
             })

@@ -98,7 +98,7 @@ struct PagePay: View {
                                             self.appController.balance = BtcUtils.satoshiToBtc(satoshi: result)
                                             
                                             if !self.appController.useAllFunds &&
-                                                 self.appController.balance < self.appController.getAmountToBeSent() {
+                                                 self.appController.balance < self.appController.getAmountSent() {
                                                 self.showBubble("Balance not enough!")
                                                 return
                                             }

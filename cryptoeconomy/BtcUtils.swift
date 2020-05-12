@@ -217,6 +217,7 @@ class BtcUtils {
      * Process signaure
      */
     static func processSignedMessage(encodedMessageToSign: String, publicKey: String, signedMessage: String) throws -> String {
+        print("processingSignedMessage: \(encodedMessageToSign), \(publicKey), \(signedMessage)")
         let key = BTCDataFromHex(publicKey)
         let hash = BTCDataFromHex(encodedMessageToSign)
 

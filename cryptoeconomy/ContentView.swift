@@ -23,6 +23,8 @@ struct ContentView: View {
     @State var showTransactionInfo = false
     @ObservedObject var transactionList = TransactionListViewModel()
     @State private var transaction: TransactionViewModel? = nil
+    
+    let otkNpi = AppController.otkNpi
 
     var body: some View {
         ZStack {
@@ -132,17 +134,78 @@ struct ContentView: View {
                 self.showPaymentConfirmation = false
                 self.fullscreenMessage = "Processing transaction..."
 
-                _ = BlockCypherService.newTransaction(from: self.appController.payer, to: self.appController.payee, amountInSatoshi: BtcUtils.BtcToSatoshi(btc: self.appController.getAmountToBeSent()), fees: BtcUtils.BtcToSatoshi(btc: self.appController.fees)).done(){ unsignedTx in
-                    print(unsignedTx.toString())
-                    self.transaction = TransactionViewModel(time: Date(), hash: "fake_hash", payer: self.appController.payer, payee: self.appController.payee, amountSent: self.appController.getAmountToBeSent(), amountRecv: self.appController.getAmountReceived(), rawData: "fake_raw_data", blockHeight: -1, exchangeRate: AppController.exchangeRates.toString())
+                _ = WebServices.newTransaction(from: self.appController.payer, to: self.appController.payee, amountInSatoshi: BtcUtils.BtcToSatoshi(btc: self.appController.getAmountReceived()), fees: BtcUtils.BtcToSatoshi(btc: self.appController.fees)).done(){ unsignedTx in
                     
-                    _ = CoreDataManager.shared.insertTransaction(transactionVM: self.transaction!)
-
-                    DispatchQueue.main.async {
-                        self.fullscreenMessage = ""
-                        self.appController.pageSelected = 2
-                        self.showTransactionInfo = true
+                    print(unsignedTx.toString())
+                    
+                    var signatures = ""
+                    for signature in unsignedTx.toSign {
+                        signatures += signature + "\n"
                     }
+                    
+                    self.otkNpi.request = OtkRequest(command: .sign, pin: "", data: signatures, option: "")
+                    
+                    self.otkNpi.beginScanning(onCompleted: {
+                        print("\(self.otkNpi.otkState)")
+                        print("\(self.otkNpi.otkData)")
+                        print("\(self.otkNpi.otkData.signatures.count)")
+                        print("\(self.otkNpi.otkData.signatures.count)")
+                        if self.otkNpi.otkState.execState == .success {
+                            _ = WebServices.sendTransaction(unsignedTx: unsignedTx, signatures: self.otkNpi.otkData.signatures, publicKey: self.otkNpi.otkData.publicKey)
+                                .done(){tx in
+                                
+                                print(tx)
+                                    
+                                let transaction = TransactionViewModel(time: Date(), hash: tx.hash, payer: tx.from, payee: tx.to, amountSent: self.appController.getAmountSent(), amountRecv: self.appController.getAmountReceived(), rawData: tx.rawData, blockHeight: tx.blockHeight, exchangeRate: AppController.exchangeRates.toString())
+                                _ = CoreDataManager.shared.insertTransaction(transactionVM: transaction)
+
+                                if transaction.rawData.isEmpty {
+                                    _ = WebServices.getRawTranaction(hash: transaction.hash)
+                                        .done(){ rawData in
+                                            transaction.rawData = rawData
+                                            _ = CoreDataManager.shared.updateTransaction(transactionVM: transaction)
+                                    }
+                                }
+                                self.transaction = transaction
+
+                                DispatchQueue.main.async {
+                                    self.fullscreenMessage = ""
+                                    self.appController.pageSelected = 2
+                                    self.showTransactionInfo = true
+                                }
+                            }
+                            .catch(){err in
+                                DispatchQueue.main.async {
+                                    self.fullscreenMessage = ""
+                                    self.bubbleMessage = "Error: \(err)"
+                                    self.showBubble.toggle()
+                                }
+                            }
+                        }
+                        else {
+                            DispatchQueue.main.async {
+                                self.fullscreenMessage = ""
+                                self.bubbleMessage = "Error: \(self.otkNpi.otkState.failureReason)"
+                                self.showBubble.toggle()
+                            }
+                        }
+//                        self.transaction = TransactionViewModel(time: Date(), hash: "fake_hash", payer: self.appController.payer, payee: self.appController.payee, amountSent: self.appController.getAmountSent(), amountRecv: self.appController.getAmountReceived(), rawData: "fake_raw_data", blockHeight: -1, exchangeRate: AppController.exchangeRates.toString())
+//
+//                        _ = CoreDataManager.shared.insertTransaction(transactionVM: self.transaction!)
+//
+//                        DispatchQueue.main.async {
+//                            self.fullscreenMessage = ""
+//                            self.appController.pageSelected = 2
+//                            self.showTransactionInfo = true
+//                        }
+
+                    }, onCanceled: {
+                        DispatchQueue.main.async {
+                            self.fullscreenMessage = ""
+                            self.bubbleMessage = "Cancel payment!"
+                            self.showBubble.toggle()
+                        }
+                    })
                 }.catch(){err in
                     print("failed to generate transaction")
                     DispatchQueue.main.async {

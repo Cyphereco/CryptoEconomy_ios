@@ -47,15 +47,13 @@ struct PageHistory: View {
                               primaryButton: .default(
                                 Text("delete"),
                                 action: {
-                                    print("Clear History")
                                     if CoreDataManager.shared.deleteAllTransaction() {
                                         self.transactionListVM.fetch()
                                     }
                                 }
                             ),
                               secondaryButton: .default(
-                                Text(AppStrings.cancel),
-                                action: {print("Cancel Clear")}
+                                Text(AppStrings.cancel)
                             )
                         )
                     }

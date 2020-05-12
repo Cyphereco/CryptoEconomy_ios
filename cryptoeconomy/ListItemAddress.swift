@@ -42,7 +42,6 @@ struct AddressQRCodeView: View {
             }
             .navigationBarTitle(Text(AppStrings.btcQrCode), displayMode: .inline)
             .navigationBarItems(trailing: Button(action: {
-                print("Dismissing sheet view...")
                 self.showSheetView = false
             }) {
                 Image("clear")
