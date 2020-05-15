@@ -73,7 +73,7 @@ struct SideMenuPay: View {
                 }
             }.setCustomDecoration(.foregroundNormal).padding()
             .alert(isPresented: self.$alertAbout){
-                Alert(title: Text("Version") + Text(": \(AppController.VERSION)"))
+                Alert(title: Text("Version") + Text(": \(AppController.VERSION).\(AppController.BUILD_NUMBER)"))
             }
 
         }.asSideMenu(isOpened: self.isOpened)

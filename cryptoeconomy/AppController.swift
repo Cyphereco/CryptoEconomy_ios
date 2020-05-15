@@ -198,7 +198,9 @@ class AppController: ObservableObject {
 
     static var shared = AppController()
     
-    static let VERSION = "1.0"
+    static let VERSION = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+    static let BUILD_NUMBER = Bundle.main.infoDictionary?["CFBundleVersion"] as! String
+    
     static let REQUEST_TIMEOUT = 30.0         // seconds
     static let ESTIMATED_BLOCK_SIZE = 200   // bytes
     static let accentColorLight: Color = .blue

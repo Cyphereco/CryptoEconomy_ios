@@ -435,6 +435,7 @@
 				BA9595E0242EFD8800C48B37 /* Frameworks */,
 				BA9595E1242EFD8800C48B37 /* Resources */,
 				5711D4150D9D381920179007 /* [CP] Embed Pods Frameworks */,
+				B2436A51246EE1FF004F4F47 /* Set build number */,
 			);
 			buildRules = (
 			);
@@ -604,6 +605,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-cryptoeconomy/Pods-cryptoeconomy-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		B2436A51246EE1FF004F4F47 /* Set build number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Set build number";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$SRCROOT/Scripts/set_build_number.sh\n";
 		};
 		C2FF0AB73BA2CFA421A1662A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -912,6 +931,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "cryptoeconomy/Crypto Economy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"cryptoeconomy/Preview Content\"";
 				DEVELOPMENT_TEAM = P2UPNJ5555;
 				ENABLE_BITCODE = NO;
@@ -939,6 +959,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "cryptoeconomy/Crypto Economy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"cryptoeconomy/Preview Content\"";
 				DEVELOPMENT_TEAM = P2UPNJ5555;
 				ENABLE_BITCODE = NO;
