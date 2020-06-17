@@ -16,6 +16,7 @@
 "btc_address" = "BTC アドレス";
 "btc_qr_code" = "BTC QRコード";
 "cancel" = "キャンセル";
+"cannot_reach_network" = "ネットワークと通信できません";
 "choose_key" = "鍵を選んで";
 "choose_key_warning_message" = "変更する前に、現在のキーパスや公開鍵を輸出する必要があります。 そうしないと、現在の資金へのアクセスが失われる可能性があります。";
 "clear_history" = "歴史削除";

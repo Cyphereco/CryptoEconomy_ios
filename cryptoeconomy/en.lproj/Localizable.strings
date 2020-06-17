@@ -16,6 +16,7 @@
 "btc_address" = "BTC Address";
 "btc_qr_code" = "BTC QR Code";
 "cancel" = "Cancel";
+"cannot_reach_network" = "Cannot reach to the network";
 "choose_key" = "Choose Key";
 "choose_key_warning_message" = "You should backup the current key path or export the current key before changing it. Otherwise, You may lost the access to your current funds.";
 "clear_history" = "Clear History";

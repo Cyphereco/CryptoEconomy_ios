@@ -179,7 +179,7 @@ struct PageOpenTurnKey: View {
                     if command == .invalid {
                         // no request, just otk info
                         _ = BlockChainInfoService.getBalance(address: self.otkNpi.otkData.btcAddress).done({result in
-                            if (result > 0) {
+                            if (result >= 0) {
                                 self.otkBtcBalance = BtcUtils.satoshiToBtc(satoshi: result)
                             }
                         }).catch({_ in

@@ -94,6 +94,8 @@ struct AppStrings {
     static let reset_command_sent = localize("reset_command_sent")
     static let sign = localize("sign")
     static let validate = localize("validate")
+    static let cannot_reach_network = localize("cannot_reach_network");
+
 
     private static func localize(_ str: String) -> String {
         return NSLocalizedString(str, comment: "")

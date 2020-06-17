@@ -309,6 +309,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
 //                preferredStyle: .alert
 //            )
 //            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            print("NFC scanning not supported!")
             return
         }
         
@@ -356,15 +357,19 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         let tag = tags.first!
         session.connect(to: tag, completionHandler: { (error: Error?) in
             if nil != error {
-                session.alertMessage = AppStrings.strUnableToConnect
-                session.invalidate()
+//                session.alertMessage = AppStrings.strUnableToConnect
+//                session.invalidate()
+                print(AppStrings.strUnableToConnect)
+                session.restartPolling()
                 return
             }
             
             tag.queryNDEFStatus(completionHandler: { (ndefStatus: NFCNDEFStatus, capacity: Int, error: Error?) in
                 guard error == nil else {
-                    session.alertMessage = AppStrings.strUnableToQueryNdef
-                    session.invalidate()
+//                    session.alertMessage = AppStrings.strUnableToQueryNdef
+//                    session.invalidate()
+                    print(AppStrings.strUnableToQueryNdef)
+                    session.restartPolling()
                     return
                 }
 
@@ -378,8 +383,10 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                 case .readWrite:
                     tag.readNDEF(completionHandler: { (message: NFCNDEFMessage?, error: Error?) in
                         if nil != error || nil == message {
-                            session.alertMessage = AppStrings.strUnknownNdefStatus
-                            session.invalidate()
+//                            session.alertMessage = AppStrings.strUnknownNdefStatus
+//                            session.invalidate()
+                            print(AppStrings.strUnableToQueryNdef)
+                            session.restartPolling()
                             return
                         } else {
                             DispatchQueue.main.async {
@@ -435,8 +442,10 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                                             let requestMessage = NFCNDEFMessage.init(records: [sessId, reqId, reqCmd, reqData, reqOpt])
                                             tag.writeNDEF(requestMessage, completionHandler: { (error: Error?) in
                                                 if nil != error {
-                                                    session.alertMessage = AppStrings.strRequestSentFailed + ": \(error!)"
-                                                    session.invalidate()
+//                                                    session.alertMessage = AppStrings.strRequestSentFailed + ": \(error!)"
+//                                                    session.invalidate()
+                                                    print(AppStrings.strRequestSentFailed + ": \(error!)")
+                                                    session.restartPolling()
                                                     return
                                                 }
                                                 else {
@@ -455,8 +464,10 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                         }
                     })
                 @unknown default:
-                    session.alertMessage = AppStrings.strUnknownNdefStatus
-                    session.invalidate()
+//                    session.alertMessage = AppStrings.strUnknownNdefStatus
+//                    session.invalidate()
+                    print(AppStrings.strUnknownNdefStatus)
+                    session.restartPolling()
                 }
             })
         })

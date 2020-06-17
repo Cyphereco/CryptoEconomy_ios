@@ -16,6 +16,7 @@
 "btc_address" = "BTC地址";
 "btc_qr_code" = "BTC二维码";
 "cancel" = "取消";
+"cannot_reach_network" = "无法连接网络";
 "choose_key" = "选择密钥";
 "choose_key_warning_message" = "在变更密钥前您应该先备份现有密钥路径或汇出当前密钥，否则，您将会失去对现有资金的存取。";
 "clear_history" = "清除记录";

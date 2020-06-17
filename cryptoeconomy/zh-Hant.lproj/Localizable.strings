@@ -16,6 +16,7 @@
 "btc_address" = "BTC地址";
 "btc_qr_code" = "BTC二維碼";
 "cancel" = "取消";
+"cannot_reach_network" = "無法連接到網路";
 "choose_key" = "選擇密鑰";
 "choose_key_warning_message" = "在變更密鑰前您應該先備份現有密鑰路徑或匯出當前密鑰，否則，您將會失去對現有資金的存取。";
 "clear_history" = "清除記錄";

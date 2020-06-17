@@ -28,12 +28,11 @@ struct ViewOpenTurnKeyInfo: View {
             }.padding()
             VStack {
                 if self.btcBalance < 0 {
-                    Text("Cannot update balance due to newwork connection problems, please try later!").font(.headline)
+                    Text(AppStrings.cannot_reach_network).font(.headline)
                 }
                 else {
                     Text("\(AppTools.btcToFormattedString(self.btcBalance)) BTC").font(.title)
-//                    Text("(~ \(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btcBalance, currencySelection: self.appController.getLocalCurrency().ordinal))) \(appController.getLocalCurrency().label))").font(.headline)
-                    Text("(~ \(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btcBalance, currencySelection: 0))) \(appController.getLocalCurrency().label))").font(.headline)
+                    Text("(~ \(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btcBalance, currencySelection: self.appController.getLocalCurrency().ordinal))) \(appController.getLocalCurrency().label))").font(.headline)
                 }
             }.padding()
             VStack {
