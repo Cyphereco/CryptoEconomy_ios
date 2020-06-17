@@ -345,16 +345,17 @@ class AppController: ObservableObject {
 
     @objc func updateBlockHeight() {
         var nextUpdate = 10.0  // seconds
-        
+        self.currentBlockHeight = Int64(UserDefaults.standard.integer(forKey: "LastBlockHeight"))
+
         _ = BlockChainInfoService.getLatestBlockHeight()
             .done({ height in
             print("Current Blockheight: \(height)")
             
-            if height > 0 {
+            if height >= 0 {
+                UserDefaults.standard.set(height, forKey: "LastBlockHeight")
                 self.currentBlockHeight = height
                 nextUpdate = 300.0
             }
-                
 
             DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
                self.updateTxFees()
