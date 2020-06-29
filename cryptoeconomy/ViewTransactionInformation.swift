@@ -290,7 +290,9 @@ struct ViewTransactionInformation: View {
     }
         
     func getConfirmation() -> String {
-        if self.transaction.blockHeight < 0 {
+        print("Tx Block Height: >> \(self.transaction.blockHeight)")
+
+        if self.transaction.blockHeight <= 0 {
             _ = BlockChainInfoService.getBlockHeight(hash: self.transaction.hash)
                 .done(){ height in
                     print("Height: >> \(height)")

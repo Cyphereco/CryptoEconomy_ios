@@ -21,6 +21,8 @@ struct ContentView: View {
     @State var showBubble = false
     @State var bubbleMessage = ""
     @State var showTransactionInfo = false
+    @State var showDialogEnterPin = false
+    @State var strPincode = ""
     @ObservedObject var transactionList = TransactionListViewModel()
     @State private var transaction: TransactionViewModel? = nil
     
@@ -131,87 +133,14 @@ struct ContentView: View {
             DialogConfirmPayment(showDialog: self.showPaymentConfirmation, closeDialog: {
                 self.showPaymentConfirmation = false
             }, onConfirm: {
-                self.showPaymentConfirmation = false
-                self.fullscreenMessage = "Processing transaction..."
-
-                _ = WebServices.newTransaction(from: self.appController.payer, to: self.appController.payee, amountInSatoshi: BtcUtils.BtcToSatoshi(btc: self.appController.getAmountReceived()), fees: BtcUtils.BtcToSatoshi(btc: self.appController.fees)).done(){ unsignedTx in
-                    
-                    print(unsignedTx.toString())
-                    
-                    var signatures = ""
-                    for signature in unsignedTx.toSign {
-                        signatures += signature + "\n"
+                withAnimation {
+                    self.showPaymentConfirmation = false
+                    // if set AutyByPin, prompt PIN input dialog then proceed
+                    if self.appController.authByPin {
+                        self.showDialogEnterPin = true
                     }
-                    
-                    self.otkNpi.request = OtkRequest(command: .sign, pin: "", data: signatures, option: "")
-                    
-                    self.otkNpi.beginScanning(onCompleted: {
-                        print("\(self.otkNpi.otkState)")
-                        print("\(self.otkNpi.otkData)")
-                        print("\(self.otkNpi.otkData.signatures.count)")
-                        print("\(self.otkNpi.otkData.signatures.count)")
-                        if self.otkNpi.otkState.execState == .success {
-                            _ = WebServices.sendTransaction(unsignedTx: unsignedTx, signatures: self.otkNpi.otkData.signatures, publicKey: self.otkNpi.otkData.publicKey)
-                                .done(){tx in
-                                
-                                print(tx)
-                                    
-                                let transaction = TransactionViewModel(time: Date(), hash: tx.hash, payer: tx.from, payee: tx.to, amountSent: self.appController.getAmountSent(), amountRecv: self.appController.getAmountReceived(), rawData: tx.rawData, blockHeight: tx.blockHeight, exchangeRate: AppController.exchangeRates.toString())
-                                _ = CoreDataManager.shared.insertTransaction(transactionVM: transaction)
-
-                                if transaction.rawData.isEmpty {
-                                    _ = WebServices.getRawTranaction(hash: transaction.hash)
-                                        .done(){ rawData in
-                                            transaction.rawData = rawData
-                                            _ = CoreDataManager.shared.updateTransaction(transactionVM: transaction)
-                                    }
-                                }
-                                self.transaction = transaction
-
-                                DispatchQueue.main.async {
-                                    self.fullscreenMessage = ""
-                                    self.appController.pageSelected = 2
-                                    self.showTransactionInfo = true
-                                }
-                            }
-                            .catch(){err in
-                                DispatchQueue.main.async {
-                                    self.fullscreenMessage = ""
-                                    self.bubbleMessage = "Error: \(err)"
-                                    self.showBubble.toggle()
-                                }
-                            }
-                        }
-                        else {
-                            DispatchQueue.main.async {
-                                self.fullscreenMessage = ""
-                                self.bubbleMessage = "Error: \(self.otkNpi.otkState.failureReason)"
-                                self.showBubble.toggle()
-                            }
-                        }
-//                        self.transaction = TransactionViewModel(time: Date(), hash: "fake_hash", payer: self.appController.payer, payee: self.appController.payee, amountSent: self.appController.getAmountSent(), amountRecv: self.appController.getAmountReceived(), rawData: "fake_raw_data", blockHeight: -1, exchangeRate: AppController.exchangeRates.toString())
-//
-//                        _ = CoreDataManager.shared.insertTransaction(transactionVM: self.transaction!)
-//
-//                        DispatchQueue.main.async {
-//                            self.fullscreenMessage = ""
-//                            self.appController.pageSelected = 2
-//                            self.showTransactionInfo = true
-//                        }
-
-                    }, onCanceled: {
-                        DispatchQueue.main.async {
-                            self.fullscreenMessage = ""
-                            self.bubbleMessage = "Cancel payment!"
-                            self.showBubble.toggle()
-                        }
-                    })
-                }.catch(){err in
-                    print("failed to generate transaction")
-                    DispatchQueue.main.async {
-                        self.fullscreenMessage = ""
-                        self.bubbleMessage = "Failed to generate transaction: (\(err))"
-                        self.showBubble = true
+                    else {
+                        self.makePayment()
                     }
                 }
             }, onCancel: {
@@ -219,11 +148,104 @@ struct ContentView: View {
                 self.showToast = true
                 self.showPaymentConfirmation = false
             })
+
+            DialogEnterPin(showDialog: self.showDialogEnterPin, closeDialog: {
+                withAnimation {
+                    self.showDialogEnterPin = false
+                }
+            }, pin: "", handler: {pin in
+                self.strPincode = pin
+                self.makePayment()
+            })
         }
         .isKeyboardActive(keyboardActive: self.$keyboardActive)
         .fullScreenPrompt(message: self.$fullscreenMessage)
         .toastMessage(message: self.$toastMessage, show: self.$showToast)
         .bubbleMessage(message: self.$bubbleMessage, show: self.$showBubble)
+    }
+    
+    func makePayment() {
+        self.fullscreenMessage = "Processing transaction..."
+
+        _ = WebServices.newTransaction(from: self.appController.payer, to: self.appController.payee, amountInSatoshi: BtcUtils.BtcToSatoshi(btc: self.appController.getAmountReceived()), fees: BtcUtils.BtcToSatoshi(btc: self.appController.fees)).done(){ unsignedTx in
+            
+            print(unsignedTx.toString())
+            
+            var signatures = ""
+            for signature in unsignedTx.toSign {
+                signatures += signature + "\n"
+            }
+            
+            self.otkNpi.request = OtkRequest(command: .sign, pin: self.strPincode, data: signatures, option: "")
+            
+            self.otkNpi.beginScanning(onCompleted: {
+                print("\(self.otkNpi.otkState)")
+                print("\(self.otkNpi.otkData)")
+                print("\(self.otkNpi.otkData.signatures.count)")
+                print("\(self.otkNpi.otkData.signatures.count)")
+                if self.otkNpi.otkState.execState == .success {
+                    _ = WebServices.sendTransaction(unsignedTx: unsignedTx, signatures: self.otkNpi.otkData.signatures, publicKey: self.otkNpi.otkData.publicKey)
+                        .done(){tx in
+                        
+                        print(tx)
+                            
+                        let transaction = TransactionViewModel(time: Date(), hash: tx.hash, payer: tx.from, payee: tx.to, amountSent: self.appController.getAmountSent(), amountRecv: self.appController.getAmountReceived(), rawData: tx.rawData, blockHeight: tx.blockHeight, exchangeRate: AppController.exchangeRates.toString())
+                        _ = CoreDataManager.shared.insertTransaction(transactionVM: transaction)
+
+                        if transaction.rawData.isEmpty {
+                            _ = WebServices.getRawTranaction(hash: transaction.hash)
+                                .done(){ rawData in
+                                    transaction.rawData = rawData
+                                    _ = CoreDataManager.shared.updateTransaction(transactionVM: transaction)
+                            }
+                        }
+                        self.transaction = transaction
+
+                        DispatchQueue.main.async {
+                            self.fullscreenMessage = ""
+                            self.appController.pageSelected = 2
+                            self.showTransactionInfo = true
+                        }
+                    }
+                    .catch(){err in
+                        DispatchQueue.main.async {
+                            self.fullscreenMessage = ""
+                            self.bubbleMessage = "Error: \(err)"
+                            self.showBubble.toggle()
+                        }
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        self.fullscreenMessage = ""
+                        self.bubbleMessage = "Error: \(self.otkNpi.otkState.failureReason)"
+                        self.showBubble.toggle()
+                    }
+                }
+//              self.transaction = TransactionViewModel(time: Date(), hash: "fake_hash", payer: self.appController.payer, payee: self.appController.payee, amountSent: self.appController.getAmountSent(), amountRecv: self.appController.getAmountReceived(), rawData: "fake_raw_data", blockHeight: -1, exchangeRate: AppController.exchangeRates.toString())
+//
+//              _ = CoreDataManager.shared.insertTransaction(transactionVM: self.transaction!)
+//
+//                DispatchQueue.main.async {
+//                    self.fullscreenMessage = ""
+//                    self.appController.pageSelected = 2
+//                    self.showTransactionInfo = true
+//                }
+            }, onCanceled: {
+                DispatchQueue.main.async {
+                    self.fullscreenMessage = ""
+                    self.bubbleMessage = "Cancel payment!"
+                    self.showBubble.toggle()
+                }
+            })
+        }.catch(){err in
+            print("failed to generate transaction")
+            DispatchQueue.main.async {
+                self.fullscreenMessage = ""
+                self.bubbleMessage = "Failed to generate transaction: (\(err))"
+                self.showBubble = true
+            }
+        }
     }
             
     func closeMenu() {

@@ -27,7 +27,7 @@ struct ViewChooseKey: View {
     var body: some View {
         VStack (alignment: .leading) {
             HStack {
-                Text("Key index must be an integer number between 0~2,147,483,647")
+                Text("Choose a derivative key by selecting an index for each level.")
                 Spacer()
                 Button(action: {
                     if let pasteString = self.pasteboard.string {
@@ -42,11 +42,11 @@ struct ViewChooseKey: View {
                     }
                 }){Image("scan_qrcode")}
                 
-            }.padding().padding()
+            }.padding()
 
             VStack {
                 ForEach(0 ..< self.keyIndexes.count) { item in
-                    TextField("Index of level \(item) key", text: self.$keyIndexes[item], onEditingChanged: {_ in
+                    TextField("Index of level \(item + 1) (0 ~ 2,147,483,647)", text: self.$keyIndexes[item], onEditingChanged: {_ in
                         if self.keyIndexes[item].count > 0 {
                             self.falseInput = false
                             self.clearFocus()
