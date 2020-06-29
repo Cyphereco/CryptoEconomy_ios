@@ -204,6 +204,12 @@ class BlockCypherService: WebService {
             var sigArray = Array<String>()
             var pubKeyArray = Array<String>()
             for sig in signatures {
+                // Validate signature length
+                if sig.count != 128 {
+                    Logger.shared.debug("Incorrect signature length:\(sig.count)")
+                    resolver.reject(WebServiceError.otherErrors)
+                    return
+                }
                 // convert to DER and append to array
                 let der = BtcUtils.toDER(sigHexString: sig) as Data
                 sigArray.append(der.hexEncodedString())
@@ -221,6 +227,7 @@ class BlockCypherService: WebService {
                 } catch {
                     Logger.shared.debug("Failed to generate data for send transaction")
                     resolver.reject(WebServiceError.otherErrors)
+                    return
                 }
             }
             // generate Request
