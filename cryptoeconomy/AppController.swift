@@ -349,24 +349,24 @@ class AppController: ObservableObject {
 
         _ = BlockChainInfoService.getLatestBlockHeight()
             .done({ height in
-            print("Current Blockheight: \(height)")
-            
-            if height >= 0 {
-                UserDefaults.standard.set(height, forKey: "LastBlockHeight")
-                self.currentBlockHeight = height
-                nextUpdate = 300.0
-            }
+                print("Current Blockheight: \(height)")
+                
+                if height >= 0 {
+                    UserDefaults.standard.set(height, forKey: "LastBlockHeight")
+                    self.currentBlockHeight = height
+                    nextUpdate = 300.0
+                }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
-               self.updateTxFees()
-            }
-        })
+                DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
+                   self.updateBlockHeight()
+                }
+            })
             .catch() {err in
-            print(err)
-            DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
-               self.updateTxFees()
+                print(err)
+                DispatchQueue.main.asyncAfter(deadline: .now() + nextUpdate) {
+                   self.updateBlockHeight()
+                }
             }
-        }
     }
 
     @objc func updateTxFees() {

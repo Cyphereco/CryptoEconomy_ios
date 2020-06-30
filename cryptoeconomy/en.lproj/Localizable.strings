@@ -12,6 +12,7 @@
 "alias" = "Alias";
 "amount" = "Amount";
 "Approach OpenTurnKey to the NFC reader." = "Approach OpenTurnKey to the NFC reader.";
+"authentciation_failed" = "Authentciation failed";
 "authorization_with_pin_code" = "Authorization with PIN Code";
 "btc_address" = "BTC Address";
 "btc_qr_code" = "BTC QR Code";
@@ -20,8 +21,10 @@
 "choose_key" = "Choose Key";
 "choose_key_warning_message" = "You should backup the current key path or export the current key before changing it. Otherwise, You may lost the access to your current funds.";
 "clear_history" = "Clear History";
+"Confirm Payment" = "Confirm Payment";
 "confirmations" = "Confirmations";
 "copied" = "Copied";
+"copy" = "Copy";
 "custom" = "Custom";
 "date" = "Date";
 "delete" = "Delete";
@@ -31,6 +34,7 @@
 "derivative_public_key" = "Derivative Public Key";
 "edit_address" = "Edit Address";
 "estimated_fees" = "Estimated Fees";
+"Estimated Time" = "Estimated Time";
 "excluded" = "Excluded";
 "export_key" = "Export Key";
 "export_wif_warning_message" = "If it is not necessary, DO  NOT export the WIF key!  A WIF key is the private key that has the full access to the current funds. If you export a WIF key, make sure you keep the exported key in a safe deposit, or your funds may be stolen.";
@@ -40,6 +44,8 @@
 "high" = "High";
 "history" = "History";
 "included" = "Included";
+"invalid_command" = "Invalid command";
+"invalide_parameters" = "Invalide parameters";
 "i_understood" = "I Understood!";
 "low" = "Low";
 "make_request" = "Make Request";
@@ -48,6 +54,7 @@
 "mid" = "Mid";
 "minutes" = "Minutes";
 "mint_information" = "Mint Information";
+"missing_parameters" = "Missing parameters";
 "Multiple tags are detected, please remove all tags and try again." = "Multiple tags are detected, please remove all tags and try again.";
 "no_address" = "No Address";
 "no_transaction_record" = "No Transaction Record";
@@ -57,15 +64,17 @@
 "openturnkey_information" = "OpenTurnKey Information";
 "pay" = "Pay";
 "pin_code_warning_message" = "PIN code setting guarantee an alternative backup access to the key when OpenTurnKey fingerprint authentication run into problem. In the most cases, we recommend you to use fingerprint authentication if possible. If PIN code authorization is to be used, make sure you use it only on trusted secure devices.";
+"pin_is_not_set" = "PIN is not set";
 "read_general_information" = "Read General Information";
+"received_amount" = "Received amount";
 "recipient" = "Recipient";
 "recipient_address" = "Recipient Address";
 "Recipient address is empty!" = "Recipient address is empty!";
-"received_amount" = "Received Amount";
 "request_fail" = "Request Fail";
 "Request has been sent." = "Request has been sent. Do not remove OpenTurnKey until request processed.";
 "Request processed." = "Request processed.";
 "request_success" = "Request Success";
+"request_timeout" = "Request timeout";
 "reset" = "Reset";
 "reset_command_sent" = "Reset Command Sent";
 "reset_step_intro" = "To complete the reset process, please press and hold the fingerprint sensor on OpenTurnKey for 8 seconds.";
@@ -92,6 +101,7 @@
 "transaction_information" = "Transaction Information";
 "Unable to connect to tag." = "Unable to connect to tag.";
 "Unable to query the NDEF status of tag." = "Unable to query the NDEF status of tag.";
+"unknow_failure_reason" = "Unknow failure reason";
 "Unknown NDEF tag status." = "Unknown NDEF tag status.";
 "unlock" = "Unlock";
 "unlock_warning" = "Unlock OpenTurnKey will erase enrolled fingerprint and clear PIN coe setting. It is highly recommend to move your funds to another address or back up the private key before unlock to avoid the risk of losing access to your crypto assets.";

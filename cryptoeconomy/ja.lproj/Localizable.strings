@@ -12,6 +12,7 @@
 "alias" = "別称";
 "amount" = "金額";
 "Approach OpenTurnKey to the NFC reader." = "OpenTurnKeyをNFCリーダーに近づけます";
+"authentciation_failed" = "認証に失敗しました";
 "authorization_with_pin_code" = "PINコード認証";
 "btc_address" = "BTC アドレス";
 "btc_qr_code" = "BTC QRコード";
@@ -20,8 +21,10 @@
 "choose_key" = "鍵を選んで";
 "choose_key_warning_message" = "変更する前に、現在のキーパスや公開鍵を輸出する必要があります。 そうしないと、現在の資金へのアクセスが失われる可能性があります。";
 "clear_history" = "歴史削除";
+"Confirm Payment" = "支払いを確認する";
 "confirmations" = "確認";
 "copied" = "コピーした";
+"copy" = "コピー";
 "custom" = "限定";
 "date" = "日付";
 "delete" = "削除";
@@ -31,6 +34,7 @@
 "derivative_public_key" = "派生公開鍵";
 "edit_address" = "アドレス編集";
 "estimated_fees" = "推定手数料";
+"Estimated Time" = "推定時間";
 "excluded" = "抜き";
 "export_key" = "私有鍵を輸出する";
 "export_wif_warning_message" = "必要ない場合は、WIFキーをエクスポートしないでください！  WIFキーは、現在の資金への完全なアクセス権を持つ秘密キーです。 WIFキーをエクスポートする場合は、エクスポートしたキーを安全な預金に保管してください。そうしないと、資金が盗まれる可能性があります。";
@@ -40,6 +44,8 @@
 "high" = "高";
 "history" = "支払歴史";
 "included" = "込み";
+"invalid_command" = "無効な命令";
+"invalide_parameters" = "無効なデータ";
 "i_understood" = "了解しました!";
 "low" = "低";
 "make_request" = "リクエストの送信";
@@ -48,6 +54,7 @@
 "mid" = "中";
 "minutes" = "分";
 "mint_information" = "ミント情報";
+"missing_parameters" = "データがありません";
 "Multiple tags are detected, please remove all tags and try again." = "複数のタグが検出されました。すべてのタグを削除して、もう一度お試しください。";
 "no_address" = "入金アドレスなし";
 "no_transaction_record" = "支払い記録なし";
@@ -57,6 +64,7 @@
 "openturnkey_information" = "OpenTurnKey情報";
 "pay" = "支払い";
 "pin_code_warning_message" = "PINコード設定は、OpenTurnKey指紋認証で問題が発生した場合に、キーへの代替バックアップアクセスを保証します。 ほとんどの場合、可能であれば指紋認証を使用することをお勧めします。 PINコード認証を使用する場合は、信頼できる安全なデバイスでのみ使用するようにしてください。";
+"pin_is_not_set" = "PINコード未設定";
 "read_general_information" = "一般情報を読む";
 "received_amount" = "受金金額";
 "recipient" = "受金方";
@@ -66,6 +74,7 @@
 "Request has been sent." = "リクエストが送信されました、処理が完了する前に、OpenTurnKeyを移動しないでください。";
 "Request processed." = "リクエストを処理しました。";
 "request_success" = "リクエスト実行成功";
+"request_timeout" = "操作タイムアウト";
 "reset" = "リセット";
 "reset_command_sent" = "リセットコマンドが送信された";
 "reset_step_intro" = "リセットプロセスを完了するには、OpenTurnKeyの指紋センサーを8秒間押し続けます。";
@@ -92,6 +101,7 @@
 "transaction_information" = "取引情報";
 "Unable to connect to tag." = "タグに接続できません。";
 "Unable to query the NDEF status of tag." = "タグのNDEFステータスを聞くできません。";
+"unknow_failure_reason" = "不明な矢敗理由";
 "Unknown NDEF tag status." = "不明なNDEFタグのステータス。";
 "unlock" = "ロック解除";
 "unlock_warning" = "OpenTurnKeyのロックを解除すると、登録済みの指紋が消去され、PIN coe設定がクリアされます。 暗号資産へのアクセスを失うリスクを回避するために、ロックを解除する前に資金を別のアドレスに移動するか、私有鍵をバックアップすることを強くお勧めします。";

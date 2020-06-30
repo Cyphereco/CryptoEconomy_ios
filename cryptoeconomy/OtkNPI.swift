@@ -324,19 +324,19 @@ enum OtkFailureReason: CaseIterable{
     var desc: String {
         switch self {
         case .timeout:
-            return "Request timeout."
+            return AppStrings.request_timeout
         case .auth_failed:
-            return "Authentciation failed."
+            return AppStrings.authentciation_failed
         case .cmd_invalid:
-            return "Invalid command"
+            return AppStrings.invalid_command
         case .param_invalid:
-            return "Invalide parameters."
+            return AppStrings.invalide_parameters
         case .param_missing:
-            return "Missing parameters."
+            return AppStrings.missing_parameters
         case .pin_unset:
-            return "PIN is not set."
+            return AppStrings.pin_is_not_set
         default:
-            return "Unknow failure."
+            return AppStrings.unknow_failure_reason
         }
     }
 }

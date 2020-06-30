@@ -95,7 +95,13 @@ struct AppStrings {
     static let sign = localize("sign")
     static let validate = localize("validate")
     static let cannot_reach_network = localize("cannot_reach_network");
-
+    static let request_timeout = localize("request_timeout");
+    static let authentciation_failed = localize("authentciation_failed");
+    static let invalid_command = localize("invalid_command");
+    static let invalide_parameters = localize("invalide_parameters");
+    static let missing_parameters = localize("missing_parameters");
+    static let pin_is_not_set = localize("pin_is_not_set");
+    static let unknow_failure_reason = localize("unknow_failure_reason");
 
     private static func localize(_ str: String) -> String {
         return NSLocalizedString(str, comment: "")

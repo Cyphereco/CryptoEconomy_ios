@@ -12,6 +12,7 @@
 "alias" = "別名";
 "amount" = "金額";
 "Approach OpenTurnKey to the NFC reader." = "將OpenTurnKey靠近NFC讀寫器.";
+"authentciation_failed" = "認證失敗";
 "authorization_with_pin_code" = "使用PIN碼授權";
 "btc_address" = "BTC地址";
 "btc_qr_code" = "BTC二維碼";
@@ -20,8 +21,10 @@
 "choose_key" = "選擇密鑰";
 "choose_key_warning_message" = "在變更密鑰前您應該先備份現有密鑰路徑或匯出當前密鑰，否則，您將會失去對現有資金的存取。";
 "clear_history" = "清除記錄";
+"Confirm Payment" = "確認支付";
 "confirmations" = "確認";
 "copied" = "已複製";
+"copy" = "複製";
 "custom" = "自訂";
 "date" = "日期";
 "delete" = "刪除";
@@ -31,6 +34,7 @@
 "derivative_public_key" = "導出公鑰";
 "edit_address" = "編輯地址";
 "estimated_fees" = "預估手續費";
+"Estimated Time" = "預估時間";
 "excluded" = "外加";
 "export_key" = "匯出密鑰";
 "export_wif_warning_message" = "如非必要，請不要匯出WIF密鑰！  WIF密鑰是擁有存取當前資金完整權限的密鑰。如果您將密鑰匯出，請確保您的密鑰保管於安全的場所，否則您可能會丟失您的資金。";
@@ -40,6 +44,8 @@
 "high" = "高";
 "history" = "支付紀錄";
 "included" = "內含";
+"invalid_command" = "無效的指令";
+"invalide_parameters" = "無效的參數";
 "i_understood" = "我已瞭解!";
 "low" = "低";
 "make_request" = "發送請求";
@@ -48,6 +54,7 @@
 "mid" = "中";
 "minutes" = "分鐘";
 "mint_information" = "鑄造資訊";
+"missing_parameters" = "缺少參數";
 "Multiple tags are detected, please remove all tags and try again." = "讀取到多個標籤，請全部移開後重試。";
 "no_address" = "無常用地址";
 "no_transaction_record" = "無交易紀錄";
@@ -57,6 +64,7 @@
 "openturnkey_information" = "OpenTurnKey資訊";
 "pay" = "支付";
 "pin_code_warning_message" = "設置PIN碼可以保障您的OpenTurnKey在指紋驗證功能發生問題時，仍然保有一個存取密鑰的備援方法，但多數情況下，如果指紋驗證功能正常，建議您優先使用指紋認證，如要使用PIN碼認證，請僅在信任的安全設備上使用。";
+"pin_is_not_set" = "PIN碼未設定";
 "read_general_information" = "讀取一般資訊";
 "received_amount" = "實收金額";
 "recipient" = "收款方";
@@ -66,6 +74,7 @@
 "Request has been sent." = "請求已發送，處理完成前，請勿移開OpenTurnKey。";
 "Request processed." = "請求已處理。";
 "request_success" = "請求成功";
+"request_timeout" = "操作逾時";
 "reset" = "重置";
 "reset_command_sent" = "重置命令已發送";
 "reset_step_intro" = "要完成重置請持續按住OpenTurnKey上的指紋傳感器8秒鐘。";
@@ -92,6 +101,7 @@
 "transaction_information" = "交易資訊";
 "Unable to connect to tag." = "無法連線到標籤。";
 "Unable to query the NDEF status of tag." = "無法訪問NDEF標籤狀態。";
+"unknow_failure_reason" = "不明失敗原因";
 "Unknown NDEF tag status." = "未知的NDEF標籤狀態。";
 "unlock" = "解鎖";
 "unlock_warning" = "解鎖OpenTurnKey將注銷已註冊的指紋並清除PIN碼設置。 強烈您建議在解鎖之前將資金轉移到另一個地址或備份私鑰，以避免失去訪問您的加密資產的風險。";

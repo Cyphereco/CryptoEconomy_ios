@@ -19,13 +19,12 @@ struct BtcAddress: View {
 
 struct AmountBtcFiat: View {
     let btc: Double
+    @Binding var showFiat: Bool
     @EnvironmentObject var appController: AppController
 
     var body: some View {
-        Text(AppTools.btcToFormattedString(self.btc)) +
-            Text(" / ") +
-            Text(AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btc, currencySelection: self.appController.currencySelection))) +
-            Text(" (BTC/\(self.appController.getLocalCurrency().label))")
+        Text(!showFiat ? AppTools.btcToFormattedString(self.btc) : AppTools.fiatToFormattedString(AppTools.btcToFiat(self.btc, currencySelection: self.appController.currencySelection))) +
+            Text(showFiat ? " \(self.appController.getLocalCurrency().label)" : " BTC")
     }
 }
 
@@ -39,6 +38,7 @@ struct DialogConfirmPayment: View {
 
     @EnvironmentObject var appController: AppController
     @State var keyboardActive = false
+    @State var showFiat = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -59,79 +59,68 @@ struct DialogConfirmPayment: View {
                             Text("")
                             HStack{
                                 Spacer()
-                                Text("(>> Recipient)").font(.subheadline).padding(.horizontal)
+                                (Text("=> ") + Text("recipient").font(.subheadline)).padding(.horizontal)
                             }
-                            BtcAddress(btcAddr: self.appController.payee)
+                            BtcAddress(btcAddr: self.appController.payee).padding(.top, -2)
                             Text("")
                             HStack{
-                                Text("(Sender >>)").font(.subheadline)
+                                Text("sender") + Text(" =>").font(.subheadline)
                                 Spacer()
                             }
-                            BtcAddress(btcAddr: self.appController.payer)
+                            BtcAddress(btcAddr: self.appController.payer).padding(.top, -2)
                             Text("")
+                        }
+                        Toggle(isOn: self.$showFiat){
+                            HStack {
+                                Spacer()
+                                Text(AppStrings.showLocalCurrency).font(.headline).padding(.vertical)
+                            }.padding(.bottom, -10)
                         }
                         Group {
                             HStack {
+                                Text("send_amount") + Text(":").font(.subheadline)
                                 Spacer()
-                                Text("Amount").font(.headline)
+                                AmountBtcFiat(btc: self.appController.getAmountSent(), showFiat: self.$showFiat).font(.headline).foregroundColor(.blue)
+                            }
+                            HStack {
+                                Text("-)") + Text("fees") + Text(": ").font(.subheadline)
+                                Spacer()
+                                AmountBtcFiat(btc: self.appController.fees, showFiat: self.$showFiat)
+                                    .font(.headline).foregroundColor(.gray)
                             }.addUnderline().padding(.bottom, -10)
                             HStack {
-                                Text("Send:").font(.subheadline)
+                                Text("received_amount") + Text(":").font(.subheadline)
                                 Spacer()
-                            }
-                            HStack {
-                                Spacer()
-                                AmountBtcFiat(btc: self.appController.getAmountSent()).font(.headline).foregroundColor(.blue)
-                            }
-                            HStack {
-                                Text("Fees: ").font(.subheadline)
-                                Spacer()
-                            }
-                            HStack {
-                                Text("-)")
-                                Spacer()
-                                AmountBtcFiat(btc: self.appController.fees).foregroundColor(.blue)
-                            }.addUnderline().padding(.bottom, -10)
-                            HStack {
-                                Text("Received: ").font(.subheadline)
-                                Spacer()
-                            }
-                            HStack {
-                                Text("=")
-                                Spacer()
-                                
-                                AmountBtcFiat(btc: self.appController.getAmountReceived())
-                                .foregroundColor(.blue)
+                                AmountBtcFiat(btc: self.appController.getAmountReceived(), showFiat: self.$showFiat)
+                                .font(.headline).foregroundColor(.blue)
                             }
                         }
                     }.font(.callout).padding()
                     HStack {
-                        Text("Est. Time: ").font(.headline)
+                        Text("Estimated Time") + Text(":").font(.headline)
                         Spacer()
-                        Text(self.appController.getEstTime()) + Text(" Min.")
-                    }.padding()
+                        Text(self.appController.getEstTime()) + Text(" ") + Text("minutes")
+                        }.padding().addUnderline()
                     HStack {
                         Button(action: {
                             self.closeDialog()
                             self.onCancel()
                         }){
                             Text("cancel")
-                        }
-                        .frame(width: geometry.size.width * 0.4)
+                        }.frame(width: geometry.size.width * 0.4)
                         Text("").padding()
                         Button(action: {
                             self.closeDialog()
                             self.onConfirm()
                         }){
                             Text("ok")
-                        }
-                        .frame(width: geometry.size.width * 0.4)
-                    }
+                        }.frame(width: geometry.size.width * 0.4)
+                    }.padding(.top, -10)
                 }
                 .setCustomDecoration(.backgroundNormal)
                 .setCustomDecoration(.accentColor)
                 .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                .frame(width: geometry.size.width * 0.8)
+                .frame(width: geometry.size.width * 0.8, height: 440)
                 .disabled(!self.showDialog)
                 .opacity(self.showDialog ? 1 : 0)
                 .animation(.easeInOut)
