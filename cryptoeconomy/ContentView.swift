@@ -182,7 +182,6 @@ struct ContentView: View {
                 print("\(self.otkNpi.otkState)")
                 print("\(self.otkNpi.otkData)")
                 print("\(self.otkNpi.otkData.signatures.count)")
-                print("\(self.otkNpi.otkData.signatures.count)")
                 if self.otkNpi.otkState.execState == .success {
                     _ = WebServices.sendTransaction(unsignedTx: unsignedTx, signatures: self.otkNpi.otkData.signatures, publicKey: self.otkNpi.otkData.publicKey)
                         .done(){tx in
@@ -218,7 +217,7 @@ struct ContentView: View {
                 else {
                     DispatchQueue.main.async {
                         self.fullscreenMessage = ""
-                        self.bubbleMessage = "Error: \(self.otkNpi.otkState.failureReason)"
+                        self.bubbleMessage = "Error: \(self.otkNpi.otkState.failureReason.desc)"
                         self.showBubble.toggle()
                     }
                 }
