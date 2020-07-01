@@ -254,13 +254,23 @@ class BtcUtils {
             var address2: BTCAddress
 
             if (isMainNet) {
-                address1 = BTCPublicKeyAddress(string: address)!
-                address2 = key.address
+                if let btcAddr = BTCPublicKeyAddress(string: address) {
+                    address1 = btcAddr
+                    address2 = key.address
+                }
+                else {
+                    return false
+                }
             }
             else {
                 // Testnet
-                address1 = BTCPublicKeyAddressTestnet(string: address)!
-                address2 = key.addressTestnet
+                if let btcAddr = BTCPublicKeyAddressTestnet(string: address) {
+                    address1 = btcAddr
+                    address2 = key.addressTestnet
+                }
+                else {
+                    return false
+                }
             }
             return address1 == address2
         }
