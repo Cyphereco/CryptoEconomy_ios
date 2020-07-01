@@ -168,6 +168,8 @@ struct ViewMessageSignValidate: View {
                                             }
                                             catch {
                                                 print(error)
+                                                self.bubbleMessage = AppStrings.error + ": " + AppStrings.unknow_failure_reason
+                                                self.showBubble = true
                                             }
                                         }
                                     }, onCanceled: {})
@@ -286,6 +288,7 @@ struct ViewMessageSignValidate: View {
                                     }
                                     catch {
                                         print(error)
+                                        self.signatureIsInvalid = true
                                     }
                                 }) {
                                     HStack{

@@ -244,7 +244,8 @@ class BtcUtils {
        
         let decodedSignature = Data.init(base64Encoded: signature)
         if decodedSignature == nil {
-            throw OtkError.InvalidSignature
+//            throw OtkError.InvalidSignature
+            return false
         }
         let hash = BTCDataFromHex(message)
         let key = BTCKey.verifyCompactSignature(decodedSignature, forHash: hash)
