@@ -330,7 +330,7 @@ enum OtkFailureReason: CaseIterable{
         case .cmd_invalid:
             return AppStrings.invalid_command
         case .param_invalid:
-            return AppStrings.invalide_parameters
+            return AppStrings.invalid_parameters
         case .param_missing:
             return AppStrings.missing_parameters
         case .pin_unset:

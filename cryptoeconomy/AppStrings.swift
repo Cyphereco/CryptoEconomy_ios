@@ -98,10 +98,31 @@ struct AppStrings {
     static let request_timeout = localize("request_timeout");
     static let authentciation_failed = localize("authentciation_failed");
     static let invalid_command = localize("invalid_command");
-    static let invalide_parameters = localize("invalide_parameters");
+    static let invalid_parameters = localize("invalid_parameters");
     static let missing_parameters = localize("missing_parameters");
     static let pin_is_not_set = localize("pin_is_not_set");
     static let unknow_failure_reason = localize("unknow_failure_reason");
+    static let choose_key_desc = localize("choose_key_desc");
+    static let index = localize("index");
+    static let index_range = localize("index_range");
+    static let level = localize("level");
+    static let enter_message = localize("enter_message");
+    static let error = localize("error");
+    static let cancel_payment = localize("cancel_payment");
+    static let balance_not_enough = localize("balance_not_enough");
+    static let cannot_get_balance = localize("cannot_get_balance");
+    static let checking_balance = localize("checking_balance");
+    static let payment_canceled = localize("payment_canceled");
+    static let recipient_address_cannot_be_empty = localize("recipient_address_cannot_be_empty");
+    static let send_amount_is_not_entered = localize("send_amount_is_not_entered");
+    static let amount_is_less_than_transaction_fees = localize("amount_is_less_than_transaction_fees");
+    static let processing_transaction = localize("processing_transaction");
+    static let cannot_generate_transaction = localize("cannot_generate_transaction");
+    static let alias_duplicated = localize("alias_duplicated");
+    static let index_out_of_range = localize("index_out_of_range");
+    static let invalid_path = localize("invalid_path");
+    static let signed_message = localize("signed_message");
+    static let enter_note = localize("enter_note");
 
     private static func localize(_ str: String) -> String {
         return NSLocalizedString(str, comment: "")

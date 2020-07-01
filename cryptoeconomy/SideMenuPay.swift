@@ -52,7 +52,7 @@ struct SideMenuPay: View {
                         }
                     }
                     .alert(isPresented: self.$alertEmptyAddress){
-                        Alert(title: Text("Recipient address is empty!"))
+                        Alert(title: Text(AppStrings.recipient_address_cannot_be_empty))
                     }
                 }
             }

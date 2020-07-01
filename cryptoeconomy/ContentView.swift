@@ -144,7 +144,7 @@ struct ContentView: View {
                     }
                 }
             }, onCancel: {
-                self.toastMessage = "Payment canceled!"
+                self.toastMessage = AppStrings.payment_canceled
                 self.showToast = true
                 self.showPaymentConfirmation = false
             })
@@ -165,7 +165,7 @@ struct ContentView: View {
     }
     
     func makePayment() {
-        self.fullscreenMessage = "Processing transaction..."
+        self.fullscreenMessage = "\(AppStrings.processing_transaction)..."
 
         _ = WebServices.newTransaction(from: self.appController.payer, to: self.appController.payee, amountInSatoshi: BtcUtils.BtcToSatoshi(btc: self.appController.getAmountReceived()), fees: BtcUtils.BtcToSatoshi(btc: self.appController.fees)).done(){ unsignedTx in
             
@@ -209,7 +209,7 @@ struct ContentView: View {
                     .catch(){err in
                         DispatchQueue.main.async {
                             self.fullscreenMessage = ""
-                            self.bubbleMessage = "Error: \(err)"
+                            self.bubbleMessage = "\(AppStrings.error): \(err)"
                             self.showBubble.toggle()
                         }
                     }
@@ -217,7 +217,7 @@ struct ContentView: View {
                 else {
                     DispatchQueue.main.async {
                         self.fullscreenMessage = ""
-                        self.bubbleMessage = "Error: \(self.otkNpi.otkState.failureReason.desc)"
+                        self.bubbleMessage = "\(AppStrings.error): \(self.otkNpi.otkState.failureReason.desc)"
                         self.showBubble.toggle()
                     }
                 }
@@ -233,7 +233,7 @@ struct ContentView: View {
             }, onCanceled: {
                 DispatchQueue.main.async {
                     self.fullscreenMessage = ""
-                    self.bubbleMessage = "Cancel payment!"
+                    self.bubbleMessage = AppStrings.cancel_payment
                     self.showBubble.toggle()
                 }
             })
@@ -241,7 +241,7 @@ struct ContentView: View {
             print("failed to generate transaction")
             DispatchQueue.main.async {
                 self.fullscreenMessage = ""
-                self.bubbleMessage = "Failed to generate transaction: (\(err))"
+                self.bubbleMessage = "\(AppStrings.cannot_generate_transaction): (\(err))"
                 self.showBubble = true
             }
         }
