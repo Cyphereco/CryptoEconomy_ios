@@ -49,7 +49,7 @@ struct ViewAddressEditor: View {
                     }
                     else {
                         self.showAlert = true
-                        self.alertMessage = "Database error! Add address failed."
+                        self.alertMessage = AppStrings.alias_duplicated
                     }
                 }) {
                     HStack(alignment: .center){

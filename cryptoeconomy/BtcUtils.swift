@@ -246,7 +246,8 @@ class BtcUtils {
        
         let decodedSignature = Data.init(base64Encoded: signature)
         if decodedSignature == nil {
-            throw OtkError.InvalidSignature
+//            throw OtkError.InvalidSignature
+            return false
         }
         let hash = BTCDataFromHex(message)
         let key = BTCKey.verifyCompactSignature(decodedSignature, forHash: hash)
@@ -256,19 +257,23 @@ class BtcUtils {
             var address2: BTCAddress
 
             if (isMainNet) {
-                if BTCPublicKeyAddress(string: address) == nil {
-                    return false;
+                if let btcAddr = BTCPublicKeyAddress(string: address) {
+                    address1 = btcAddr
+                    address2 = key.address
                 }
-                address1 = BTCPublicKeyAddress(string: address)!
-                address2 = key.address
+                else {
+                    return false
+                }
             }
             else {
                 // Testnet
-                if BTCPublicKeyAddressTestnet(string: address) == nil {
-                    return false;
+                if let btcAddr = BTCPublicKeyAddressTestnet(string: address) {
+                    address1 = btcAddr
+                    address2 = key.addressTestnet
                 }
-                address1 = BTCPublicKeyAddressTestnet(string: address)!
-                address2 = key.addressTestnet
+                else {
+                    return false
+                }
             }
             return address1 == address2
         }

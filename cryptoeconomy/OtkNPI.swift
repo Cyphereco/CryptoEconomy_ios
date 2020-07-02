@@ -221,6 +221,126 @@ enum OtkCommand: CaseIterable{
     }
 }
 
+enum OtkFailureReason: CaseIterable{
+    case invalid
+    case timeout
+    case auth_failed
+    case cmd_invalid
+    case param_invalid
+    case param_missing
+    case pin_unset
+
+    
+    init(_ val: Int) {
+        switch val {
+        case 192:
+            self = .timeout
+            break
+        case 193:
+            self = .auth_failed
+            break
+        case 194:
+            self = .cmd_invalid
+            break
+        case 195:
+            self = .param_invalid
+            break
+        case 196:
+            self = .param_missing
+            break
+        case 197:
+            self = .pin_unset
+            break
+        default:
+            self = .invalid
+        }
+
+    }
+    
+    init(_ str: String) {
+        switch str {
+        case "192":
+            self = .timeout
+            break
+        case "193":
+            self = .auth_failed
+            break
+        case "194":
+            self = .cmd_invalid
+            break
+        case "195":
+            self = .param_invalid
+            break
+        case "196":
+            self = .param_missing
+            break
+        case "197":
+            self = .pin_unset
+            break
+        default:
+            self = .invalid
+        }
+
+    }
+
+    var code: Int {
+        switch self {
+        case .timeout:
+            return 192
+        case .auth_failed:
+            return 193
+        case .cmd_invalid:
+            return 194
+        case .param_invalid:
+            return 195
+        case .param_missing:
+            return 196
+        case .pin_unset:
+            return 197
+        default:
+            return 0
+        }
+    }
+    
+    var string: String {
+        switch self {
+        case .timeout:
+            return "192"
+        case .auth_failed:
+            return "193"
+        case .cmd_invalid:
+            return "194"
+        case .param_invalid:
+            return "195"
+        case .param_missing:
+            return "196"
+        case .pin_unset:
+            return "197"
+        default:
+            return "0"
+        }
+    }
+
+    var desc: String {
+        switch self {
+        case .timeout:
+            return AppStrings.request_timeout
+        case .auth_failed:
+            return AppStrings.authentciation_failed
+        case .cmd_invalid:
+            return AppStrings.invalid_command
+        case .param_invalid:
+            return AppStrings.invalid_parameters
+        case .param_missing:
+            return AppStrings.missing_parameters
+        case .pin_unset:
+            return AppStrings.pin_is_not_set
+        default:
+            return AppStrings.unknow_failure_reason
+        }
+    }
+}
+
 struct OtkNDEFTag {
     var info = ""
     var state = ""
@@ -245,7 +365,7 @@ struct OtkState {
     var isAuthenticated = false
     var execState = OtkExecState.invalid
     var command = OtkCommand.invalid
-    var failureReason = 0
+    var failureReason = OtkFailureReason.invalid
 }
 
 struct OtkData {
@@ -615,7 +735,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
         otkState.isAuthenticated = lockState > 1
         otkState.execState = OtkExecState(execState)
         otkState.command = OtkCommand(requestCmd)
-        otkState.failureReason = failureReason
+        otkState.failureReason = OtkFailureReason(failureReason)
         
         return otkState
     }
@@ -657,7 +777,7 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                     otkData.publicKey = trimSting(words[1])
                 }
                 else if (words[0].contains("Request_Signature")) {
-                    let signatures = words[1].components(separatedBy: "\r\n")
+                    let signatures = words[1].replacingOccurrences(of: "\r", with: "").components(separatedBy: "\n")
                     for signature in signatures {
                         if !signature.isEmpty {
                             otkData.signatures.append(signature)

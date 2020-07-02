@@ -174,7 +174,7 @@ struct ImageQRCode: View {
     
     func getQrCodeData(str: String) -> Data {
         let filter = CIFilter(name: "CIQRCodeGenerator")
-        let data = str.data(using: .ascii, allowLossyConversion: false)
+        let data = str.data(using: .utf8, allowLossyConversion: false)
         filter?.setValue(data, forKey: "inputMessage")
         let image = filter?.outputImage
         let uiimage = UIImage(ciImage: image!)

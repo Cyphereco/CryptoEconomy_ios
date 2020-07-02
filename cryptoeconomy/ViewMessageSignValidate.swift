@@ -101,7 +101,7 @@ struct ViewMessageSignValidate: View {
                             }.padding(.horizontal)
 
                             // message to be signed
-                            TextView(placeholder: "Enter Message", text: self.$messageToBeSigned, minHeight: self.messageToBeSignedHeight, calculatedHeight: self.$messageToBeSignedHeight, editable: true)
+                            TextView(placeholder: AppStrings.enter_message, text: self.$messageToBeSigned, minHeight: self.messageToBeSignedHeight, calculatedHeight: self.$messageToBeSignedHeight, editable: true)
                                 .frame(height: self.messageToBeSignedHeight < 120 ? self.messageToBeSignedHeight : 120)
                                 .addUnderline()
                                 .padding(.horizontal)
@@ -118,17 +118,17 @@ struct ViewMessageSignValidate: View {
                             if !self.signedMessage.isEmpty {
                                 // header and copy/qrcode buttons
                                 HStack {
-                                    Text("Signed Message").font(.headline)
+                                    Text(AppStrings.signed_message).font(.headline)
                                     
                                     Spacer()
                                     
                                     CopyButton(copyString: self.signedMessage){
-                                        self.bubbleMessage = "Signed Message" + AppStrings.copied
+                                        self.bubbleMessage = AppStrings.signed_message + " " + AppStrings.copied
                                         self.showBubble = true
                                     }
                                     
                                     Button(action: {
-                                        self.QRCodeTitle = "Signed Message"
+                                        self.QRCodeTitle = AppStrings.signed_message
                                         self.QRCodeData = self.signedMessage
                                     }){Image("qrcode")}.padding(.horizontal)
                                 }.padding(.horizontal)
@@ -168,6 +168,8 @@ struct ViewMessageSignValidate: View {
                                             }
                                             catch {
                                                 print(error)
+                                                self.bubbleMessage = AppStrings.error + ": " + AppStrings.unknow_failure_reason
+                                                self.showBubble = true
                                             }
                                         }
                                     }, onCanceled: {})
@@ -179,7 +181,7 @@ struct ViewMessageSignValidate: View {
                                         else {
                                             Image("fingerprint")
                                         }
-                                        Text("Sign Message")
+                                        Text("sign")
                                             .font(.system(size: 20))
                                         .fontWeight(.bold)
                                     }
@@ -232,7 +234,7 @@ struct ViewMessageSignValidate: View {
                             }.padding(.horizontal)
 
                             // text input field for message to be validated
-                            TextView(placeholder: "Enter Message", text: self.$messageToBeValidated, minHeight: self.messageToBeValidatedHeight, calculatedHeight: self.$messageToBeValidatedHeight, editable: true, onEditingChanged: {
+                            TextView(placeholder: AppStrings.enter_message, text: self.$messageToBeValidated, minHeight: self.messageToBeValidatedHeight, calculatedHeight: self.$messageToBeValidatedHeight, editable: true, onEditingChanged: {
                                     self.signatureIsValid = false
                                     self.signatureIsInvalid = false
                                 })
@@ -251,7 +253,7 @@ struct ViewMessageSignValidate: View {
                                             .font(.system(size: 72))
                                             .foregroundColor(.green)
                                             .padding()
-                                        Text("Signature is valid.").font(.headline).foregroundColor(.green)
+                                        Text("Signature is valid").font(.headline).foregroundColor(.green)
                                     }
                                 }
                                 else if self.signatureIsInvalid {
@@ -260,7 +262,7 @@ struct ViewMessageSignValidate: View {
                                             .font(.system(size: 72))
                                             .foregroundColor(.red)
                                             .padding()
-                                        Text("Signature is invalid!").font(.headline).foregroundColor(.red)
+                                        Text("Signature is invalid").font(.headline).foregroundColor(.red)
                                     }
                                 }
                                 Spacer()
@@ -286,11 +288,12 @@ struct ViewMessageSignValidate: View {
                                     }
                                     catch {
                                         print(error)
+                                        self.signatureIsInvalid = true
                                     }
                                 }) {
                                     HStack{
                                         Image("validate")
-                                        Text("Validate Message")
+                                        Text("validate")
                                             .font(.system(size: 20))
                                         .fontWeight(.bold)
                                     }

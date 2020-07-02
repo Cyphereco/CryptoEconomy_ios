@@ -65,20 +65,20 @@ struct PagePay: View {
                         
                         Button(action: {
                             if self.appController.payeeAddr.isEmpty {
-                                self.toastMessage = "Recipient address is empty!"
+                                self.toastMessage = AppStrings.recipient_address_cannot_be_empty
                                 self.showToast = true
                                 return
                             }
                             
                             if !self.appController.useAllFunds {
                                 if self.appController.feesIncluded && self.appController.getAmountReceived() < 0.0 {
-                                   self.toastMessage = "Amount is less than transaction fees!"
+                                    self.toastMessage = AppStrings.amount_is_less_than_transaction_fees
                                    self.showToast = true
                                    return
                                 }
                                 
                                 if self.appController.amountSend.isEmpty || (Double(self.appController.amountSend) ?? 0.0) == 0.0 {
-                                    self.toastMessage = "Send amount is not entered!"
+                                    self.toastMessage = AppStrings.send_amount_is_not_entered
                                     self.showToast = true
                                     return
                                 }
@@ -88,7 +88,7 @@ struct PagePay: View {
                                 if !self.otkNpi.otkData.btcAddress.isEmpty {
                                     
                                     self.appController.balance = 0
-                                    self.promptMessage = "Checking balance, please wait..."
+                                    self.promptMessage = AppStrings.checking_balance
                                     
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.75) {
                                         _ = BlockChainInfoService.getBalance(address: self.otkNpi.otkData.btcAddress).done({result in
@@ -99,11 +99,11 @@ struct PagePay: View {
                                             
                                             if !self.appController.useAllFunds &&
                                                  self.appController.balance < self.appController.getAmountSent() {
-                                                self.showBubble("Balance not enough!")
+                                                self.showBubble(AppStrings.balance_not_enough)
                                                 return
                                             }
                                             else if self.appController.balance < self.appController.fees {
-                                                self.showBubble("Balance not enough!")
+                                                self.showBubble(AppStrings.balance_not_enough)
                                                 return
                                             }
                                             
@@ -112,7 +112,7 @@ struct PagePay: View {
                                             self.showConfirmation = true
                                         }).catch({_ in
                                             self.clearPrompt()
-                                            self.showBubble("Balance cannot be updated at the momoent!")
+                                            self.showBubble(AppStrings.cannot_get_balance)
                                         })
                                     }
                                 }
@@ -155,13 +155,10 @@ struct PagePay: View {
         .isKeyboardActive(keyboardActive: self.$keyboardActive)
     }
     
-    func showPrompt(_ message: String) {
-        self.promptMessage = message
-    }
-    
     func clearPrompt() {
         self.promptMessage = ""
     }
+    
     func showBubble(_ message: String) {
         self.bubbleMessage = message
         self.showBubble = true

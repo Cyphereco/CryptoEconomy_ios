@@ -173,7 +173,7 @@ struct PageOpenTurnKey: View {
                     }
                 }
                 if execState == .fail {
-                    self.showToast(command.desc + "\n" + AppStrings.request_fail)
+                    self.showToast("\(AppStrings.request_fail): \(command.desc)" + "\n\(self.otkNpi.otkState.failureReason.desc)")
                 }
                 else {
                     if command == .invalid {

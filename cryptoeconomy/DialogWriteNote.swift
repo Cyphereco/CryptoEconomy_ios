@@ -38,7 +38,7 @@ struct DialogWriteNote: View {
 
                 VStack {
                     Text(AppStrings.writeNote).font(.headline)
-                    TextView(placeholder: "Enter Note (No more than 64 characters)", text: self.$note, minHeight: self.noteHeight, calculatedHeight: self.$noteHeight, editable: true, onEditingChanged: {
+                    TextView(placeholder: AppStrings.enter_note, text: self.$note, minHeight: self.noteHeight, calculatedHeight: self.$noteHeight, editable: true, onEditingChanged: {
                             if self.note.count > 64 {
                                 self.note = String(self.note.prefix(64))
                             }

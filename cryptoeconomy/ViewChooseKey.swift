@@ -23,11 +23,13 @@ struct ViewChooseKey: View {
     
     @State var falseInput = false
     @State var keyboardActive = false
+    @State var textHeight = CGFloat(0)
 
     var body: some View {
         VStack (alignment: .leading) {
             HStack {
-                Text("Choose a derivative key by selecting an index for each level.")
+                TextView(placeholder: "", text: .constant(AppStrings.choose_key_desc), minHeight: self.textHeight, calculatedHeight: self.$textHeight, editable: false)
+                .frame(height: self.textHeight)
                 Spacer()
                 Button(action: {
                     if let pasteString = self.pasteboard.string {
@@ -46,12 +48,12 @@ struct ViewChooseKey: View {
 
             VStack {
                 ForEach(0 ..< self.keyIndexes.count) { item in
-                    TextField("Index of level \(item + 1) (0 ~ 2,147,483,647)", text: self.$keyIndexes[item], onEditingChanged: {_ in
+                    TextField("\(AppStrings.level) \(item + 1) \(AppStrings.index)", text: self.$keyIndexes[item], onEditingChanged: {_ in
                         if self.keyIndexes[item].count > 0 {
                             self.falseInput = false
                             self.clearFocus()
                             if !self.validateKeyIndex(self.toInt(self.keyIndexes[item])){
-                                self.bubbleMessage = "Index out of rage: \(self.keyIndexes[item])"
+                                self.bubbleMessage = "\(AppStrings.index_out_of_range): \(self.keyIndexes[item])"
                                 self.showBubble = true
                                 self.keyIndexes[item] = ""
                                 self.requireFocus[item] = true
@@ -73,6 +75,7 @@ struct ViewChooseKey: View {
                         }
                     }
                 }
+                Text("*\(AppStrings.index_range): 0 ~ 2,147,483,647")
             }.keyboardResponsive()
 
             HStack {
@@ -165,7 +168,7 @@ struct ViewChooseKey: View {
             for i in 0...self.keyIndexes.count - 1 {
                 self.keyIndexes[i] = ""
             }
-            self.bubbleMessage = "Invalid path!"
+            self.bubbleMessage = AppStrings.invalid_path
             self.showBubble = true
         }
         else {
