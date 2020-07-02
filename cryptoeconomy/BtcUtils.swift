@@ -181,8 +181,6 @@ class BtcUtils {
     /* Test code. To be removed */
     static func testSignAndVerifyMessage() {
         let plainMessage = "你好"
-        let cafe: Data? = plainMessage.data(using: .utf8)
-        Logger.shared.debug("plainMessage:\(plainMessage) data:\(cafe?.hexEncodedString()) \(cafe?.count)")
         do {
             let m = BtcUtils.generateMessageToSign(message: plainMessage)
             Logger.shared.debug("m=\(m.hexEncodedString())")
