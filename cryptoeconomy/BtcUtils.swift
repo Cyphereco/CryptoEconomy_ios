@@ -180,23 +180,25 @@ class BtcUtils {
     
     /* Test code. To be removed */
     static func testSignAndVerifyMessage() {
-        let plainMessage = "111"
+        let plainMessage = "你好"
+        let cafe: Data? = plainMessage.data(using: .utf8)
+        Logger.shared.debug("plainMessage:\(plainMessage) data:\(cafe?.hexEncodedString()) \(cafe?.count)")
         do {
             let m = BtcUtils.generateMessageToSign(message: plainMessage)
             Logger.shared.debug("m=\(m.hexEncodedString())")
-            let pubKeyStr = "02853861e2f9f802626d71242c3248a870bc51815138620d5676c2b5cf23ff9917"
-            let address = "mzn6xGu2SpVmoziGnK5rtpQsZN5UPp34L2"
-            let signedMsg = "e220cc6c334996362fac9470d600b7c3d4a00576588ab1ff308eb90d481f5717cb2fa30f494b52fdfbea0d05243710278cca0b63842827a1b4355b07aed6298f"
+            let pubKeyStr = "02cc02fc66e2f183e0b85578d327721cf94f75f42e689d0df74b23a7c7ee3fb9d5"
+            let address = "13GNvHaSjhs8dLbEWrRP7Lvbb8ZBsKUU4P"
+            let signedMsg = "630bf7a5541e19f1718649c801e059bd10a807753e579f50244d546039ab4521c9c581c310514158a7e7df76ecbe57dd095a78ec6743e1766a0687b53118f4ff"
             let encodedSignature = try BtcUtils.processSignedMessage(encodedMessageToSign: m.hexEncodedString(), publicKey: pubKeyStr, signedMessage: signedMsg)
             Logger.shared.debug("encoded signature=\(encodedSignature)")
 
             let sm = SignedMessage(address: address, signature: encodedSignature, message: plainMessage)
             let formattedMessage = sm.getFormattedMessage()
             Logger.shared.debug("formatted message:\(formattedMessage)")
-        
+
             let sm2 = try SignedMessage(formattedMessage: formattedMessage)
             let messageToSign = BtcUtils.generateMessageToSign(message: sm2.message)
-            let result = try BtcUtils.verifySignature(address: sm.address, message: messageToSign.hexEncodedString(), signature: sm2.signature, isMainNet: false)
+            let result = try BtcUtils.verifySignature(address: sm.address, message: messageToSign.hexEncodedString(), signature: sm2.signature, isMainNet: true)
             Logger.shared.debug("verify result=\(result)")
         } catch OtkError.InvalidSignature {
             Logger.shared.debug("Invalid Signature")
@@ -254,11 +256,17 @@ class BtcUtils {
             var address2: BTCAddress
 
             if (isMainNet) {
+                if BTCPublicKeyAddress(string: address) == nil {
+                    return false;
+                }
                 address1 = BTCPublicKeyAddress(string: address)!
                 address2 = key.address
             }
             else {
                 // Testnet
+                if BTCPublicKeyAddressTestnet(string: address) == nil {
+                    return false;
+                }
                 address1 = BTCPublicKeyAddressTestnet(string: address)!
                 address2 = key.addressTestnet
             }

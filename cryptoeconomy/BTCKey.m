@@ -685,7 +685,10 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
                 }
             }
         }
-        NSAssert(foundMatchingPubkey, @"At least one signature must work.");
+        if (foundMatchingPubkey == NO) {
+            return nil;
+        }
+        //NSAssert(foundMatchingPubkey, @"At least one signature must work.");
         BN_bn2bin(sig->r,&p64[32-(nBitsR+7)/8]);
         BN_bn2bin(sig->s,&p64[64-(nBitsS+7)/8]);
     }
@@ -785,12 +788,12 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 }
 
 + (NSData*) signatureHashForMessage:(NSString*)message {
-     return BTCSignatureHashForBinaryMessage([message dataUsingEncoding:NSASCIIStringEncoding]);
+     return BTCSignatureHashForBinaryMessage([message dataUsingEncoding:NSUTF8StringEncoding]);
 }
 
 // Verifies message against given signature. On success returns a public key.
 + (BTCKey*) verifySignature:(NSData*)signature forMessage:(NSString*)message {
-    return [self verifySignature:signature forBinaryMessage:[message dataUsingEncoding:NSASCIIStringEncoding]];
+    return [self verifySignature:signature forBinaryMessage:[message dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 + (BTCKey*) verifySignature:(NSData*)signature forBinaryMessage:(NSData *)data {
@@ -799,7 +802,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 }
 
 - (BOOL) isValidSignature:(NSData*)signature forMessage:(NSString*)message {
-    return [self isValidSignature:signature forBinaryMessage:[message dataUsingEncoding:NSASCIIStringEncoding]];
+    return [self isValidSignature:signature forBinaryMessage:[message dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 - (BOOL) isValidSignature:(NSData*)signature forBinaryMessage:(NSData *)data {
