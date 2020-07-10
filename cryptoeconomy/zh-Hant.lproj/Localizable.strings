@@ -21,6 +21,7 @@
 "btc_qr_code" = "BTC二維碼";
 "cancel" = "取消";
 "cancel_payment" = "取消付款";
+"connot_connect_to_network" = "無法連接到網路,請稍後再試!";
 "cannot_generate_transaction" = "無法產生交易";
 "cannot_get_balance" = "無法獲得餘額";
 "cannot_reach_network" = "無法連接到網路";

@@ -9,6 +9,7 @@
 import SwiftUI
 import Foundation
 import Combine
+import Network
 
 class BestFees {
     var low: Int
@@ -195,6 +196,7 @@ enum Interacts: CaseIterable{
 
 class AppController: ObservableObject {
     let didChange = PassthroughSubject<AppController, Never>()
+    let monitor = NWPathMonitor()
 
     static var shared = AppController()
     
@@ -213,6 +215,10 @@ class AppController: ObservableObject {
 
     private var editingAmountSend = false
     private var editingAmountSendFiat = false
+    
+    @Published var internetConnected = false { didSet {
+        self.didChange.send(self)
+    } }
 
     // default values
     @Published var currencySelection: Int = UserDefaults.standard.integer(forKey: "LocalCurrency") { didSet {
@@ -337,6 +343,22 @@ class AppController: ObservableObject {
         updateBlockHeight()
         updateTxFees()
         updateExchangeRates()
+        
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                print("Internet connected.")
+                self.internetConnected = true
+            } else {
+                print("Internet connection lost!!")
+                self.internetConnected = false
+            }
+            
+            // whether connection is via cellular network
+//            print(path.isExpensive)
+        }
+        
+        let queue = DispatchQueue(label: "Monitor")
+        monitor.start(queue: queue)
     }
     
     func calcConfirmations(_ blockHeight: Int64) -> Int {

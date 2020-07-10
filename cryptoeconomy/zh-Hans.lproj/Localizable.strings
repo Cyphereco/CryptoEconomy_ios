@@ -21,6 +21,7 @@
 "btc_qr_code" = "BTC二维码";
 "cancel" = "取消";
 "cancel_payment" = "取消付款";
+"connot_connect_to_network" = "无法连接网络,请稍后再试!";
 "cannot_generate_transaction" = "无法产生交易";
 "cannot_get_balance" = "无法获得余额";
 "cannot_reach_network" = "无法连接网络";

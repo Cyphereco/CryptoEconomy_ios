@@ -37,7 +37,12 @@ struct ViewOpenTurnKeyInfo: View {
             }.padding()
             VStack {
                 ImageQRCode(text: self.otkNpi.otkData.btcAddress)
-                Text(self.otkNpi.otkData.btcAddress).multilineTextAlignment(.center).padding()
+                Text(self.otkNpi.otkData.btcAddress).underline().multilineTextAlignment(.center).padding()
+                    .onTapGesture {
+                        if let url = URL(string: "https://blockchain.com/btc/address/" + self.otkNpi.otkData.btcAddress) {
+                            UIApplication.shared.open(url)
+                        }
+                    }
                 CopyButton(copyString: self.otkNpi.otkData.btcAddress){
                     self.bubbleMessage = AppStrings.btcAddress + AppStrings.copied
                     self.showBubble = true
@@ -46,10 +51,15 @@ struct ViewOpenTurnKeyInfo: View {
             Spacer()
             HStack(alignment: .top) {
                 Text("\(AppStrings.note):")
-                Text(self.otkNpi.otkInfo.note)
-                    .addUnderline()
-                    .multilineTextAlignment(.leading)
-                    .frame(minWidth: 200)
+                if self.otkNpi.otkInfo.note.count > 0 {
+                    Text(self.otkNpi.otkInfo.note)
+                        .addUnderline()
+                        .multilineTextAlignment(.leading)
+                        .frame(minWidth: 200)
+                }
+                else {
+                    Text(" ").addUnderline().frame(minWidth: 200)
+                }
                 Image("info")
                     .setCustomDecoration(.foregroundAccent)
                     .onTapGesture {

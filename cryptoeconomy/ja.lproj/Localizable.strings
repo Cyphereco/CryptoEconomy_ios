@@ -21,6 +21,7 @@
 "btc_qr_code" = "BTC QRコード";
 "cancel" = "キャンセル";
 "cancel_payment" = "支払いをキャンセル";
+"connot_connect_to_network" = "ネットワークと通信できません、しばらくしてからもう一度お試しください！";
 "cannot_generate_transaction" = "トランザクションを生成できません";
 "cannot_get_balance" = "残高を取得できません";
 "cannot_reach_network" = "ネットワークと通信できません";

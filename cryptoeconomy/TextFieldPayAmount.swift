@@ -34,6 +34,7 @@ struct TextFieldPayAmount: View {
                     .multilineTextAlignment(.trailing)
                     .addUnderline()
                     .font(.custom("", size: 24))
+                    .disabled(AppTools.getExchangeRate(currency: self.appController.getLocalCurrency().ordinal) <= 0)
                     Text(self.appController.getLocalCurrency().label)
                 }
                 .padding(.leading, 4.0)

@@ -64,6 +64,12 @@ struct PagePay: View {
                         }.padding(.horizontal, 20.0).padding(.top, 40).padding(.bottom, 10)
                         
                         Button(action: {
+                            if !self.appController.internetConnected {
+                                self.toastMessage = AppStrings.connot_connect_to_network
+                                self.showToast = true
+                                return
+                            }
+                            
                             if self.appController.payeeAddr.isEmpty {
                                 self.toastMessage = AppStrings.recipient_address_cannot_be_empty
                                 self.showToast = true
@@ -73,8 +79,8 @@ struct PagePay: View {
                             if !self.appController.useAllFunds {
                                 if self.appController.feesIncluded && self.appController.getAmountReceived() < 0.0 {
                                     self.toastMessage = AppStrings.amount_is_less_than_transaction_fees
-                                   self.showToast = true
-                                   return
+                                    self.showToast = true
+                                    return
                                 }
                                 
                                 if self.appController.amountSend.isEmpty || (Double(self.appController.amountSend) ?? 0.0) == 0.0 {

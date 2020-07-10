@@ -123,6 +123,7 @@ struct AppStrings {
     static let invalid_path = localize("invalid_path");
     static let signed_message = localize("signed_message");
     static let enter_note = localize("enter_note");
+    static let connot_connect_to_network = localize("connot_connect_to_network");
 
     private static func localize(_ str: String) -> String {
         return NSLocalizedString(str, comment: "")

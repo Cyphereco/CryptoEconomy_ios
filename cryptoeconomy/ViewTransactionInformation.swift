@@ -164,7 +164,7 @@ struct ViewTransactionInformation: View {
                         Text("\(AppStrings.transactionId):")
                             .font(.headline)
                         Button(action: {
-                            if let url = URL(string: "https://blockchain.info/tx/" + self.transaction.hash) {
+                            if let url = URL(string: "https://blockchain.com/btc/tx/" + self.transaction.hash) {
                                 UIApplication.shared.open(url)
                             }
                         }){

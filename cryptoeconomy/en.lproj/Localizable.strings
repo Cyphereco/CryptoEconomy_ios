@@ -21,6 +21,7 @@
 "btc_qr_code" = "BTC QR Code";
 "cancel" = "Cancel";
 "cancel_payment" = "Cancel payment";
+"connot_connect_to_network" = "Cannot connect to the network, please try later!";
 "cannot_generate_transaction" = "Cannot generate transaction";
 "cannot_get_balance" = "Cannot get balance";
 "cannot_reach_network" = "Cannot reach to the network";
