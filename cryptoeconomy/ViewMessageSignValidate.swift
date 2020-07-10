@@ -42,8 +42,10 @@ struct ViewMessageSignValidate: View {
     @State var messageToBeValidated = ""
     @State var messageToBeValidatedHeight: CGFloat = 24
     
+    @State var pin = ""
     @State var signatureIsValid = false
     @State var signatureIsInvalid = false
+    @State var showDialogEnterPin = false
 
     var body: some View {
         GeometryReader{ geometry in
@@ -154,25 +156,12 @@ struct ViewMessageSignValidate: View {
                             HStack {
                                 Spacer()
                                 Button(action: {
-                                    let hash = BtcUtils.generateMessageToSign(message: self.messageToBeSigned)
-                                    var request = OtkRequest()
-                                    request.command = .sign
-                                    request.data = hash.hexEncodedString()
-                                    self.otkNpi.request = request
-                                    self.otkNpi.beginScanning(onCompleted: {
-                                        if (self.otkNpi.readCompleted && self.otkNpi.otkState.execState == .success) {
-                                            // process signature to signed message format
-                                            do {
-                                                let signature = try BtcUtils.processSignedMessage(encodedMessageToSign: request.data, publicKey: self.otkNpi.otkData.publicKey, signedMessage: self.otkNpi.otkData.signatures[0])
-                                                self.signedMessage = SignedMessage(address: self.otkNpi.otkData.btcAddress, signature: signature, message: self.messageToBeSigned).getFormattedMessage()
-                                            }
-                                            catch {
-                                                print(error)
-                                                self.bubbleMessage = AppStrings.error + ": " + AppStrings.unknow_failure_reason
-                                                self.showBubble = true
-                                            }
-                                        }
-                                    }, onCanceled: {})
+                                    if self.appController.authByPin || self.otkNpi.request.command == .unlock {
+                                        self.showDialogEnterPin = true
+                                    }
+                                    else {
+                                        self.signMessage()
+                                    }
                                 }) {
                                     HStack{
                                         if (self.appController.authByPin) {
@@ -359,6 +348,15 @@ struct ViewMessageSignValidate: View {
                     UIApplication.shared.endEditing()
                 }
             }
+            
+            DialogEnterPin(showDialog: self.showDialogEnterPin, closeDialog: {
+                withAnimation {
+                    self.showDialogEnterPin = false
+                }
+            }, pin: "", handler: {pin in
+                self.pin = pin
+                self.signMessage()
+            })
         }
         .addKeyboardDismissButton()
         .isKeyboardActive(keyboardActive: self.$keyboardActive)
@@ -370,6 +368,42 @@ struct ViewMessageSignValidate: View {
         VStack {
             Divider().setCustomDecoration(.backgroundReversed)
         }.padding(.horizontal)
+    }
+    
+    func signMessage() {
+        let hash = BtcUtils.generateMessageToSign(message: self.messageToBeSigned)
+        var request = OtkRequest()
+        request.command = .sign
+        request.data = hash.hexEncodedString()
+        if self.pin.count > 0 {
+            request.pin = pin
+            pin = ""
+        }
+        self.otkNpi.request = request
+        self.otkNpi.beginScanning(onCompleted: {
+            if (self.otkNpi.readCompleted && self.otkNpi.otkState.execState == .success) {
+                // process signature to signed message format
+                do {
+                    let signature = try BtcUtils.processSignedMessage(encodedMessageToSign: request.data, publicKey: self.otkNpi.otkData.publicKey, signedMessage: self.otkNpi.otkData.signatures[0])
+                    self.signedMessage = SignedMessage(address: self.otkNpi.otkData.btcAddress, signature: signature, message: self.messageToBeSigned).getFormattedMessage()
+                }
+                catch {
+                    print(error)
+                    self.bubbleMessage = AppStrings.error + ": " + AppStrings.unknow_failure_reason
+                    self.showBubble = true
+                }
+            }
+            else {
+                if self.otkNpi.otkData.pinAuthSuspensionRetry > 0 {
+                    self.bubbleMessage = "\(AppStrings.pin_auth_suspended)\n\(AppStrings.retry_after)" +
+                        " \(self.otkNpi.otkData.pinAuthSuspensionRetry) \(AppStrings.reboot)"
+                }
+                else {
+                    self.bubbleMessage = "\(self.otkNpi.otkState.failureReason.desc)"
+                }
+                self.showBubble = true
+            }
+        }, onCanceled: {})
     }
 }
 

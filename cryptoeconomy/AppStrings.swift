@@ -124,6 +124,9 @@ struct AppStrings {
     static let signed_message = localize("signed_message");
     static let enter_note = localize("enter_note");
     static let connot_connect_to_network = localize("connot_connect_to_network");
+    static let pin_auth_suspended = localize("pin_auth_suspended");
+    static let reboot = localize("reboot");
+    static let retry_after = localize("retry_after");
 
     private static func localize(_ str: String) -> String {
         return NSLocalizedString(str, comment: "")

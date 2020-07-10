@@ -86,11 +86,14 @@
 "openturnkey_information" = "OpenTurnKey情報";
 "pay" = "支払い";
 "payment_canceled" = "支払いをキャンセルされた";
+"pin_auth_suspended" = "PINコード認証が一時停止";
 "pin_code_warning_message" = "PINコード設定は、OpenTurnKey指紋認証で問題が発生した場合に、キーへの代替バックアップアクセスを保証します。 ほとんどの場合、可能であれば指紋認証を使用することをお勧めします。 PINコード認証を使用する場合は、信頼できる安全なデバイスでのみ使用するようにしてください。";
 "pin_is_not_set" = "PINコード未設定";
 "Please enter a 8-digits nubmer." = "8桁の数字を入力してください";
 "processing_transaction" = "トランザクションを処理しています";
 "Raw Data" = "原生データ";
+"reboot" = "次再起動後で";
+"retry_after" = "再試行してください、";
 "read_general_information" = "一般情報を読む";
 "received_amount" = "受金金額";
 "recipient" = "受金方";

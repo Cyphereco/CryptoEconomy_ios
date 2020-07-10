@@ -173,7 +173,14 @@ struct PageOpenTurnKey: View {
                     }
                 }
                 if execState == .fail {
-                    self.showToast("\(AppStrings.request_fail): \(command.desc)" + "\n\(self.otkNpi.otkState.failureReason.desc)")
+                    if self.otkNpi.otkState.failureReason == .auth_failed &&
+                        self.otkNpi.otkData.pinAuthSuspensionRetry > 0 {
+                        self.showToast("\(AppStrings.request_fail): \(command.desc)" + "\n\(AppStrings.pin_auth_suspended)\n\(AppStrings.retry_after)" +
+                            " \(self.otkNpi.otkData.pinAuthSuspensionRetry) \(AppStrings.reboot)")
+                    }
+                    else {
+                        self.showToast("\(AppStrings.request_fail): \(command.desc)" + "\n\(self.otkNpi.otkState.failureReason.desc)")
+                    }
                 }
                 else {
                     if command == .invalid {

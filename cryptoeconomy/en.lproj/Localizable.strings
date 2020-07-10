@@ -86,11 +86,14 @@
 "openturnkey_information" = "OpenTurnKey Information";
 "pay" = "Pay";
 "payment_canceled" = "Payment canceled";
+"pin_auth_suspended" = "PIN code authentication suspended";
 "pin_code_warning_message" = "PIN code setting guarantee an alternative backup access to the key when OpenTurnKey fingerprint authentication run into problem. In the most cases, we recommend you to use fingerprint authentication if possible. If PIN code authorization is to be used, make sure you use it only on trusted secure devices.";
 "pin_is_not_set" = "PIN is not set";
 "Please enter a 8-digits nubmer." = "Please enter a 8-digits nubmer.";
 "processing_transaction" = "Processing transaction";
 "Raw Data" = "Raw Data";
+"reboot" = "reboot";
+"retry_after" = "Please retry after";
 "read_general_information" = "Read General Information";
 "received_amount" = "Received amount";
 "recipient" = "Recipient";

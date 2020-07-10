@@ -86,11 +86,14 @@
 "openturnkey_information" = "OpenTurnKey資訊";
 "pay" = "支付";
 "payment_canceled" = "支付已取消";
+"pin_auth_suspended" = "暫停PIN碼驗證";
 "pin_code_warning_message" = "設置PIN碼可以保障您的OpenTurnKey在指紋驗證功能發生問題時，仍然保有一個存取密鑰的備援方法，但多數情況下，如果指紋驗證功能正常，建議您優先使用指紋認證，如要使用PIN碼認證，請僅在信任的安全設備上使用。";
 "pin_is_not_set" = "PIN碼未設定";
 "Please enter a 8-digits nubmer." = "請輸入8位數字";
 "processing_transaction" = "處理交易中";
 "Raw Data" = "原始數據";
+"reboot" = "次重啟後重試";
+"retry_after" = "請在";
 "read_general_information" = "讀取一般資訊";
 "received_amount" = "實收金額";
 "recipient" = "收款方";

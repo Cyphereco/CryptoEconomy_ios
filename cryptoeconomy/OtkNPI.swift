@@ -378,6 +378,7 @@ struct OtkData {
     var wifKey = ""
     var publicKey = ""
     var signatures: Array<String> = []
+    var pinAuthSuspensionRetry = 0
 }
 
 struct OtkRequest {
@@ -786,6 +787,9 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                 }
                 else if (words[0].contains("WIF_Key")) {
                     otkData.wifKey = trimSting(words[1])
+                }
+                else if (words[0].contains("PIN_Suspend")) {
+                    otkData.pinAuthSuspensionRetry = Int(trimSting(words[1])) ?? 0
                 }
             }
         }
