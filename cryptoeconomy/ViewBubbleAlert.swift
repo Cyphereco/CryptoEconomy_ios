@@ -19,7 +19,7 @@ struct ViewBubbleAlert: View {
             Spacer()
             if (self.show) {
                 Text(message)
-                    .font(.title)
+                    .font(.system(size: 22))
                     .lineLimit(3)
                     .multilineTextAlignment(.center)
                     .onAppear(perform: {

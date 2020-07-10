@@ -233,22 +233,22 @@ enum OtkFailureReason: CaseIterable{
     
     init(_ val: Int) {
         switch val {
-        case 192:
+        case 0xC0:
             self = .timeout
             break
-        case 193:
+        case 0xC1:
             self = .auth_failed
             break
-        case 194:
+        case 0xC2:
             self = .cmd_invalid
             break
-        case 195:
+        case 0xC3:
             self = .param_invalid
             break
-        case 196:
+        case 0xC4:
             self = .param_missing
             break
-        case 197:
+        case 0xC7:
             self = .pin_unset
             break
         default:
@@ -274,7 +274,7 @@ enum OtkFailureReason: CaseIterable{
         case "196":
             self = .param_missing
             break
-        case "197":
+        case "199":
             self = .pin_unset
             break
         default:
@@ -286,17 +286,17 @@ enum OtkFailureReason: CaseIterable{
     var code: Int {
         switch self {
         case .timeout:
-            return 192
+            return 0xC0
         case .auth_failed:
-            return 193
+            return 0xC1
         case .cmd_invalid:
-            return 194
+            return 0xC2
         case .param_invalid:
-            return 195
+            return 0xC3
         case .param_missing:
-            return 196
+            return 0xC4
         case .pin_unset:
-            return 197
+            return 0xC7
         default:
             return 0
         }
