@@ -20,7 +20,7 @@ struct ViewBubbleAlert: View {
             if (self.show) {
                 Text(message)
                     .font(.system(size: 22))
-                    .lineLimit(3)
+                    .lineLimit(8)
                     .multilineTextAlignment(.center)
                     .onAppear(perform: {
                     DispatchQueue.main.asyncAfter(deadline: .now() + self.delay) {
