@@ -386,6 +386,7 @@ struct OtkRequest {
     var pin = ""
     var data = ""
     var option = ""
+    var useMaster = false
 }
 
 // OtkNfcProtocolInterface
@@ -557,6 +558,9 @@ class OtkNfcProtocolInterface: NSObject, ObservableObject, NFCNDEFReaderSessionD
                                                 if self.request.option.count > 0 {
                                                     opt = "\(opt),\(self.request.option)"
                                                 }
+                                            }
+                                            if self.request.useMaster {
+                                                opt = opt + ",key=1"
                                             }
                                             let reqOpt = self.payloadConstruct(str: opt)
 

@@ -375,6 +375,7 @@ struct ViewMessageSignValidate: View {
         var request = OtkRequest()
         request.command = .sign
         request.data = hash.hexEncodedString()
+        request.useMaster = self.useMasterKey
         if self.pin.count > 0 {
             request.pin = pin
             pin = ""
@@ -385,7 +386,10 @@ struct ViewMessageSignValidate: View {
                 // process signature to signed message format
                 do {
                     let signature = try BtcUtils.processSignedMessage(encodedMessageToSign: request.data, publicKey: self.otkNpi.otkData.publicKey, signedMessage: self.otkNpi.otkData.signatures[0])
-                    self.signedMessage = SignedMessage(address: self.otkNpi.otkData.btcAddress, signature: signature, message: self.messageToBeSigned).getFormattedMessage()
+                    let key = BTCDataFromHex(self.otkNpi.otkData.publicKey)
+                    let keyAddr = BTCKey(publicKey: key).address.string
+
+                    self.signedMessage = SignedMessage(address: keyAddr, signature: signature, message: self.messageToBeSigned).getFormattedMessage()
                 }
                 catch {
                     print(error)

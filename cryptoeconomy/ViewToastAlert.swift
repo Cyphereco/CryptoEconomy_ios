@@ -22,7 +22,7 @@ struct ViewToastAlert: View {
                     Spacer()
                     Text(self.message)
                         .font(.title)
-                        .lineLimit(3)
+                        .lineLimit(6)
                         .multilineTextAlignment(.center)
                         .onAppear(perform: {
                         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay) {
